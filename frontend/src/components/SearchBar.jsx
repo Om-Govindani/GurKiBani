@@ -68,7 +68,6 @@ useEffect(() => {
         placeholder="Enter First Characters of Shabad"
         value={query}
         onChange={(e) => {
-          
           setQuery(e.target.value.toLowerCase());
           handleSearch();
         }}
