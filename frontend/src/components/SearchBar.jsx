@@ -73,16 +73,31 @@ useEffect(() => {
           setQuery(e.target.value.toLowerCase());
           handleSearch();
         }}
-        className={`w-full h-full bg-zinc-800 text-white/80 px-6 py-4 placeholder:text-zinc-400 text-lg
+        className={`w-6/7 h-full bg-zinc-800 text-white/80 px-6 py-4 placeholder:text-zinc-400 text-lg
           ${hasResults ? "rounded-tl-2xl rounded-bl-none" : "rounded-l-2xl"} outline-none`}
       />
       <button
         type="submit"
-        className={`w-1/3 bg-zinc-400 cursor-pointer transition-all duration-300 hover:bg-white/40 active:scale-95
+        className={`w-1/7 bg-zinc-400 cursor-pointer transition-all duration-300 hover:bg-white/40 active:scale-95 flex items-center justify-center
           ${hasResults ? "rounded-tr-2xl rounded-br-none" : "rounded-r-2xl"}`}
+        aria-label="Search"
       >
-        Search
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-6 w-6 text-black"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth={2}
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z"
+          />
+        </svg>
       </button>
+
     </form>
   );
 }
