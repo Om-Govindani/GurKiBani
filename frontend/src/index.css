@@ -1,5 +1,4 @@
 @import "tailwindcss";
-html,
 body {
   background-color: #0f0f0f;
   color-scheme: dark;
@@ -9,9 +8,16 @@ body {
 }
 
 @media (max-width: 768px) {
-  html,
-  body {
-    background-color: transparent;
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image: url('/ਦਰਬਾਰ_ਸਾਹਿਬ.jpg');
+    background-size: cover;
+    background-position: center;
+    filter: blur(4px);
+    opacity: 0.3;
+    z-index: -1;
   }
 }
 

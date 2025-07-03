@@ -47,7 +47,7 @@ function ShabadView() {
   return (
     <div className="min-h-screen w-full bg-neutral-900 text-white px-6 py-10">
 
-      <div className="max-w-3xl mx-auto flex items-center justify-between mb-4">
+      <div className="w-full mx-auto flex items-center justify-between mb-4">
         {/* Back Button (top left) */}
         <button
             onClick={() => navigate("/")}
@@ -73,7 +73,7 @@ function ShabadView() {
 
 
         
-      <div className="max-w-3xl mx-auto relative ">
+      <div className="w-full mx-auto relative ">
 
         {shabadVerses.map(([id, verse], index) => {
           const isFirst = index === 0;
