@@ -3,7 +3,7 @@ import SearchBar from "./components/SearchBar.jsx"
 import SearchResults from "./components/SearchResults.jsx";
 import {useState , useEffect} from "react"
 import UserContext from "./contexts/UserContext.js"
-import SGGS from "./assets/SGGS_final.json";
+import SGGS from "../public/SGGS_final.json";
 import ShabadView from "./views/ShabadView.jsx";
 
 
