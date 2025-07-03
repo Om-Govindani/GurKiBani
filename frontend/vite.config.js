@@ -42,7 +42,7 @@ export default defineConfig({
         runtimeCaching: [
           {
             urlPattern: /SGGS_final\.json$/,
-            handler: "CacheFirst",
+            handler: "StaleWhileRevalidate",
             options: {
               cacheName: "sggs-cache",
               expiration: {
