@@ -10,7 +10,6 @@ function SearchBar({ results, setResults }) {
 
   const cleanedQuery = query.trim();
 
-  // ✅ If query is empty, clear results and return
   if (cleanedQuery === "") {
     setResults([]);
     return;
@@ -62,7 +61,7 @@ useEffect(() => {
     <form
       onSubmit={handleSearch}
       className={`w-full max-w-lg bg-zinc-800 h-14 flex transition-all duration-300
-        ${hasResults ? "rounded-t-2xl rounded-b-none " : "rounded-2xl"}`}
+        ${hasResults ? "rounded-t-2xl rounded-b-none " : "rounded-2xl"} shadow-md md:shadow-none shadow-stone-700/60`}
     >
       <input
         type="text"
