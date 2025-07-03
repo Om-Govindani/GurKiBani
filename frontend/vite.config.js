@@ -19,8 +19,8 @@ export default defineConfig({
         name: "GurKiBani",
         short_name: "GurKiBani",
         description: "Search and explore Sri Guru Granth Sahib Ji offline",
-        theme_color: "#0f0f0f",
-        background_color: "#0f0f0f",
+        theme_color: "#0B0D0E",
+        background_color: "#0B0D0E",
         display: "standalone",
         start_url: ".",
         icons: [

@@ -1,7 +1,7 @@
 import {useNavigate} from "react-router-dom"
 
 function SearchResults({ results }) {
-  const rowHeight = 96; 
+  const rowHeight = 100; 
   const maxVisible = 6;
   const calculatedHeight = Math.min(results.length, maxVisible) * rowHeight;
   const navigate = useNavigate();
@@ -14,11 +14,11 @@ function SearchResults({ results }) {
         <div
           key={result.id + index}
           onClick={() => navigate(`/shabad/${result.startId}?highlight=${result.id}`)}
-          className={`px-4 py-3 border-b ${index % 2 ? "bg-white/40 text-black" : "bg-zinc-800 text-white"} border-zinc-700 text-white text-sm`}
+          className={`px-4 py-3 border-y border-zinc-700 text-white text-sm`}
         >
-          <div className={`font-gurmukhi ${index % 2 ? "text-neutral-900" : "text-zinc-400"} text-xl`}>{result.gurmukhi}</div>
-          <div className={`font-hindi text-sm  ${index % 2 ? "text-neutral-900" : "text-zinc-400"}`}>{result.devanagari}</div>
-          <div className={`text-xs ${index % 2 ? "text-neutral-700" : "text-zinc-500"} mt-1`}>Ang: {result.id.split("-")[0]}</div>
+          <div className={`font-gurmukhi text-violet-50 text-xl`}>{result.gurmukhi}</div>
+          <div className={`font-hindi text-xl  text-orange-200`}>{result.devanagari}</div>
+          <div className={`text-xs text-neutral-500 mt-1`}>Ang: {result.id.split("-")[0]}</div>
         </div>
       ))}
     </div>

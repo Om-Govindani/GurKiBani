@@ -69,7 +69,7 @@ function ShabadView() {
         <div className="text-xl text-white/80 font-gurmukhi">
             ਅੰਗ: {highlightId.split("-")[0]}
         </div>
-        </div>
+      </div>
 
 
         
@@ -84,11 +84,6 @@ function ShabadView() {
               key={id}
               ref={(el) => (verseRef.current[id] = el)}
               className={`p-4 transition-all duration-200
-            ${id === highlightId
-                ? "bg-yellow-900 text-white"
-                : index % 2
-                ? "bg-white/40 text-neutral-900"
-                : "bg-zinc-800 text-zinc-400"}
                 ${isFirst ? "rounded-t-lg" : ""}
                 ${isLast ? "rounded-b-lg" : ""}
                 ${!isLast ? "border-b-0" : ""}
@@ -97,11 +92,11 @@ function ShabadView() {
 
             >
               <div 
-                className={`font-gurmukhi ${index % 2 ? "text-neutral-900" : "text-zinc-400"}`}
+                className={`font-gurmukhi ${id == highlightId ? "bg-white/15":""} text-violet-50`}
                 style={{fontSize : `${fontSize}px` , lineHeight:"1.4"}}
               >{verse[0]}</div>
               <div 
-                className={`font-hindi ${index % 2 ? "text-neutral-900" : "text-zinc-400"} mt-1`}
+                className={`font-hindi ${id == highlightId ? "bg-white/15":"mt-1"} text-orange-200 `}
                 style={{fontSize : `${fontSize }px`}}
               >{verse[1]}</div>
             </div>
