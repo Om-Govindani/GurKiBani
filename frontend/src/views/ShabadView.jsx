@@ -45,36 +45,38 @@ function ShabadView() {
   );
 
   return (
-    <div className="min-h-screen w-full bg-neutral-900 text-white px-6 py-10">
+    <div className="h-screen w-full bg-neutral-900 text-white px-6 py-5 relative flex-col">
 
-      <div className="w-full mx-auto flex items-center justify-between mb-4">
-        {/* Back Button (top left) */}
-        <button
-            onClick={() => navigate("/")}
-            className="flex items-center text-zinc-400 hover:text-white transition text-xl"
-        >
-            <svg
-            className="w-4 h-4 mr-1"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            viewBox="0 0 24 24"
-            >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-            </svg>
-            Back
-        </button>
+      <div className="absolute left-0 top-0 h-16 flex items-center w-full bg-neutral-900/5 backdrop-blur-sm px-6 z-10">
+        <div className="w-full mx-auto h-fit flex items-center justify-between ">
+          {/* Back Button (top left) */}
+          <button
+              onClick={() => navigate("/")}
+              className="flex items-center text-white transition text-xl"
+          >
+              <svg
+              className="w-4 h-4 mr-1"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+              >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+              </svg>
+              Back
+          </button>
 
-        {/* Gurmukhi Ang Number (top right) */}
-        <div className="text-xl text-white/80 font-gurmukhi">
-            ਅੰਗ: {highlightId.split("-")[0]}
+          {/* Gurmukhi Ang Number (top right) */}
+          <div className="text-xl text-white font-gurmukhi">
+              ਅੰਗ: {highlightId.split("-")[0]}
+          </div>
         </div>
       </div>
 
 
         
-      <div className="w-full mx-auto relative ">
-
+      <div className="w-full h-full mx-auto relative overflow-y-scroll">
+        <div className="h-10"></div>
         {shabadVerses.map(([id, verse], index) => {
           const isFirst = index === 0;
           const isLast = index === shabadVerses.length - 1;
