@@ -45,9 +45,17 @@ function ShabadView() {
   );
 
   return (
-    <div className="h-screen w-full bg-neutral-900 text-white px-6 py-5 relative flex-col">
+    <div className="h-screen w-full bg-neutral-900 text-white px-2 py-5 relative flex-col">
 
-      <div className="absolute left-0 top-0 h-16 flex items-center w-full bg-neutral-900/5 backdrop-blur-sm px-6 z-10">
+      <div
+        className="fixed top-0 left-0 w-full z-50 px-6 flex items-center h-16"
+        style={{
+          paddingTop: 'env(safe-area-inset-top)',
+          paddingBottom: '0.5rem', // or your preferred padding
+          backgroundColor: 'rgba(15, 15, 15, 0.6)',
+          backdropFilter: 'blur(8px)'
+        }}
+      >
         <div className="w-full mx-auto h-fit flex items-center justify-between ">
           {/* Back Button (top left) */}
           <button
