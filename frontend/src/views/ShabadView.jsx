@@ -48,9 +48,9 @@ function ShabadView() {
     <div className="h-screen w-full bg-neutral-900 text-white px-2 py-5 relative flex-col">
 
       <div
-        className="fixed top-0 left-0 w-full z-50 px-6 flex items-center h-16"
+        className="fixed top-0 left-0 w-full z-50 px-6 flex items-center h-[72px]"
         style={{
-          paddingTop: 'env(safe-area-inset-top)',
+          paddingTop: `calc(env(safe-area-inset-top) + 12px)`,
           paddingBottom: '0.5rem', // or your preferred padding
           backgroundColor: 'rgba(15, 15, 15, 0.6)',
           backdropFilter: 'blur(8px)'
@@ -93,7 +93,7 @@ function ShabadView() {
             <div
               key={id}
               ref={(el) => (verseRef.current[id] = el)}
-              className={`p-4 transition-all duration-200
+              className={`py-4 transition-all duration-200
                 ${isFirst ? "rounded-t-lg" : ""}
                 ${isLast ? "rounded-b-lg" : ""}
                 ${!isLast ? "border-b-0" : ""}
