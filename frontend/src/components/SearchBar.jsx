@@ -51,14 +51,12 @@ function SearchBar({ results, setResults }) {
 
 const handleSearch = (e) => {
   
-
-    // ✅ Normalize input: Convert "smmp", "s mm p" => ["s", "m", "m", "p"]
     const raw = query.trim().toLowerCase();
     const normalizedChars = raw.includes(" ")
       ? raw.split(/\s+/)
       : raw.split("");
 
-    // ✅ Ignore search if input is less than 3 characters
+    
     if (normalizedChars.length < 3) {
       setResults([]);
       return;
