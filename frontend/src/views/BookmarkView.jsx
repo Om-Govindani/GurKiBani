@@ -14,8 +14,14 @@ function BookmarkView(){
     },[bookmarks])
 
     return (
-        <div className="h-screen w-full bg-neutral-900 px-2 py-5 flex-col">
-            <div className="w-full mx-auto h-fit flex items-center justify-between">
+        <div className="relative h-screen w-full bg-neutral-900 px-2 py-5 flex-col">
+            <div className="fixed w-full mx-auto h-fit flex items-center justify-between"
+                style={{
+                    paddingTop: `calc(env(safe-area-inset-top) + 12px)`,
+                    paddingBottom: '0.5rem',
+                    transform: 'translateZ(0)'
+                }}
+            >
                 <button
                     onClick={() => navigate("/")}
                     className="flex items-center text-white transition text-xl cursor-pointer"
@@ -31,9 +37,10 @@ function BookmarkView(){
                     </svg>
                     Back
                 </button>
+                {/* <h1 className="text-zinc-400 text-center text-2xl mx-auto font-light">Bookmarks</h1> */}
             </div>
             
-            <div className=" mx-auto overflow-y-scroll mt-4 max-w-3xl rounded-2xl">
+            <div className="h-full mx-auto overflow-y-scroll my-12 max-w-3xl rounded-2xl">
                 {[...bookmarks].reverse().map(({ highlightId, romanChar }, idx) => {
                 const verse = SGGS[highlightId];
                 if (!verse) return null;

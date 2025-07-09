@@ -17,22 +17,22 @@ function HamburgerMenu() {
     }
     if(isOpen){
         document.addEventListener("mousedown" , handleClickOutside);
-        document.addEventListener("touchstart" , handleClickOutside)
+        // document.addEventListener("touchstart" , handleClickOutside)
     }else{
         document.removeEventListener("mousedown" , handleClickOutside);
-        document.removeEventListener("touchstart" , handleClickOutside);
+        // document.removeEventListener("touchstart" , handleClickOutside);
     }
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
-      document.removeEventListener("touchstart", handleClickOutside);
+    //   document.removeEventListener("touchstart", handleClickOutside);
     };
   },[isOpen])
 
   return (
     <>
-        <div className="fixed md:top-4 md:left-4 top-2 left-2 z-[999]"
+        <div className="fixed md:top-4 md:left-4 top-1 left-1 z-[999]"
             style={{
-                paddingTop: `calc(env(safe-area-inset-top) + 14px)`,
+                paddingTop: `calc(env(safe-area-inset-top) + 12px)`,
                 paddingBottom: '0.5rem',
                 transform: 'translateZ(0)'
             }}
