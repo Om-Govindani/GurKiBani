@@ -8,6 +8,7 @@ function ShabadView() {
   const { startId } = useParams();
   const [searchParams] = useSearchParams();
   const highlightId = searchParams.get("highlight")
+  const from = searchParams.get("from");
   const SGGS = useContext(UserContext);
   const [fontSize , setFontSize] = useState(24);
   const [showControls, setShowControls] = useState(true);
@@ -50,7 +51,7 @@ function ShabadView() {
   return (
     <div className="h-screen w-full bg-neutral-900 text-white px-2 py-5 relative flex-col">
 
-      <TopBar highlightId = {highlightId} view = "ShabadView" />
+      <TopBar highlightId = {highlightId} from = {from} />
 
 
         

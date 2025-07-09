@@ -5,7 +5,7 @@ import BookmarkContext from "../contexts/BookmarkContext"
 import SGGSContext from "../contexts/SGGSContext";
 
 
-function TopBar({highlightId , view}){
+function TopBar({highlightId , from}){
     const navigate = useNavigate()
     
     const [bookmarks , setBookmarks] = useContext(BookmarkContext);
@@ -79,7 +79,7 @@ function TopBar({highlightId , view}){
           {/* Back Button (top left) */}
           <button
               onClick={() => {
-                navigate("/")}}
+                from === "bookmarks" ? navigate("/bookmarks") : navigate("/")}}
               className="flex items-center text-white transition text-xl"
           >
               <svg
@@ -95,7 +95,7 @@ function TopBar({highlightId , view}){
           </button>
 
           {/* Gurmukhi Ang Number (top right) */}
-          {(view === "ShabadView") && <div className="flex flex-row space-x-4">
+          {(from === "searchresults") && <div className="flex flex-row space-x-4">
             <div className="text-xl text-white font-gurmukhi">
                 ਅੰਗ: {convertToGurmukhiNumber(highlightId.split("-")[0])}
             </div>

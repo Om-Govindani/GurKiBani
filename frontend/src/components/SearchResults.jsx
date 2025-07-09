@@ -22,7 +22,7 @@ function SearchResults({ results }) {
       {results.map((result, index) => (
         <div
           key={result.id + index}
-          onClick={() => navigate(`/shabad/${result.startId}?highlight=${result.id}`)}
+          onClick={() => navigate(`/shabad/${result.startId}?highlight=${result.id}&from=searchresults`)}
           className={`relative px-4 py-3 border-y border-zinc-700 text-white text-sm cursor-pointer hover:bg-zinc-700/40 transition`}
         >
           {/* ⭐️ Bookmark icon */}
