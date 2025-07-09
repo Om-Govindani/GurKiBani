@@ -70,7 +70,9 @@ function TopBar({highlightId}){
           paddingTop: `calc(env(safe-area-inset-top) + 12px)`,
           paddingBottom: '0.5rem', // or your preferred padding
         //   backgroundColor: 'rgba(15, 15, 15, 0.6)',
-          backdropFilter: 'blur(8px)'
+          WebkitBackdropFilter: 'blur(8px)',
+          backdropFilter: 'blur(8px)',
+          transform: 'translateZ(0)'
         }}
       >
         <div className="w-full mx-auto h-fit flex items-center justify-between ">

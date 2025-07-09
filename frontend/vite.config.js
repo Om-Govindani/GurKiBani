@@ -19,7 +19,8 @@ export default defineConfig({
         "logo.png",
         "robots.txt",
         "ਦਰਬਾਰ_ਸਾਹਿਬ.jpg",
-        "Dabar-sahib.jpeg"
+        "Dabar-sahib.jpeg",
+        "ekOnkaar.png"
       ],
       manifest: {
         name: "GurKiBani",
