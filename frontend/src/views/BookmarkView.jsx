@@ -3,6 +3,7 @@ import {useState , useContext, useEffect} from "react"
 import SGGSContext from "../contexts/SGGSContext";
 import BookmarkContext from "../contexts/BookmarkContext";
 import BookmarkBtn from "../components/buttons/BookmarkBtn";
+import TopBar from "../components/TopBar";
 
 function BookmarkView(){
     const navigate = useNavigate()
@@ -14,33 +15,46 @@ function BookmarkView(){
     },[bookmarks])
 
     return (
-        <div className="relative h-screen w-full bg-neutral-900 px-2 py-5 flex-col">
-            <div className="fixed w-full mx-auto h-fit flex items-center justify-between"
+        <div className="relative h-screen w-full bg-neutral-900 flex-col px-2 py-5 overflow-y-scroll">
+    
+            <div
+                className="fixed top-0 left-0 w-full z-50 px-6 flex items-center min-h-[72px] bg-black/5"
                 style={{
                     paddingTop: `calc(env(safe-area-inset-top) + 12px)`,
                     paddingBottom: '0.5rem',
-                    transform: 'translateZ(0)'
+                    backdropFilter: 'blur(8px)',
+                    // backgroundColor: 'rgba(15,15,15,0.6)',
                 }}
-            >
-                <button
-                    onClick={() => navigate("/")}
-                    className="flex items-center text-white transition text-xl cursor-pointer"
                 >
-                    <svg
-                    className="w-4 h-4 mr-1"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    viewBox="0 0 24 24"
+                <div className="w-full mx-auto h-fit flex items-center justify-between">
+                    {/* Back Button (top left) */}
+                    <button
+                    onClick={() => navigate("/")}
+                    className="flex items-center text-white transition text-xl"
                     >
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+                    <svg
+                        className="w-4 h-4 mr-1"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        viewBox="0 0 24 24"
+                    >
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
                     </svg>
                     Back
-                </button>
-                {/* <h1 className="text-zinc-400 text-center text-2xl mx-auto font-light">Bookmarks</h1> */}
-            </div>
+                    </button>
+
+                    {/* Page Title (centered visually) */}
+                    <div className="text-white text-xl font-light text-center mr-12">
+                    Bookmarks
+                    </div>
+                </div>
+                </div>
+
+
             
-            <div className="h-full mx-auto overflow-y-scroll my-12 max-w-3xl rounded-2xl">
+            <div className="h-full mx-auto max-w-3xl mt-[20px]">
+                <div className="h-10"></div>
                 {[...bookmarks].reverse().map(({ highlightId, romanChar }, idx) => {
                 const verse = SGGS[highlightId];
                 if (!verse) return null;
@@ -48,7 +62,7 @@ function BookmarkView(){
                     setBookmarks(prev => prev.filter(b => b.highlightId !== highlightId))
                 }
                 return (
-                    <div key={highlightId} className="flex flex-row bg-zinc-800 hover:bg-zinc-700">
+                    <div key={highlightId} className={`flex flex-row bg-zinc-800 hover:bg-zinc-700 ${idx === 0 ? "rounded-t-2xl" : idx === bookmarks.length-1 ? "rounded-b-2xl": "" }`}>
                         <div
                             key={highlightId + idx}
                             onClick={() => navigate(`/shabad/${verse[5]}?highlight=${highlightId}`)}

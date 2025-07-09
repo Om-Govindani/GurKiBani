@@ -65,10 +65,11 @@ function TopBar({highlightId , view}){
     
     return (
         <div
-        className="fixed top-0 left-0 w-full z-50 px-2 flex items-center h-[80px] bg-black/5"
+        className="fixed top-0 left-0 w-full z-50 px-2 flex items-center h-[72px] bg-black/5"
         style={{
           paddingTop: `calc(env(safe-area-inset-top) + 12px)`,
-          paddingBottom: '0.5rem',
+          paddingBottom: '0.5rem', // or your preferred padding
+        //   backgroundColor: 'rgba(15, 15, 15, 0.6)',
           WebkitBackdropFilter: 'blur(8px)',
           backdropFilter: 'blur(8px)',
           transform: 'translateZ(0)'
@@ -78,8 +79,7 @@ function TopBar({highlightId , view}){
           {/* Back Button (top left) */}
           <button
               onClick={() => {
-                (view === "Bookmark") ? navigate("/bookmarks") : navigate("/")
-              }}
+                navigate("/")}}
               className="flex items-center text-white transition text-xl"
           >
               <svg
