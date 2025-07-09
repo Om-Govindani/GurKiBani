@@ -13,6 +13,8 @@ function ShabadView() {
   const [showControls, setShowControls] = useState(true);
   const scrollTimeoutRef = useRef(null);
   const verseRef = useRef({})
+  const [showHindi , setShowHindi] = useState(true);
+  const [showGurmukhi , setShowGurmukhi] = useState(false);
   
   useEffect(() => {
     const handleScroll = () => {
@@ -48,7 +50,7 @@ function ShabadView() {
   return (
     <div className="h-screen w-full bg-neutral-900 text-white px-2 py-5 relative flex-col">
 
-      <TopBar highlightId = {highlightId}/>
+      <TopBar highlightId = {highlightId} view = "ShabadView" />
 
 
         

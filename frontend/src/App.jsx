@@ -5,6 +5,7 @@ import SGGS from "../public/SGGS_final.json";
 import ShabadView from "./views/ShabadView.jsx";
 import SearchView from "./views/SearchView.jsx";
 import { useState , useEffect} from "react";
+import BookmarkView from "./views/BookmarkView.jsx";
 
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
           <Routes>
             <Route path="/" element={ <SearchView />} />
             <Route path="/shabad/:startId" element={<ShabadView />} />
+            <Route path="/bookmarks" element={<BookmarkView />} />
           </Routes>
         </Router>
       </BookmarkContext.Provider>

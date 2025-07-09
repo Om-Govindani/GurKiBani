@@ -7,48 +7,6 @@ function SearchBar({ results, setResults }) {
   const SGGS = useContext(SGGSContext);
   const [bookmarks] = useContext(BookmarkContext);
 
-//   const handleSearch = (e) => {
-//   if (e) e.preventDefault();
-
-//   const cleanedQuery = query.trim();
-
-//   if (cleanedQuery === "") {
-//     setResults([]);
-//     return;
-//   }
-
-//   const inputChar = cleanedQuery.split(" ").filter((c) => c !== "");
-//   if (inputChar.length < 3) {
-//     setResults([]);
-//     return;
-//   }
-//   const isMatch = (verseChars, inputChars) => {
-//     if (inputChars.length > verseChars.length) return false;
-//     for (let i = 0; i < inputChars.length; i++) {
-//       if (verseChars[i] !== inputChars[i]) return false;
-//     }
-//     return true;
-//   };
-
-//   const tempResults = [];
-
-//   for (const [id, verse] of Object.entries(SGGS)) {
-//     const letters = verse[4].split(" ");
-//     if (isMatch(letters, inputChar)) {
-//       tempResults.push({
-//         id,
-//         gurmukhi: verse[0],
-//         devanagari: verse[1],
-//         startId: verse[5],
-//         endId: verse[6],
-//       });
-//     }
-//   }
-
-//   setResults(tempResults);
-//   console.log(results)
-// };
-
 const handleSearch = (e) => {
   
     const raw = query.trim().toLowerCase();

@@ -5,7 +5,7 @@ import BookmarkContext from "../contexts/BookmarkContext"
 import SGGSContext from "../contexts/SGGSContext";
 
 
-function TopBar({highlightId}){
+function TopBar({highlightId , view}){
     const navigate = useNavigate()
     
     const [bookmarks , setBookmarks] = useContext(BookmarkContext);
@@ -65,11 +65,10 @@ function TopBar({highlightId}){
     
     return (
         <div
-        className="fixed top-0 left-0 w-full z-50 px-2 flex items-center h-[72px] bg-black/5"
+        className="fixed top-0 left-0 w-full z-50 px-2 flex items-center h-[80px] bg-black/5"
         style={{
           paddingTop: `calc(env(safe-area-inset-top) + 12px)`,
-          paddingBottom: '0.5rem', // or your preferred padding
-        //   backgroundColor: 'rgba(15, 15, 15, 0.6)',
+          paddingBottom: '0.5rem',
           WebkitBackdropFilter: 'blur(8px)',
           backdropFilter: 'blur(8px)',
           transform: 'translateZ(0)'
@@ -78,7 +77,9 @@ function TopBar({highlightId}){
         <div className="w-full mx-auto h-fit flex items-center justify-between ">
           {/* Back Button (top left) */}
           <button
-              onClick={() => navigate("/")}
+              onClick={() => {
+                (view === "Bookmark") ? navigate("/bookmarks") : navigate("/")
+              }}
               className="flex items-center text-white transition text-xl"
           >
               <svg
@@ -94,12 +95,12 @@ function TopBar({highlightId}){
           </button>
 
           {/* Gurmukhi Ang Number (top right) */}
-          <div className="flex flex-row space-x-4">
+          {(view === "ShabadView") && <div className="flex flex-row space-x-4">
             <div className="text-xl text-white font-gurmukhi">
                 ਅੰਗ: {convertToGurmukhiNumber(highlightId.split("-")[0])}
             </div>
             <BookmarkBtn isBookmark = {isBookmark} onToggle={handleBookmarkToggle} />
-          </div>
+          </div>}
         </div>
       </div>
     )
