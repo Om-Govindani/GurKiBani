@@ -23,13 +23,13 @@ function NitnemView(){
         ["ਤ੍ਵ ਪ੍ਰਸਾਦਿ (ਚੌਪਈ)","त्व प्रसादि (चौपई)"]
     ]
     return (
-        <div className="relative h-screen w-full bg-neutral-900 flex-col px-2 py-5 overflow-y-scroll">
+        <div className="relative min-h-screen w-full bg-neutral-900 flex-col px-2 py-5">
     
             <TopBar />
 
 
             
-            <div className="h-full mx-auto max-w-3xl mt-[20px]">
+            <div className="h-full mx-auto max-w-3xl mt-[20px] overflow-y-scroll">
                 <div className="h-10"></div>
                 <div className="h-full bg-transparent flex flex-col ">
                     { [...paths].map(([gurmukhi , devanagri] , idx)=>{

@@ -67,7 +67,7 @@ function TopBar({highlightId , from}){
         <div
         className="fixed top-0 left-0 w-full z-50 px-2 flex items-center min-h-[72px] bg-black/5 border-b-1 border-zinc-700/60"
         style={{
-          paddingTop: `calc(env(safe-area-inset-top ,0px) + 12px)`,
+          paddingTop: `calc(env(safe-area-inset-top ,0px))`,
           paddingBottom: `calc(env(safe-area-inset-bottom))`, // or your preferred padding
         //   backgroundColor: 'rgba(15, 15, 15, 0.6)',
           WebkitBackdropFilter: 'blur(8px)',

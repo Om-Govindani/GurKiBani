@@ -11,13 +11,13 @@ function BookmarkView(){
     const [bookmarks , setBookmarks] = useContext(BookmarkContext);
 
     return (
-        <div className="relative h-screen w-full bg-neutral-900 flex-col px-2 py-5 overflow-y-scroll">
+        <div className="relative h-screen w-full bg-neutral-900 flex-col px-2 py-5 overflow-x-scroll">
     
             <TopBar />
 
 
             
-            <div className="h-full mx-auto max-w-3xl mt-[20px]">
+            <div className="h-fit mx-auto max-w-3xl mt-[20px]">
                 <div className="h-10"></div>
                 {[...bookmarks].reverse().map(({ highlightId, romanChar }, idx) => {
                 const verse = SGGS[highlightId];
@@ -26,7 +26,7 @@ function BookmarkView(){
                     setBookmarks(prev => prev.filter(b => b.highlightId !== highlightId))
                 }
                 return (
-                    <div key={highlightId} className={`flex flex-row bg-transparent hover:bg-zinc-700 ${idx === 0 ? "rounded-t-2xl" : idx === bookmarks.length-1 ? "rounded-b-2xl": "" }`}>
+                    <div key={highlightId} className={`flex flex-row bg-transparent`}>
                         <div
                             key={highlightId + idx}
                             onClick={() => navigate(`/shabad/${verse[5]}?highlight=${highlightId}&from=bookmarks`)}
