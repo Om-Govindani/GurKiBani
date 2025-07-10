@@ -3,7 +3,7 @@ import { useContext  , useState , useEffect , useRef} from "react";
 import UserContext from "../contexts/SGGSContext";
 import SizeControlBtns from "../components/buttons/SizeControlBtns";
 import TopBar from "../components/TopBar";
-
+import LanguageContext from "../contexts/LanguageContext";
 function ShabadView() {
   const { startId } = useParams();
   const [searchParams] = useSearchParams();
@@ -12,10 +12,8 @@ function ShabadView() {
   const SGGS = useContext(UserContext);
   const [fontSize , setFontSize] = useState(24);
   const [showControls, setShowControls] = useState(true);
-  const scrollTimeoutRef = useRef(null);
   const verseRef = useRef({})
-  const [showHindi , setShowHindi] = useState(true);
-  const [showGurmukhi , setShowGurmukhi] = useState(false);
+  const [language] = useContext(LanguageContext);
 
   useEffect(()=>{
     if(highlightId && verseRef.current[highlightId]){
@@ -31,13 +29,13 @@ function ShabadView() {
   );
 
   return (
-    <div className="h-screen w-full bg-neutral-900 text-white px-2 py-5 relative flex-col">
+    <div className="min-h-screen w-full bg-neutral-900 text-white px-2 py-5 relative flex-col">
 
       <TopBar highlightId = {highlightId} from = {from} />
 
 
         
-      <div className="w-full h-full mx-auto relative overflow-y-scroll">
+      <div className="w-full h-full mx-auto mt-[20px] relative overflow-y-scroll">
         <div className="h-10"></div>
         {shabadVerses.map(([id, verse], index) => {
           const isFirst = index === 0;
@@ -55,14 +53,14 @@ function ShabadView() {
               `}
 
             >
-              <div 
+              {language!=="hindi" && (<div 
                 className={`font-gurmukhi ${id == highlightId ? "bg-white/15":""} text-violet-50`}
                 style={{fontSize : `${fontSize}px` , lineHeight:"1.4"}}
-              >{verse[0]}</div>
-              <div 
+              >{verse[0]}</div>)}
+              {language!=="gurmukhi" && (<div 
                 className={`font-hindi ${id == highlightId ? "bg-white/15":"mt-1"} text-orange-200 `}
                 style={{fontSize : `${fontSize }px`}}
-              >{verse[1]}</div>
+              >{verse[1]}</div>)}
             </div>
           );
         })}

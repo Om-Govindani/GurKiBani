@@ -1,14 +1,15 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import BookmarkContext from "../contexts/BookmarkContext";
+import LanguageContext from "../contexts/LanguageContext";
 
 function SearchResults({ results , setQuery}) {
   const [bookmarks] = useContext(BookmarkContext);
-  const rowHeight = 100;
+  const[language] = useContext(LanguageContext)
+  const rowHeight = (language !== "both") ? 50 : 100;
   const maxVisible = 6;
   const calculatedHeight = Math.min(results.length, maxVisible) * rowHeight;
   const navigate = useNavigate();
-
   const isBookmarked = (result) => {
     return bookmarks.some((b) => b.romanChar === result.romanChar);
   };
@@ -25,6 +26,7 @@ function SearchResults({ results , setQuery}) {
           <div
             key={result.id + index}
             onClick={() => {
+              setQuery("");
               if (isQuickRef) {
                 navigate(`/bani/${encodeURIComponent(result.devanagari)}?from=search`);
               } else {
@@ -32,7 +34,6 @@ function SearchResults({ results , setQuery}) {
                   `/shabad/${result.startId}?highlight=${result.id}&from=searchresults`
                 );
               }
-              setQuery("");
             }}
             className={`relative px-4 py-3 border-y border-zinc-700 text-white text-sm cursor-pointer hover:bg-zinc-700/40 transition`}
           >
@@ -50,12 +51,12 @@ function SearchResults({ results , setQuery}) {
               </div>
             )}
 
-            <div className="font-gurmukhi text-violet-50 text-xl pr-3">
+            {language!=="hindi" && <div className="font-gurmukhi text-violet-50 text-xl pr-3">
               {result.gurmukhi}
-            </div>
-            <div className="font-hindi text-xl text-orange-200 pr-3">
+            </div>}
+            {language!=="gurmukhi" && <div className="font-hindi text-xl text-orange-200 pr-3">
               {result.devanagari}
-            </div>
+            </div>}
             {!isQuickRef && (
               <div className="text-xs text-neutral-500 mt-1">
                 Ang: {result.id.split("-")[0]}

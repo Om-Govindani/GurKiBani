@@ -1,6 +1,7 @@
-import { BrowserRouter as Router, Routes, Route ,Navigate} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route ,Navigate ,useNavigate, useLocation} from "react-router-dom";
 import SGGSContext from "./contexts/SGGSContext.js"
 import BookmarkContext from "./contexts/BookmarkContext.js";
+import LanguageContext from "./contexts/LanguageContext.js";
 import SGGS from "../public/SGGS.json";
 import ShabadView from "./views/ShabadView.jsx";
 import SearchView from "./views/SearchView.jsx";
@@ -9,21 +10,34 @@ import BookmarkView from "./views/BookmarkView.jsx";
 import NitnemView from "./views/NitnemView.jsx";
 import BaniView from "./views/BaniView.jsx";
 
-
 function App() {
+  
+  const [language, setLanguage] = useState(() => {
+    return localStorage.getItem("language") || "both";
+  });
+
   const [bookmarks, setBookmarks] = useState(() => {
     const stored = localStorage.getItem("bookmarks");
     return stored ? JSON.parse(stored) : [];
   });
+
+  
   useEffect(() => {
     localStorage.setItem("bookmarks", JSON.stringify(bookmarks));
   }, [bookmarks]);
+
+  useEffect(() => {
+    localStorage.setItem("language", language);
+  }, [language]);
+
   return (
     <SGGSContext.Provider value = {SGGS}>
+      <LanguageContext.Provider value={[language , setLanguage]} >
         <BookmarkContext.Provider value={[bookmarks , setBookmarks]}>
           <Router>
             <Routes>
               <Route path="/" element={ <SearchView />} />
+              <Route path="/reset" element={<Navigate to="/" replace />} />
               <Route path="/shabad/:startId" element={<ShabadView />} />
               <Route path="/bookmarks" element={<BookmarkView />} />
               <Route path="/nitnem" element={<NitnemView />} />
@@ -32,6 +46,7 @@ function App() {
             </Routes>
           </Router>
         </BookmarkContext.Provider>
+      </LanguageContext.Provider>
     </SGGSContext.Provider>
   )
 }

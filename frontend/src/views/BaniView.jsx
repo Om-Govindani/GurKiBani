@@ -3,6 +3,7 @@ import {useParams ,useSearchParams} from "react-router-dom"
 import TopBar from "../components/TopBar";
 import SundarGutka from "../../public/SundarGutka.json"
 import SizeControlBtns from "../components/buttons/SizeControlBtns";
+import LanguageContext from "../contexts/LanguageContext";
 
 function BaniView(){
     const { name } = useParams(); 
@@ -12,6 +13,9 @@ function BaniView(){
     const from = searchParams.get("from");
     const [fontSize , setFontSize] = useState(24);
     const [showControls, setShowControls] = useState(true);
+    const [language] = useContext(LanguageContext);
+
+    const keywords = ["ੴ",]
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -23,7 +27,7 @@ function BaniView(){
     
             <TopBar from={from}/>
 
-            <div className="h-full mx-auto max-w-3xl mt-[20px] overflow-y-scroll">
+            <div className="h-full mx-auto w-full mt-[20px] overflow-y-scroll">
                 <div className="h-10"></div>
                 {baniVerses.map(([id, verse], index) => {
 
@@ -33,14 +37,14 @@ function BaniView(){
                         className={`py-4 transition-all duration-200 text-center`}
 
                         >
-                        <div 
+                        {language!=="hindi" &&<div 
                             className={`font-gurmukhi  text-violet-50`}
                             style={{fontSize : `${fontSize}px` , lineHeight:"1.4"}}
-                        >{verse[0]}</div>
-                        <div 
+                        >{verse[0]}</div>}
+                        {language!=="gurumukhi" && <div 
                             className={`font-hindi text-orange-200 `}
                             style={{fontSize : `${fontSize }px`}}
-                        >{verse[1]}</div>
+                        >{verse[1]}</div>}
                         </div>
                     );
                     })}
