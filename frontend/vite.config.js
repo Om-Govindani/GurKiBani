@@ -56,16 +56,27 @@ export default defineConfig({
         globPatterns: ["**/*.{js,css,html,svg,png,json}"],
         runtimeCaching: [
           {
-            urlPattern: /SGGS_final\.json$/,
+            urlPattern: /SGGS\.json$/,
             handler: "StaleWhileRevalidate",
             options: {
-              cacheName: "sggs-cache",
+              cacheName: "SGGS-cache",
               expiration: {
                 maxEntries: 1,
                 maxAgeSeconds: 60 * 60 * 24 * 365, // 1 year
               },
             },
           },
+          {
+            urlPattern: /SundarGutka\.json$/,
+            handler: "StaleWhileRevalidate",
+            options: {
+              cacheName: "SundarGutka-cache",
+              expiration: {
+                maxEntries: 1,
+                maxAgeSeconds: 60 * 60 * 24 * 365, // 1 year
+              },
+            },
+          }
         ],
       },
     }),

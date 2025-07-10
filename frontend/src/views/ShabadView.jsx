@@ -16,24 +16,6 @@ function ShabadView() {
   const verseRef = useRef({})
   const [showHindi , setShowHindi] = useState(true);
   const [showGurmukhi , setShowGurmukhi] = useState(false);
-  
-  useEffect(() => {
-    const handleScroll = () => {
-        setShowControls(true);
-        if (scrollTimeoutRef.current) {
-        clearTimeout(scrollTimeoutRef.current);
-        }
-        scrollTimeoutRef.current = setTimeout(() => {
-        setShowControls(false);
-        }, 3000);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-        window.removeEventListener("scroll", handleScroll);
-        if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
-    };
-    }, []);
 
   useEffect(()=>{
     if(highlightId && verseRef.current[highlightId]){

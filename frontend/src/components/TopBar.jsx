@@ -68,7 +68,7 @@ function TopBar({highlightId , from}){
         className="fixed top-0 left-0 w-full z-50 px-2 flex items-center min-h-[72px] bg-black/5 border-b-1 border-zinc-700/60"
         style={{
           paddingTop: `calc(env(safe-area-inset-top ,0px))`,
-          paddingBottom: `calc(env(safe-area-inset-bottom))`, // or your preferred padding
+          // paddingBottom: `calc(env(safe-area-inset-bottom))`, // or your preferred padding
         //   backgroundColor: 'rgba(15, 15, 15, 0.6)',
           WebkitBackdropFilter: 'blur(8px)',
           backdropFilter: 'blur(8px)',
@@ -79,7 +79,7 @@ function TopBar({highlightId , from}){
           {/* Back Button (top left) */}
           <button
               onClick={() => {
-                from === "bookmarks" ? navigate("/bookmarks") : navigate("/")}}
+                from === "bookmarks" ? navigate("/bookmarks") : from === "bani" ? navigate("/nitnem") : navigate("/")}}
               className="flex items-center text-white transition text-xl"
           >
               <svg
