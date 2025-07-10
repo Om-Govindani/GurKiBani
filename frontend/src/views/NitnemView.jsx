@@ -22,6 +22,29 @@ function NitnemView(){
         ["ਤ੍ਵ ਪ੍ਰਸਾਦਿ ਸਵੱਯੇ (ਦੀਨਨ ਦੀ ਪ੍ਰਤੀਪਾਲ)","त्व प्रसादि सवये (दीनन की प्रतिपाल)"],
         ["ਤ੍ਵ ਪ੍ਰਸਾਦਿ (ਚੌਪਈ)","त्व प्रसादि (चौपई)"]
     ]
+
+    const quickRefs = {
+        "japji sahib":["ਜਪੁਜੀ ਸਾਹਿਬ","जपुजी साहिब"],
+        "japjee sahib":["ਜਪੁਜੀ ਸਾਹਿਬ","जपुजी साहिब"],
+        "chopai sahib":["ਕਬਿਯੋ ਬਾਚ ਬੇਨਤੀ (ਚੌਪਈ)","कबियो बाच बेनती (चौपई)"] ,
+        "chaupai sahib":["ਕਬਿਯੋ ਬਾਚ ਬੇਨਤੀ (ਚੌਪਈ)","कबियो बाच बेनती (चौपई)"] ,
+        "anand sahib" : ["ਅਨੰਦੁ ਸਾਹਿਬ","अनंदु साहिब"],
+        "tav prasad savaiye" : ["ਤ੍ਵ ਪ੍ਰਸਾਦਿ ਸਵੱਯੇ (ਸ੍ਰਾਵਗ ਸੁਧ ਸਮੂਹ)","त्व प्रसादि सवये (स्रावग सुध समूह)"], 
+        "jaap sahib" : ["ਜਾਪੁ ਸਾਹਿਬ","जापु साहिब"],
+        "rehraas sahib" : ["ਰਹਰਾਸਿ ਸਾਹਿਬ","रहरासि साहिब"],
+        "sohila sahib" : ["ਸੋਹਿਲਾ ਸਾਹਿਬ","सोहिला साहिब"],
+        "sukhmani sahib" : ["ਸੁਖਮਨੀ ਸਾਹਿਬ","सुखमनी साहिब"],
+        "salok mohalla 9" : ["ਸਲੋਕ ਮਹਲਾ ੯","सलोक महला ९"],
+        "shlok mohalla 9" : ["ਸਲੋਕ ਮਹਲਾ ੯","सलोक महला ९"],
+        "salok mehella 9" : ["ਸਲੋਕ ਮਹਲਾ ੯","सलोक महला ९"],
+        "shlok mehella 9" : ["ਸਲੋਕ ਮਹਲਾ ੯","सलोक महला ९"],
+        "salok mohala 9" : ["ਸਲੋਕ ਮਹਲਾ ੯","सलोक महला ९"],
+        "shlok mohala 9" : ["ਸਲੋਕ ਮਹਲਾ ੯","सलोक महला ९"],
+        "salok mehela 9" : ["ਸਲੋਕ ਮਹਲਾ ੯","सलोक महला ९"],
+        "shlok mehela 9" : ["ਸਲੋਕ ਮਹਲਾ ੯","सलोक महला ९"],
+        "ardas" : ["ਅਰਦਾਸ","अरदास"] ,
+        "ardaas" : ["ਅਰਦਾਸ","अरदास"] ,
+    }
     return (
         <div className="relative min-h-screen w-full bg-neutral-900 flex-col px-2 py-5">
     
@@ -37,7 +60,7 @@ function NitnemView(){
                         <div 
                             key={idx} 
                             className="w-full p-4 cursor-pointer transition border-b-1 flex flex-col items-center justify-center border-zinc-700/40"
-                            onClick={()=> navigate(`/bani/${devanagri}`)}
+                            onClick={()=> navigate(`/bani/${devanagri}?from=bani`)}
                         >
                             <div className="font-gurmukhi text-xl md:text-2xl text-orange-50">{gurmukhi}</div>
                             <div className="font-hindi text-xl md:text-2xl text-orange-200">{devanagri}</div>

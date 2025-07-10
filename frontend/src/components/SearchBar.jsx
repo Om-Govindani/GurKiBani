@@ -7,18 +7,51 @@ function SearchBar({ results, setResults }) {
   const SGGS = useContext(SGGSContext);
   const [bookmarks] = useContext(BookmarkContext);
 
-const handleSearch = (e) => {
-  
+  const quickRefs = {
+    "japji sahib": ["ਜਪੁਜੀ ਸਾਹਿਬ", "जपुजी साहिब"],
+    "japjee sahib": ["ਜਪੁਜੀ ਸਾਹਿਬ", "जपुजी साहिब"],
+    "chopai sahib": ["ਕਬਿਯੋ ਬਾਚ ਬੇਨਤੀ (ਚੌਪਈ)", "कबियो बाच बेनती (चौपई)"],
+    "chaupai sahib": ["ਕਬਿਯੋ ਬਾਚ ਬੇਨਤੀ (ਚੌਪਈ)", "कबियो बाच बेनती (चौपई)"],
+    "anand sahib": ["ਅਨੰਦੁ ਸਾਹਿਬ", "अनंदु साहिब"],
+    "tav prasad savaiye": ["ਤ੍ਵ ਪ੍ਰਸਾਦਿ ਸਵੱਯੇ (ਸ੍ਰਾਵਗ ਸੁਧ ਸਮੂਹ)", "त्व प्रसादि सवये (स्रावग सुध समूह)"],
+    "jaap sahib": ["ਜਾਪੁ ਸਾਹਿਬ", "जापु साहिब"],
+    "rehraas sahib": ["ਰਹਰਾਸਿ ਸਾਹਿਬ", "रहरासि साहिब"],
+    "sohila sahib": ["ਸੋਹਿਲਾ ਸਾਹਿਬ", "सोहिला साहिब"],
+    "sukhmani sahib": ["ਸੁਖਮਨੀ ਸਾਹਿਬ", "सुखमनी साहिब"],
+    "salok mohalla 9": ["ਸਲੋਕ ਮਹਲਾ ੯", "सलोक महला ९"],
+    "shlok mohalla 9": ["ਸਲੋਕ ਮਹਲਾ ੯", "सलोक महला ९"],
+    "salok mehella 9": ["ਸਲੋਕ ਮਹਲਾ ੯", "सलोक महला ९"],
+    "shlok mehella 9": ["ਸਲੋਕ ਮਹਲਾ ੯", "सलोक महला ९"],
+    "salok mohala 9": ["ਸਲੋਕ ਮਹਲਾ ੯", "सलोक महला ९"],
+    "shlok mohala 9": ["ਸਲੋਕ ਮਹਲਾ ੯", "सलोक महला ९"],
+    "salok mehela 9": ["ਸਲੋਕ ਮਹਲਾ ੯", "सलोक महला ९"],
+    "shlok mehela 9": ["ਸਲੋਕ ਮਹਲਾ ੯", "सलोक महला ९"],
+    "ardas": ["ਅਰਦਾਸ", "अरदास"],
+    "ardaas": ["ਅਰਦਾਸ", "अरदास"],
+  };
+
+  const handleSearch = () => {
     const raw = query.trim().toLowerCase();
     const normalizedChars = raw.includes(" ")
       ? raw.split(/\s+/)
       : raw.split("");
 
-    
     if (normalizedChars.length < 3) {
       setResults([]);
       return;
     }
+
+    const quickKey = Object.keys(quickRefs).find((key) =>
+      key.startsWith(raw)
+    );
+    const quickRefResult = quickKey
+      ? {
+          id: "__quickref__",
+          gurmukhi: quickRefs[quickKey][0],
+          devanagari: quickRefs[quickKey][1],
+          isQuickRef: true,
+        }
+      : null;
 
     const isMatch = (verseChars, inputChars) => {
       if (inputChars.length > verseChars.length) return false;
@@ -29,7 +62,6 @@ const handleSearch = (e) => {
     };
 
     const allMatches = [];
-
     for (const [id, verse] of Object.entries(SGGS)) {
       const verseRomanChars = verse[4].split(" ");
       if (isMatch(verseRomanChars, normalizedChars)) {
@@ -44,33 +76,34 @@ const handleSearch = (e) => {
       }
     }
 
-    // ✅ Prioritize bookmarked results by romanChar
     const sortedResults = [
+      ...(quickRefResult ? [quickRefResult] : []),
       ...allMatches.filter((res) =>
         bookmarks.some((b) => b.romanChar === res.romanChar)
       ),
       ...allMatches.filter(
-        (res) =>
-          !bookmarks.some((b) => b.romanChar === res.romanChar)
+        (res) => !bookmarks.some((b) => b.romanChar === res.romanChar)
       ),
     ];
 
     setResults(sortedResults);
   };
 
-useEffect(() => {
+  useEffect(() => {
     const delay = setTimeout(() => {
-        handleSearch();
+      handleSearch();
     }, 200);
-
     return () => clearTimeout(delay);
-}, [query]);
-const hasResults = results.length > 0;
+  }, [query]);
 
+  const hasResults = results.length > 0;
 
   return (
     <form
-      onSubmit={handleSearch}
+      onSubmit={(e) => {
+        e.preventDefault();
+        handleSearch();
+      }}
       className={`w-full max-w-lg bg-zinc-800 h-14 flex transition-all duration-300
         ${hasResults ? "rounded-t-2xl rounded-b-none " : "rounded-2xl"} shadow-md shadow-stone-700/60`}
     >
@@ -80,7 +113,6 @@ const hasResults = results.length > 0;
         value={query}
         onChange={(e) => {
           setQuery(e.target.value.toLowerCase());
-          handleSearch();
         }}
         className={`w-6/7 h-full bg-zinc-800 text-white/80 px-6 py-4 placeholder:text-zinc-400 text-lg
           ${hasResults ? "rounded-tl-2xl rounded-bl-none" : "rounded-l-2xl"} outline-none`}
@@ -106,7 +138,6 @@ const hasResults = results.length > 0;
           />
         </svg>
       </button>
-
     </form>
   );
 }

@@ -8,6 +8,8 @@ function BaniView(){
     const { name } = useParams(); 
     const decodedName = decodeURIComponent(name); 
     const baniVerses = Object.entries(SundarGutka[decodedName]) || {};
+    const [searchParams] = useSearchParams();
+    const from = searchParams.get("from");
     const [fontSize , setFontSize] = useState(24);
     const [showControls, setShowControls] = useState(true);
 
@@ -19,7 +21,7 @@ function BaniView(){
     return (
         <div className="relative min-h-screen w-full bg-neutral-900 flex-col px-2 py-5">
     
-            <TopBar from={"bani"}/>
+            <TopBar from={from}/>
 
             <div className="h-full mx-auto max-w-3xl mt-[20px] overflow-y-scroll">
                 <div className="h-10"></div>
