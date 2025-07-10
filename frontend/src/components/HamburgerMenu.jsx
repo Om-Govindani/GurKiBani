@@ -54,25 +54,25 @@ function HamburgerMenu() {
                 </div>
                 <div className="flex flex-col items-center justify-center h-full w-full gap-4 mt-10">
                     <div 
-                        onClick={()=>{navigate("/nitnem")}} 
+                        onClick={()=>{setIsOpen(false);navigate("/nitnem")}} 
                         className="text-xl text-center cursor-pointer w-full text-orange-200 border-b-1 border-zinc-700 pb-4"
                     >
                         📿 Sundar Gutka
                     </div>
                     <div 
-                        onClick={()=>{navigate("/bookmarks")}} 
+                        onClick={()=>{setIsOpen(false);navigate("/bookmarks")}} 
                         className="text-xl text-center cursor-pointer w-full text-orange-200"
                     >
                         📖 Bookmarks
                     </div>
                     <div 
-                        onClick={()=>{navigate("/history")}} 
+                        onClick={()=>{setIsOpen(false);navigate("/history")}} 
                         className="text-xl text-center cursor-pointer w-full text-orange-200 border-t-1 border-zinc-700 pt-4"
                     >
                         🔍 History
                     </div>
                     <div 
-                        onClick={()=>{navigate("/aboutus")}} 
+                        onClick={()=>{setIsOpen(false);navigate("/aboutus")}} 
                         className="text-xl text-center cursor-pointer w-full text-orange-200 border-t-1 border-zinc-700 pt-4"
                     >
                         🙏 About us

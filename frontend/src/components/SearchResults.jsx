@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import BookmarkContext from "../contexts/BookmarkContext";
 
-function SearchResults({ results }) {
+function SearchResults({ results , setQuery}) {
   const [bookmarks] = useContext(BookmarkContext);
   const rowHeight = 100;
   const maxVisible = 6;
@@ -32,6 +32,7 @@ function SearchResults({ results }) {
                   `/shabad/${result.startId}?highlight=${result.id}&from=searchresults`
                 );
               }
+              setQuery("");
             }}
             className={`relative px-4 py-3 border-y border-zinc-700 text-white text-sm cursor-pointer hover:bg-zinc-700/40 transition`}
           >

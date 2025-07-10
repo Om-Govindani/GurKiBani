@@ -2,8 +2,8 @@ import { useState, useEffect, useContext } from "react";
 import SGGSContext from "../contexts/SGGSContext";
 import BookmarkContext from "../contexts/BookmarkContext";
 
-function SearchBar({ results, setResults }) {
-  const [query, setQuery] = useState("");
+
+function SearchBar({ results, setResults ,query , setQuery }) {
   const SGGS = useContext(SGGSContext);
   const [bookmarks] = useContext(BookmarkContext);
 

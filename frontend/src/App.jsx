@@ -15,24 +15,23 @@ function App() {
     const stored = localStorage.getItem("bookmarks");
     return stored ? JSON.parse(stored) : [];
   });
-
   useEffect(() => {
     localStorage.setItem("bookmarks", JSON.stringify(bookmarks));
   }, [bookmarks]);
   return (
     <SGGSContext.Provider value = {SGGS}>
-      <BookmarkContext.Provider value={[bookmarks , setBookmarks]}>
-        <Router>
-          <Routes>
-            <Route path="/" element={ <SearchView />} />
-            <Route path="/shabad/:startId" element={<ShabadView />} />
-            <Route path="/bookmarks" element={<BookmarkView />} />
-            <Route path="/nitnem" element={<NitnemView />} />
-            <Route path="/bani" element={<Navigate to="/nitnem" replace />} />
-            <Route path="/bani/:name" element={<BaniView />} />
-          </Routes>
-        </Router>
-      </BookmarkContext.Provider>
+        <BookmarkContext.Provider value={[bookmarks , setBookmarks]}>
+          <Router>
+            <Routes>
+              <Route path="/" element={ <SearchView />} />
+              <Route path="/shabad/:startId" element={<ShabadView />} />
+              <Route path="/bookmarks" element={<BookmarkView />} />
+              <Route path="/nitnem" element={<NitnemView />} />
+              <Route path="/bani" element={<Navigate to="/nitnem" replace />} />
+              <Route path="/bani/:name" element={<BaniView />} />
+            </Routes>
+          </Router>
+        </BookmarkContext.Provider>
     </SGGSContext.Provider>
   )
 }
