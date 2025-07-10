@@ -65,10 +65,10 @@ function TopBar({highlightId , from}){
     
     return (
         <div
-        className="fixed top-0 left-0 w-full z-50 px-2 flex items-center h-[72px] bg-black/5 border-b-1 border-zinc-700/60"
+        className="fixed top-0 left-0 w-full z-50 px-2 flex items-center min-h-[72px] bg-black/5 border-b-1 border-zinc-700/60"
         style={{
-          paddingTop: `calc(env(safe-area-inset-top) + 12px)`,
-          paddingBottom: '0.5rem', // or your preferred padding
+          paddingTop: `calc(env(safe-area-inset-top ,0px) + 12px)`,
+          paddingBottom: `calc(env(safe-area-inset-bottom))`, // or your preferred padding
         //   backgroundColor: 'rgba(15, 15, 15, 0.6)',
           WebkitBackdropFilter: 'blur(8px)',
           backdropFilter: 'blur(8px)',
