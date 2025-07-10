@@ -65,7 +65,7 @@ function TopBar({highlightId , from}){
     
     return (
         <div
-        className="fixed top-0 left-0 w-full z-50 px-2 flex items-center h-[72px] bg-black/5"
+        className="fixed top-0 left-0 w-full z-50 px-2 flex items-center h-[72px] bg-black/5 border-b-1 border-zinc-700/60"
         style={{
           paddingTop: `calc(env(safe-area-inset-top) + 12px)`,
           paddingBottom: '0.5rem', // or your preferred padding
@@ -95,7 +95,7 @@ function TopBar({highlightId , from}){
           </button>
 
           {/* Gurmukhi Ang Number (top right) */}
-          {(from === "searchresults") && <div className="flex flex-row space-x-4">
+          {(from === "searchresults" || from === "bookmarks") && <div className="flex flex-row space-x-4">
             <div className="text-xl text-white font-gurmukhi">
                 ਅੰਗ: {convertToGurmukhiNumber(highlightId.split("-")[0])}
             </div>

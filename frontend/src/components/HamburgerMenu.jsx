@@ -45,7 +45,7 @@ function HamburgerMenu() {
             </button>
         </div>
         <div 
-            className={`fixed top-0 left-0 h-screen w-80 bg-zinc-800 shadow-lg z-[998] transform transition-transform duration-300 ease-in-out ${isOpen ? "translate-x-0" : "-translate-x-full"}`}
+            className={`fixed top-0 left-0 h-screen w-80 bg-zinc-800 backdrop-blur-2xl shadow-lg z-[998] transform transition-transform duration-300 ease-in-out ${isOpen ? "translate-x-0" : "-translate-x-full"}`}
             ref={menuRef}
         >
             <div className="flex flex-col h-19/20 justify-between py-3 px-6 relative">

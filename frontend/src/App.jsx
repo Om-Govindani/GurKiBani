@@ -6,6 +6,7 @@ import ShabadView from "./views/ShabadView.jsx";
 import SearchView from "./views/SearchView.jsx";
 import { useState , useEffect} from "react";
 import BookmarkView from "./views/BookmarkView.jsx";
+import NitnemView from "./views/NitnemView.jsx";
 
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
             <Route path="/" element={ <SearchView />} />
             <Route path="/shabad/:startId" element={<ShabadView />} />
             <Route path="/bookmarks" element={<BookmarkView />} />
+            <Route path="/nitnem" element={<NitnemView />} />
           </Routes>
         </Router>
       </BookmarkContext.Provider>
