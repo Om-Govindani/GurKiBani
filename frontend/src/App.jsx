@@ -9,12 +9,18 @@ import { useState , useEffect} from "react";
 import BookmarkView from "./views/BookmarkView.jsx";
 import NitnemView from "./views/NitnemView.jsx";
 import BaniView from "./views/BaniView.jsx";
-
+import HistoryContext from "./contexts/HistoryContext.js";
+import HistoryView from "./views/HistoryView.jsx";
 function App() {
   
   const [language, setLanguage] = useState(() => {
     return localStorage.getItem("language") || "both";
   });
+
+  const [history , setHistory] = useState(()=>{
+    const stored = localStorage.getItem("history");
+    return stored ? JSON.parse(stored) : []
+  })
 
   const [bookmarks, setBookmarks] = useState(() => {
     const stored = localStorage.getItem("bookmarks");
@@ -30,22 +36,29 @@ function App() {
     localStorage.setItem("language", language);
   }, [language]);
 
+  useEffect(()=>{
+    localStorage.setItem("history" , JSON.stringify(history));
+  })
+
   return (
     <SGGSContext.Provider value = {SGGS}>
       <LanguageContext.Provider value={[language , setLanguage]} >
-        <BookmarkContext.Provider value={[bookmarks , setBookmarks]}>
-          <Router>
-            <Routes>
-              <Route path="/" element={ <SearchView />} />
-              <Route path="/reset" element={<Navigate to="/" replace />} />
-              <Route path="/shabad/:startId" element={<ShabadView />} />
-              <Route path="/bookmarks" element={<BookmarkView />} />
-              <Route path="/nitnem" element={<NitnemView />} />
-              <Route path="/bani" element={<Navigate to="/nitnem" replace />} />
-              <Route path="/bani/:name" element={<BaniView />} />
-            </Routes>
-          </Router>
-        </BookmarkContext.Provider>
+        <HistoryContext.Provider value={[history , setHistory]}>
+          <BookmarkContext.Provider value={[bookmarks , setBookmarks]}>
+            <Router>
+              <Routes>
+                <Route path="/" element={ <SearchView />} />
+                <Route path="/reset" element={<Navigate to="/" replace />} />
+                <Route path="/shabad/:startId" element={<ShabadView />} />
+                <Route path="/bookmarks" element={<BookmarkView />} />
+                <Route path="/nitnem" element={<NitnemView />} />
+                <Route path="/bani" element={<Navigate to="/nitnem" replace />} />
+                <Route path="/bani/:name" element={<BaniView />} />
+                <Route path="/history" element={<HistoryView />} />
+              </Routes>
+            </Router>
+          </BookmarkContext.Provider>
+        </HistoryContext.Provider>
       </LanguageContext.Provider>
     </SGGSContext.Provider>
   )

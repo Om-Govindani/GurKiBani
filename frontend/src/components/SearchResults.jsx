@@ -2,16 +2,47 @@ import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import BookmarkContext from "../contexts/BookmarkContext";
 import LanguageContext from "../contexts/LanguageContext";
+import HistoryContext from "../contexts/HistoryContext";
 
-function SearchResults({ results , setQuery}) {
+function SearchResults({ results, setQuery }) {
   const [bookmarks] = useContext(BookmarkContext);
-  const[language] = useContext(LanguageContext)
+  const [language] = useContext(LanguageContext);
+  const [history, setHistory] = useContext(HistoryContext);
+  const navigate = useNavigate();
+
   const rowHeight = (language !== "both") ? 50 : 100;
   const maxVisible = 6;
   const calculatedHeight = Math.min(results.length, maxVisible) * rowHeight;
-  const navigate = useNavigate();
+
   const isBookmarked = (result) => {
     return bookmarks.some((b) => b.romanChar === result.romanChar);
+  };
+
+  const handleNavigate = (result) => {
+    setQuery("");
+
+    const isQuickRef = result.id === "__quickref__";
+
+    if (isQuickRef) {
+      navigate(`/bani/${encodeURIComponent(result.devanagari)}?from=search`);
+    } else {
+      // ✅ Add to history
+      setHistory((prev) => {
+        const newEntry = {
+          id: result.id,
+          startId: result.startId,
+        };
+
+        // Remove if already exists
+        const filtered = prev.filter((item) => item.id !== result.id);
+
+        // Add to top
+        return [newEntry, ...filtered]; 
+        
+      });
+
+      navigate(`/shabad/${result.startId}?highlight=${result.id}&from=searchresults`);
+    }
   };
 
   return (
@@ -25,19 +56,10 @@ function SearchResults({ results , setQuery}) {
         return (
           <div
             key={result.id + index}
-            onClick={() => {
-              setQuery("");
-              if (isQuickRef) {
-                navigate(`/bani/${encodeURIComponent(result.devanagari)}?from=search`);
-              } else {
-                navigate(
-                  `/shabad/${result.startId}?highlight=${result.id}&from=searchresults`
-                );
-              }
-            }}
+            onClick={() => handleNavigate(result)}
             className={`relative px-4 py-3 border-y border-zinc-700 text-white text-sm cursor-pointer hover:bg-zinc-700/40 transition`}
           >
-            {/* 📿 Simran Mala (quick ref) */}
+            {/* 📿 Simran Mala */}
             {isQuickRef && (
               <div className="absolute top-1/2 -translate-y-1/2 right-2 text-orange-300 text-xl">
                 📿
@@ -51,12 +73,16 @@ function SearchResults({ results , setQuery}) {
               </div>
             )}
 
-            {language!=="hindi" && <div className="font-gurmukhi text-violet-50 text-xl pr-3">
-              {result.gurmukhi}
-            </div>}
-            {language!=="gurmukhi" && <div className="font-hindi text-xl text-orange-200 pr-3">
-              {result.devanagari}
-            </div>}
+            {language !== "hindi" && (
+              <div className="font-gurmukhi text-violet-50 text-xl pr-3">
+                {result.gurmukhi}
+              </div>
+            )}
+            {language !== "gurmukhi" && (
+              <div className="font-hindi text-xl text-orange-200 pr-3">
+                {result.devanagari}
+              </div>
+            )}
             {!isQuickRef && (
               <div className="text-xs text-neutral-500 mt-1">
                 Ang: {result.id.split("-")[0]}

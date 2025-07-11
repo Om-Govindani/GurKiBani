@@ -4,7 +4,10 @@ import { useContext, useState, useEffect , useRef } from "react";
 import BookmarkContext from "../contexts/BookmarkContext";
 import SGGSContext from "../contexts/SGGSContext";
 import LanguageContext from "../contexts/LanguageContext";
+import HistoryContext from "../contexts/HistoryContext";
 import { HiDotsVertical } from "react-icons/hi";
+import { HiTrash } from "react-icons/hi";
+
 
 function TopBar({ highlightId, from }) {
   const navigate = useNavigate();
@@ -14,6 +17,7 @@ function TopBar({ highlightId, from }) {
   const found = bookmarks.some((b) => b.highlightId === highlightId);
   const [isBookmark, setIsBookmark] = useState(found);
   const [showLangMenu, setShowLangMenu] = useState(false);
+  const [history, setHistory] = useContext(HistoryContext);
   const settingsRef = useRef();
   const buttonRef = useRef();
 
@@ -102,6 +106,7 @@ function TopBar({ highlightId, from }) {
           onClick={() => {
             from === "bookmarks" ? navigate("/bookmarks") :
             from === "bani" ? navigate("/nitnem") :
+            from === "history" ? navigate("/history") :
             navigate("/reset")
           }}
           className="flex items-center text-white transition text-xl"
@@ -129,7 +134,18 @@ function TopBar({ highlightId, from }) {
             </>
           )}
 
+          {from === "historyView" && (
+            <button
+              className="text-white p-1"
+              onClick={() => setHistory([])}
+              title="Clear History"
+            >
+              <HiTrash size={22} />
+            </button>
+          )}
+
           {/* 3-dot menu */}
+
           <div className="relative">
             <button
               onClick={() => setShowLangMenu(prev => !prev)}

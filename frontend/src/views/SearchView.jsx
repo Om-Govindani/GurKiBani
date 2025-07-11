@@ -45,7 +45,7 @@ function SearchView (){
                 < SearchResults results = {results} setQuery = {setQuery}/>
                 <button
                         onClick={() => setShowLangMenu(prev => !prev)}
-                        className="p-1 md:text-zinc-800 text-white fixed top-4 right-4"
+                        className="p-1 md:text-zinc-800 text-white fixed top-5 right-4"
                         aria-label="Language Menu"
                         ref={buttonRef}
                 >

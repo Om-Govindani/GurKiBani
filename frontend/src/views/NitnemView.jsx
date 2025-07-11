@@ -1,12 +1,10 @@
 import {useNavigate} from "react-router-dom"
 import {useState , useContext, useEffect} from "react"
-import SGGSContext from "../contexts/SGGSContext";
 import TopBar from "../components/TopBar";
 import LanguageContext from "../contexts/LanguageContext";
 
 function NitnemView(){
     const navigate = useNavigate()
-    const SGGS = useContext(SGGSContext);
     const [language] = useContext(LanguageContext);
     const paths = [
         ["ਜਪੁਜੀ ਸਾਹਿਬ","जपुजी साहिब"] ,
