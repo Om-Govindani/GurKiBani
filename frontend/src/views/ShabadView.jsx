@@ -37,7 +37,7 @@ function ShabadView() {
         
       <div className="w-full h-full mx-auto mt-[20px] relative overflow-y-scroll">
         <div className="h-10"></div>
-        {shabadVerses.map(([id, verse], index) => {
+        {shabadVerses.length===0?<EmptyPage title={"Some technical issue"} content={"This will be fixed soon"}/> : shabadVerses.map(([id, verse], index) => {
           const isFirst = index === 0;
           const isLast = index === shabadVerses.length - 1;
 

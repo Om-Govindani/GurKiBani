@@ -2,6 +2,7 @@ import {useNavigate} from "react-router-dom"
 import {useState , useContext, useEffect} from "react"
 import TopBar from "../components/TopBar";
 import LanguageContext from "../contexts/LanguageContext";
+import EmptyPage from "../components/EmptyPage";
 
 function NitnemView(){
     const navigate = useNavigate()
@@ -56,7 +57,7 @@ function NitnemView(){
             <div className="h-full mx-auto max-w-3xl mt-[20px] overflow-y-scroll">
                 <div className="h-10"></div>
                 <div className="h-full bg-transparent flex flex-col ">
-                    { [...paths].map(([gurmukhi , devanagri] , idx)=>{
+                    { paths.length===0?<EmptyPage title={"Some technical issue"} content={"This will be fixed soon"}/> : [...paths].map(([gurmukhi , devanagri] , idx)=>{
                         return ( 
                         <div 
                             key={idx} 

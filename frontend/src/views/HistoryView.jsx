@@ -38,10 +38,10 @@ function HistoryView(){
                         className="p-4 w-full cursor-pointer transition border-b-1 border-zinc-700/40 flex flex-col"
                         >
                         {language !== "hindi" && (
-                            <div className="font-gurmukhi text-xl text-violet-50 pr-12">{verse[0]}</div>
+                            <div className="font-gurmukhi text-xl text-violet-50">{verse[0]}</div>
                         )}
                         {language !== "gurmukhi" && (
-                            <div className="font-hindi text-lg text-orange-200 pr-12">{verse[1]}</div>
+                            <div className="font-hindi text-lg text-orange-200">{verse[1]}</div>
                         )}
                         <div className="text-xs text-neutral-400 mt-1">Ang: {id.split("-")[0]}</div>
                         </div>

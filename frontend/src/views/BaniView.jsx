@@ -49,7 +49,7 @@ function BaniView(){
 
             <div className="h-full mx-auto w-full mt-[20px] overflow-y-scroll">
                 <div className="h-10"></div>
-                {baniVerses.map(([id, verse], index) => {
+                {baniVerses.length===0?<EmptyPage title={"Some technical issue"} content={"This will be fixed soon"}/> : baniVerses.map(([id, verse], index) => {
 
                     return (
                         <div

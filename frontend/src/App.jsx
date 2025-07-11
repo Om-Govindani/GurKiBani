@@ -11,6 +11,7 @@ import NitnemView from "./views/NitnemView.jsx";
 import BaniView from "./views/BaniView.jsx";
 import HistoryContext from "./contexts/HistoryContext.js";
 import HistoryView from "./views/HistoryView.jsx";
+import AboutUs from "./views/AboutUs.jsx";
 function App() {
   
   const [language, setLanguage] = useState(() => {
@@ -55,6 +56,7 @@ function App() {
                 <Route path="/bani" element={<Navigate to="/nitnem" replace />} />
                 <Route path="/bani/:name" element={<BaniView />} />
                 <Route path="/history" element={<HistoryView />} />
+                <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>
             </Router>
           </BookmarkContext.Provider>

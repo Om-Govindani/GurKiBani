@@ -71,12 +71,12 @@ function HamburgerMenu() {
                     >
                         🔍 History
                     </div>
-                    <div 
+                    {/* <div 
                         onClick={()=>{setIsOpen(false);navigate("/aboutus")}} 
                         className="text-xl text-center cursor-pointer w-full text-orange-200 border-t-1 border-zinc-700 pt-4"
                     >
                         🙏 About us
-                    </div>
+                    </div> */}
                 </div>
                 <div className="w-full h-1/20 flex flex-row items-center justify-center">
                     <img src={icon512} alt="App Logo" className="w-14 h-14 rounded-md" />
