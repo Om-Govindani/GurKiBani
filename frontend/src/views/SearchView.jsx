@@ -48,6 +48,11 @@ function SearchView (){
                         className="p-1 md:text-zinc-800 text-white fixed top-5 right-4"
                         aria-label="Language Menu"
                         ref={buttonRef}
+                        style={{
+                                paddingTop: `calc(env(safe-area-inset-top ,0px))`,
+                                paddingBottom: "0.5rem",
+                                transform: 'translateZ(0)'
+                        }}
                 >
                         <MdSettings size={30} />
                 </button>
