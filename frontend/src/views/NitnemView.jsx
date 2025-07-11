@@ -31,6 +31,7 @@ function NitnemView(){
         "chopai sahib":["ਕਬਿਯੋ ਬਾਚ ਬੇਨਤੀ (ਚੌਪਈ)","कबियो बाच बेनती (चौपई)"] ,
         "chaupai sahib":["ਕਬਿਯੋ ਬਾਚ ਬੇਨਤੀ (ਚੌਪਈ)","कबियो बाच बेनती (चौपई)"] ,
         "anand sahib" : ["ਅਨੰਦੁ ਸਾਹਿਬ","अनंदु साहिब"],
+        "anand sahib" : ["ਅਨੰਦ ਸਾਹਿਬ (ਛੋਟਾ)","अनंद साहिब (छोटा)"],
         "tav prasad savaiye" : ["ਤ੍ਵ ਪ੍ਰਸਾਦਿ ਸਵੱਯੇ (ਸ੍ਰਾਵਗ ਸੁਧ ਸਮੂਹ)","त्व प्रसादि सवये (स्रावग सुध समूह)"], 
         "jaap sahib" : ["ਜਾਪੁ ਸਾਹਿਬ","जापु साहिब"],
         "rehraas sahib" : ["ਰਹਰਾਸਿ ਸਾਹਿਬ","रहरासि साहिब"],
@@ -65,7 +66,7 @@ function NitnemView(){
                             onClick={()=> navigate(`/bani/${devanagri}?from=bani`)}
                         >
                             {language!=="hindi" && <div className="font-gurmukhi text-xl md:text-2xl text-orange-50">{gurmukhi}</div>}
-                            {language!=="gurumukhi" && <div className="font-hindi text-xl md:text-2xl text-orange-200">{devanagri}</div>}
+                            {language!=="gurmukhi" && <div className="font-hindi text-xl md:text-2xl text-orange-200">{devanagri}</div>}
                         </div>
                     )})}
                 </div>

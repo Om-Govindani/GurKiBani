@@ -149,9 +149,7 @@ function TopBar({ highlightId, from }) {
                     }`}
                     onClick={() => handleLanguageChange(lang)}
                   >
-                    {lang === "both"
-                      ? "Hindi + Gurmukhi"
-                      : lang.charAt(0).toUpperCase() + lang.slice(1)}
+                    {lang.charAt(0).toUpperCase() + lang.slice(1)}
                   </div>
                 ))}
               </div>

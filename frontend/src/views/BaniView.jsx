@@ -1,4 +1,4 @@
-import {useState , useContext, useEffect} from "react"
+import {useState , useContext, useEffect , useRef} from "react"
 import {useParams ,useSearchParams} from "react-router-dom"
 import TopBar from "../components/TopBar";
 import SundarGutka from "../../public/SundarGutka.json"
@@ -14,12 +14,32 @@ function BaniView(){
     const [fontSize , setFontSize] = useState(24);
     const [showControls, setShowControls] = useState(true);
     const [language] = useContext(LanguageContext);
+    const topBarRef = useRef(null);
 
     const keywords = ["ੴ",]
 
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
+
+    useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (!["ArrowRight", "ArrowLeft"].includes(e.key)) return;
+
+      const topBarHeight = topBarRef.current?.offsetHeight || 72; // fallback
+      const scrollAmount = window.innerHeight - topBarHeight;
+
+      if (e.key === "ArrowRight") {
+        window.scrollBy({ top: scrollAmount });
+      } else if (e.key === "ArrowLeft") {
+        window.scrollBy({ top: -scrollAmount });
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
 
 
     return (
@@ -41,7 +61,7 @@ function BaniView(){
                             className={`font-gurmukhi  text-violet-50`}
                             style={{fontSize : `${fontSize}px` , lineHeight:"1.4"}}
                         >{verse[0]}</div>}
-                        {language!=="gurumukhi" && <div 
+                        {language!=="gurmukhi" && <div 
                             className={`font-hindi text-orange-200 `}
                             style={{fontSize : `${fontSize }px`}}
                         >{verse[1]}</div>}
