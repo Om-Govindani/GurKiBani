@@ -24,7 +24,7 @@ function HistoryView(){
     return (
         <div className="relative min-h-screen w-full bg-neutral-900 flex-col px-2 py-5 ">
             <TopBar from={"historyView"}/>
-            <div className="h-fit mx-auto max-w-3xl mt-[20px] overflow-y-scroll">
+            <div className="h-full mx-auto max-w-3xl mt-[20px] overflow-y-scroll">
                 <div className="h-10"></div>
                 {
                     history.length === 0 ? <EmptyPage title={"No History Found"} content={"you haven't opened any shabad from search results yet."} /> :

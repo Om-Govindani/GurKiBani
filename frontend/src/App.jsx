@@ -48,7 +48,7 @@ function App() {
       debug: true,
       ignore_dnt: true,
     });
-
+    
     let distinctId = localStorage.getItem("mixpanel_distinct_id");
     if (!distinctId) {
       distinctId = crypto.randomUUID(); // or use uuid
@@ -65,6 +65,21 @@ function App() {
       deviceType: isMobile ? "Mobile" : "Desktop",
       platform: navigator.platform,
       userAgent: navigator.userAgent,
+    });
+    window.addEventListener("appinstalled", () => {
+      mixpanel.track("PWA Installed");
+    });
+    let deferredPrompt;
+
+    window.addEventListener("beforeinstallprompt", (e) => {
+      e.preventDefault(); // Prevent browser default
+      deferredPrompt = e;
+
+      // Track event
+      mixpanel.track("Install Prompt Shown");
+
+      // You can store `deferredPrompt` to trigger manually later
+      // setDeferredPrompt(e);
     });
   }, []);
 
