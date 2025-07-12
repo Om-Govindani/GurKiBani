@@ -13,4 +13,14 @@ if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/sw.js')
   })
+  window.addEventListener('appinstalled', () => {
+    mixpanel.track('PWA Installed');
+  });
+  let deferredPrompt;
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    mixpanel.track('PWA Install Prompt Shown');
+  });
+
 }

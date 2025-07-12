@@ -1,4 +1,6 @@
 import { BrowserRouter as Router, Routes, Route ,Navigate ,useNavigate, useLocation} from "react-router-dom";
+import mixpanel from 'mixpanel-browser';
+import { v4 as uuidv4 } from 'uuid';
 import SGGSContext from "./contexts/SGGSContext.js"
 import BookmarkContext from "./contexts/BookmarkContext.js";
 import LanguageContext from "./contexts/LanguageContext.js";
@@ -38,8 +40,33 @@ function App() {
   }, [language]);
 
   useEffect(()=>{
-    localStorage.setItem("history" , JSON.stringify(history));
-  })
+      localStorage.setItem("history" , JSON.stringify(history));
+    })
+
+  useEffect(() => {
+    mixpanel.init("5288e40acba2f12eb049438934b2af9c", {
+      debug: true,
+      ignore_dnt: true,
+    });
+
+    let distinctId = localStorage.getItem("mixpanel_distinct_id");
+    if (!distinctId) {
+      distinctId = crypto.randomUUID(); // or use uuid
+      localStorage.setItem("mixpanel_distinct_id", distinctId);
+    }
+    mixpanel.identify(distinctId);
+
+    const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+    mixpanel.register({
+      deviceType: isMobile ? "Mobile" : "Desktop",
+    });
+
+    mixpanel.track("App Opened", {
+      deviceType: isMobile ? "Mobile" : "Desktop",
+      platform: navigator.platform,
+      userAgent: navigator.userAgent,
+    });
+  }, []);
 
   return (
     <SGGSContext.Provider value = {SGGS}>
