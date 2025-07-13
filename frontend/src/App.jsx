@@ -7,13 +7,17 @@ import LanguageContext from "./contexts/LanguageContext.js";
 import SGGS from "../public/SGGS.json";
 import ShabadView from "./views/ShabadView.jsx";
 import SearchView from "./views/SearchView.jsx";
-import { useState , useEffect} from "react";
+import { useState , useEffect , useRef} from "react";
 import BookmarkView from "./views/BookmarkView.jsx";
 import NitnemView from "./views/NitnemView.jsx";
 import BaniView from "./views/BaniView.jsx";
 import HistoryContext from "./contexts/HistoryContext.js";
 import HistoryView from "./views/HistoryView.jsx";
 import AboutUs from "./views/AboutUs.jsx";
+import SilentAudio from "./components/SilentAudio.jsx";
+
+
+
 function App() {
   
   const [language, setLanguage] = useState(() => {
@@ -83,11 +87,13 @@ function App() {
     });
   }, []);
 
+
   return (
     <SGGSContext.Provider value = {SGGS}>
       <LanguageContext.Provider value={[language , setLanguage]} >
         <HistoryContext.Provider value={[history , setHistory]}>
           <BookmarkContext.Provider value={[bookmarks , setBookmarks]}>
+            <SilentAudio />
             <Router>
               <Routes>
                 <Route path="/" element={ <SearchView />} />

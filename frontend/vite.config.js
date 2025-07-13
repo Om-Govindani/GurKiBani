@@ -20,7 +20,8 @@ export default defineConfig({
         "robots.txt",
         "ਦਰਬਾਰ_ਸਾਹਿਬ.jpg",
         "Dabar-sahib.jpeg",
-        "ekOnkaar.png"
+        "ekOnkaar.png",
+        "silent.mp3",
       ],
       manifest: {
         name: "GurKiBani",
@@ -76,7 +77,7 @@ export default defineConfig({
                 maxAgeSeconds: 60 * 60 * 24 * 365, // 1 year
               },
             },
-          }
+          },
         ],
       },
     }),
