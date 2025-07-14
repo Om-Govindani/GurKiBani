@@ -19,7 +19,7 @@ export default defineConfig({
         "logo.png",
         "robots.txt",
         "ਦਰਬਾਰ_ਸਾਹਿਬ.jpg",
-        "Dabar-sahib.jpeg",
+        "Darbar-sahib.jpeg",
         "ekOnkaar.png",
         "silent.mp3",
       ],
