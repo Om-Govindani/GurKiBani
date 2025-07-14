@@ -15,10 +15,16 @@ import HistoryContext from "./contexts/HistoryContext.js";
 import HistoryView from "./views/HistoryView.jsx";
 import AboutUs from "./views/AboutUs.jsx";
 import SilentAudio from "./components/SilentAudio.jsx";
+import SahajPaathView from "./views/SahajPaathView.jsx";
+import AngContext from "./contexts/AngContext.js";
 
 
 
 function App() {
+
+  const [ang , setAng] = useState(() =>{
+    return localStorage.getItem("ang") || "1";
+  })
   
   const [language, setLanguage] = useState(() => {
     return localStorage.getItem("language") || "both";
@@ -34,7 +40,10 @@ function App() {
     return stored ? JSON.parse(stored) : [];
   });
 
-  
+  useEffect(()=>{
+    localStorage.setItem("ang" ,ang);
+  },[ang]);
+
   useEffect(() => {
     localStorage.setItem("bookmarks", JSON.stringify(bookmarks));
   }, [bookmarks]);
@@ -90,26 +99,29 @@ function App() {
 
   return (
     <SGGSContext.Provider value = {SGGS}>
-      <LanguageContext.Provider value={[language , setLanguage]} >
-        <HistoryContext.Provider value={[history , setHistory]}>
-          <BookmarkContext.Provider value={[bookmarks , setBookmarks]}>
-            <SilentAudio />
-            <Router>
-              <Routes>
-                <Route path="/" element={ <SearchView />} />
-                <Route path="/reset" element={<Navigate to="/" replace />} />
-                <Route path="/shabad/:startId" element={<ShabadView />} />
-                <Route path="/bookmarks" element={<BookmarkView />} />
-                <Route path="/nitnem" element={<NitnemView />} />
-                <Route path="/bani" element={<Navigate to="/nitnem" replace />} />
-                <Route path="/bani/:name" element={<BaniView />} />
-                <Route path="/history" element={<HistoryView />} />
-                <Route path="*" element={<Navigate to="/" replace />} />
-              </Routes>
-            </Router>
-          </BookmarkContext.Provider>
-        </HistoryContext.Provider>
-      </LanguageContext.Provider>
+      <AngContext.Provider value={[ang , setAng]}>
+        <LanguageContext.Provider value={[language , setLanguage]} >
+          <HistoryContext.Provider value={[history , setHistory]}>
+            <BookmarkContext.Provider value={[bookmarks , setBookmarks]}>
+              <SilentAudio />
+                <Router>
+                  <Routes>
+                    <Route path="/" element={ <SearchView />} />
+                  <Route path="/reset" element={<Navigate to="/" replace />} />
+                  <Route path="/shabad/:startId" element={<ShabadView />} />
+                  <Route path="/bookmarks" element={<BookmarkView />} />
+                  <Route path="/nitnem" element={<NitnemView />} />
+                  <Route path="/bani" element={<Navigate to="/nitnem" replace />} />
+                  <Route path="/bani/:name" element={<BaniView />} />
+                  <Route path="/history" element={<HistoryView />} />
+                  <Route path="*" element={<Navigate to="/" replace />} />
+                  <Route path="/SahajPaath" element={<SahajPaathView />} />
+                </Routes>
+              </Router>
+            </BookmarkContext.Provider>
+          </HistoryContext.Provider>
+        </LanguageContext.Provider>
+      </AngContext.Provider>
     </SGGSContext.Provider>
   )
 }

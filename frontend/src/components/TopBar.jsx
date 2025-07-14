@@ -2,16 +2,24 @@ import { useNavigate } from "react-router-dom";
 import BookmarkBtn from "./buttons/BookmarkBtn";
 import { useContext, useState, useEffect , useRef } from "react";
 import BookmarkContext from "../contexts/BookmarkContext";
+import AngContext from "../contexts/AngContext";
 import SGGSContext from "../contexts/SGGSContext";
 import LanguageContext from "../contexts/LanguageContext";
 import HistoryContext from "../contexts/HistoryContext";
 import { HiDotsVertical } from "react-icons/hi";
 import { HiTrash } from "react-icons/hi";
+import { HiArrowLeft, HiArrowRight } from 'react-icons/hi';
+import { FiArrowLeftCircle, FiArrowRightCircle } from 'react-icons/fi';
+import { MdBabyChangingStation, MdNavigateBefore, MdNavigateNext } from 'react-icons/md';
+import { BsArrowLeftCircleFill, BsArrowRightCircleFill } from 'react-icons/bs';
 
 
-function TopBar({ highlightId, from }) {
+
+
+function TopBar({ highlightId, from  }) {
   const navigate = useNavigate();
   const [bookmarks, setBookmarks] = useContext(BookmarkContext);
+  const [ang, setAng] = useContext(AngContext);
   const SGGS = useContext(SGGSContext);
   const [language, setLanguage] = useContext(LanguageContext);
   const found = bookmarks.some((b) => b.highlightId === highlightId);
@@ -143,6 +151,33 @@ function TopBar({ highlightId, from }) {
               <HiTrash size={22} />
             </button>
           )}
+
+          {from === "SahajPaath" && (
+            <>
+              <button
+                className="text-white p-1"
+                onClick={() => {
+                  const newAng = Math.max(1, Number(ang) - 1);
+                  setAng(String(newAng));
+                }}
+                title="Previous Ang"
+              >
+                <FiArrowLeftCircle size={28} />
+              </button>
+              <button
+                className="text-white p-1"
+                onClick={() => {
+                  const newAng = Number(ang) + 1;
+                  setAng(String(newAng));
+                }}
+                title="Next Ang"
+              >
+                <FiArrowRightCircle size={28} />
+              </button>
+            </>
+          )}
+
+
 
           {/* 3-dot menu */}
 
