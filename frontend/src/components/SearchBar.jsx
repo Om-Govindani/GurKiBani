@@ -28,6 +28,8 @@ function SearchBar({ results, setResults ,query , setQuery }) {
     "shlok mehela 9": ["ਸਲੋਕ ਮਹਲਾ ੯", "सलोक महला ९"],
     "ardas": ["ਅਰਦਾਸ", "अरदास"],
     "ardaas": ["ਅਰਦਾਸ", "अरदास"],
+    "aarti" : ["ਆਰਤੀ","आरती"],
+    "dukh bhanjan sahib" : ["ਦੁਖ ਭੰਜਨ ਸਾਹਿਬ","दुख भंजन साहिब"],
   };
 
   const handleSearch = () => {
