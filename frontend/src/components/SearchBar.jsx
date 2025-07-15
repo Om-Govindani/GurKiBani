@@ -29,7 +29,7 @@ function SearchBar({ results, setResults ,query , setQuery }) {
     "ardas": ["ਅਰਦਾਸ", "अरदास"],
     "ardaas": ["ਅਰਦਾਸ", "अरदास"],
     "aarti" : ["ਆਰਤੀ","आरती"],
-    "dukh bhanjan sahib" : ["ਦੁਖ ਭੰਜਨ ਸਾਹਿਬ","दुख भंजन साहिब"],
+    "dukh bhanjan sahib" : ["ਦੁਖ ਭੰਜਨੀ ਸਾਹਿਬ","दुख भंजनी साहिब"],
   };
 
   const handleSearch = () => {

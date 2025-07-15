@@ -9,7 +9,7 @@ import HistoryContext from "../contexts/HistoryContext";
 import { HiDotsVertical } from "react-icons/hi";
 import { HiTrash } from "react-icons/hi";
 import { HiArrowLeft, HiArrowRight } from 'react-icons/hi';
-import { FiArrowLeftCircle, FiArrowRightCircle } from 'react-icons/fi';
+import { FiArrowLeftCircle, FiArrowRightCircle , FiSearch } from 'react-icons/fi';
 import { MdBabyChangingStation, MdNavigateBefore, MdNavigateNext } from 'react-icons/md';
 import { BsArrowLeftCircleFill, BsArrowRightCircleFill } from 'react-icons/bs';
 
@@ -20,14 +20,18 @@ function TopBar({ highlightId, from }) {
   const navigate = useNavigate();
   const [bookmarks, setBookmarks] = useContext(BookmarkContext);
   const [ang, setAng] = useContext(AngContext);
+  
   const SGGS = useContext(SGGSContext);
   const [language, setLanguage] = useContext(LanguageContext);
   const found = bookmarks.some((b) => b.highlightId === highlightId);
   const [isBookmark, setIsBookmark] = useState(found);
   const [showLangMenu, setShowLangMenu] = useState(false);
+  const [showAngInput, setShowAngInput] = useState(false);
+
   const [history, setHistory] = useContext(HistoryContext);
   const settingsRef = useRef();
   const buttonRef = useRef();
+const angInputRef = useRef();
 
   useEffect(() => {
     function handleClickOutside(e) {
@@ -153,32 +157,68 @@ function TopBar({ highlightId, from }) {
           )}
 
           {from === "SahajPaath" && (
-            <>
-              <div className="text-white text-lg">
-                ਅੰਗ: {convertToGurmukhiNumber(ang)}
-              </div>
-              <button
-                className="text-white p-1"
-                onClick={() => {
-                  const newAng = Math.max(1, Number(ang) - 1);
-                  setAng(String(newAng));
-                }}
-                title="Previous Ang"
-              >
-                <FiArrowLeftCircle size={28} />
-              </button>
-              <button
-                className="text-white p-1"
-                onClick={() => {
-                  const newAng = Number(ang) + 1;
-                  setAng(String(newAng));
-                }}
-                title="Next Ang"
-              >
-                <FiArrowRightCircle size={28} />
-              </button>
-            </>
-          )}
+  <>
+    <div className="text-white text-lg hidden sm:block">
+      ਅੰਗ: {convertToGurmukhiNumber(ang)}
+    </div>
+
+    <button
+      className="text-white p-1"
+      onClick={() => {
+        const newAng = Math.max(1, Number(ang) - 1);
+        setAng(String(newAng));
+      }}
+      title="Previous Ang"
+    >
+      <FiArrowLeftCircle size={28} />
+    </button>
+
+    <button
+      className="text-white p-1"
+      onClick={() => {
+        const newAng = Math.min(1430, Number(ang) + 1);
+        setAng(String(newAng));
+      }}
+      title="Next Ang"
+    >
+      <FiArrowRightCircle size={28} />
+    </button>
+
+    {/* 🔍 Inline ang search input */}
+    <div className="flex items-center space-x-2">
+      {showAngInput ? (
+        <input
+          type="number"
+          ref={angInputRef}
+          min="1"
+          max="1430"
+          placeholder="Ang"
+          className="bg-white/80 text-zinc-800 px-2 py-1 rounded-md w-20 border border-zinc-600 focus:outline-none"
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              const num = parseInt(e.target.value);
+              if (num >= 1 && num <= 1430) {
+                setAng(String(num));
+                setShowAngInput(false);
+              }
+            }
+          }}
+          onBlur={() => setShowAngInput(false)}
+          autoFocus
+        />
+      ) : (
+        <button
+          className="text-white p-1"
+          onClick={() => setShowAngInput(true)}
+          title="Search Ang"
+        >
+          <FiSearch size={24} />
+        </button>
+      )}
+    </div>
+  </>
+)}
+
 
 
 
