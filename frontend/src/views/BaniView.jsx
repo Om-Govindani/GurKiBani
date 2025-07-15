@@ -54,7 +54,7 @@ function BaniView(){
                     return (
                         <div
                         key={id}
-                        className={`py-4 transition-all duration-200 text-center`}
+                        className={`py-2 transition-all duration-200 text-center`}
 
                         >
                         {language!=="hindi" &&<div 

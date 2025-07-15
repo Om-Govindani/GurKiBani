@@ -54,7 +54,7 @@ function SahajPaathView() {
   return (
     <div className="relative min-h-screen w-full bg-neutral-900 flex-col px-2 py-5 select-none">
       <TopBar from="SahajPaath" ang={ang} setAng={setAng} />
-      <div className="max-w-3xl mx-auto mt-20 space-y-6">
+      <div className="max-w-3xl mx-auto mt-20 space-y-2">
         {filteredVerses.map(([id, verse]) => (
           <div
             key={id}

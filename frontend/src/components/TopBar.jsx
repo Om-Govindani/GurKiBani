@@ -16,7 +16,7 @@ import { BsArrowLeftCircleFill, BsArrowRightCircleFill } from 'react-icons/bs';
 
 
 
-function TopBar({ highlightId, from  }) {
+function TopBar({ highlightId, from }) {
   const navigate = useNavigate();
   const [bookmarks, setBookmarks] = useContext(BookmarkContext);
   const [ang, setAng] = useContext(AngContext);
@@ -154,6 +154,9 @@ function TopBar({ highlightId, from  }) {
 
           {from === "SahajPaath" && (
             <>
+              <div className="text-white text-lg">
+                ਅੰਗ: {convertToGurmukhiNumber(ang)}
+              </div>
               <button
                 className="text-white p-1"
                 onClick={() => {

@@ -59,12 +59,12 @@ function HamburgerMenu() {
                     >
                         📿 Sundar Gutka
                     </div>
-                    {/* <div 
-                        onClick={()=>{setIsOpen(false);navigate("/nitnem")}} 
+                    <div 
+                        onClick={()=>{setIsOpen(false);navigate("/sahajpaath")}} 
                         className="text-xl text-center cursor-pointer w-full text-orange-200 border-b-1 border-zinc-700 pb-4"
                     >
                         🙏 Sahaj Paath
-                    </div> */}
+                    </div>
                     <div 
                         onClick={()=>{setIsOpen(false);navigate("/bookmarks")}} 
                         className="text-xl text-center cursor-pointer w-full text-orange-200"

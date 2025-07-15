@@ -45,10 +45,8 @@ function ShabadView() {
             <div
               key={id}
               ref={(el) => (verseRef.current[id] = el)}
-              className={`py-4 transition-all duration-200
-                ${isFirst ? "rounded-t-lg" : ""}
-                ${isLast ? "rounded-b-lg" : ""}
-                ${!isLast ? "border-b-0" : ""}
+              className={`py-2 transition-all duration-200
+                
                 text-center
               `}
 
