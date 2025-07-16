@@ -13,7 +13,55 @@ function ShabadView() {
   const [fontSize , setFontSize] = useState(24);
   const [showControls, setShowControls] = useState(true);
   const verseRef = useRef({})
+  const pinchRef = useRef(null);
+  const lastScale = useRef(1);
+  const baseFontSize = useRef(24);
   const [language] = useContext(LanguageContext);
+
+    useEffect(() => {
+    let initialDistance = null;
+
+    function getDistance(touches) {
+      const [a, b] = touches;
+      const dx = a.clientX - b.clientX;
+      const dy = a.clientY - b.clientY;
+      return Math.sqrt(dx * dx + dy * dy);
+    }
+
+    function handleTouchMove(e) {
+      if (e.touches.length === 2) {
+        const distance = getDistance(e.touches);
+        if (initialDistance === null) {
+          initialDistance = distance;
+        } else {
+          const delta = distance - initialDistance;
+          if (Math.abs(delta) > 10) {
+            if (delta > 0) {
+              setFontSize((f) => Math.min(f + 1, 48));
+            } else {
+              setFontSize((f) => Math.max(f - 1, 12));
+            }
+            initialDistance = distance;
+          }
+        }
+      }
+    }
+
+    function resetDistance() {
+      initialDistance = null;
+    }
+
+    document.addEventListener("touchmove", handleTouchMove, { passive: false });
+    document.addEventListener("touchend", resetDistance);
+    document.addEventListener("touchcancel", resetDistance);
+
+    return () => {
+      document.removeEventListener("touchmove", handleTouchMove);
+      document.removeEventListener("touchend", resetDistance);
+      document.removeEventListener("touchcancel", resetDistance);
+    };
+  }, []);
+
 
   useEffect(()=>{
     if(highlightId && verseRef.current[highlightId]){

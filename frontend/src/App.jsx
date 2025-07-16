@@ -96,6 +96,21 @@ function App() {
     });
   }, []);
 
+  useEffect(() => {
+  function disableZoom(e) {
+    if (e.touches.length > 1) {
+      e.preventDefault(); // stops pinch zoom
+    }
+  }
+
+  document.addEventListener('touchmove', disableZoom, { passive: false });
+
+  return () => {
+    document.removeEventListener('touchmove', disableZoom);
+  };
+}, []);
+
+
 
   return (
     <SGGSContext.Provider value = {SGGS}>
