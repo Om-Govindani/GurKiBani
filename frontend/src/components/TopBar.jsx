@@ -136,7 +136,7 @@ const angInputRef = useRef();
         </button>
 
         {/* Right Side */}
-        <div className="flex items-center space-x-3 relative">
+        <div className="flex items-center space-x-2 relative">
           {(from === "searchresults" || from === "bookmarks") && (
             <>
               <div className="text-xl text-white font-gurmukhi">
@@ -158,12 +158,10 @@ const angInputRef = useRef();
 
           {from === "SahajPaath" && (
   <>
-    <div className="text-white text-lg hidden sm:block">
-      ਅੰਗ: {convertToGurmukhiNumber(ang)}
-    </div>
+    
 
     <button
-      className="text-white p-1"
+      className="text-white"
       onClick={() => {
         const newAng = Math.max(1, Number(ang) - 1);
         setAng(String(newAng));
@@ -185,7 +183,7 @@ const angInputRef = useRef();
     </button>
 
     {/* 🔍 Inline ang search input */}
-    <div className="flex items-center space-x-2">
+    <div className="flex items-center">
       {showAngInput ? (
         <input
           type="number"
@@ -208,13 +206,16 @@ const angInputRef = useRef();
         />
       ) : (
         <button
-          className="text-white p-1"
+          className="text-white"
           onClick={() => setShowAngInput(true)}
           title="Search Ang"
         >
           <FiSearch size={24} />
         </button>
       )}
+    </div>
+    <div className="text-white text-lg sm:block">
+      ਅੰਗ: {convertToGurmukhiNumber(ang)}
     </div>
   </>
 )}
