@@ -54,16 +54,16 @@ function HamburgerMenu() {
                 </div>
                 <div className="flex flex-col items-center justify-center h-full w-full gap-4 mt-10">
                     <div 
+                        onClick={()=>{setIsOpen(false);navigate("/sahajpaath")}} 
+                        className="text-xl text-center cursor-pointer w-full text-orange-200 border-y-1 border-zinc-700 py-4"
+                    >
+                        🙏 Sri Guru Granth <br/> Saheb ji
+                    </div>
+                    <div 
                         onClick={()=>{setIsOpen(false);navigate("/nitnem")}} 
                         className="text-xl text-center cursor-pointer w-full text-orange-200 border-b-1 border-zinc-700 pb-4"
                     >
                         📿 Sundar Gutka
-                    </div>
-                    <div 
-                        onClick={()=>{setIsOpen(false);navigate("/sahajpaath")}} 
-                        className="text-xl text-center cursor-pointer w-full text-orange-200 border-b-1 border-zinc-700 pb-4"
-                    >
-                        🙏 Sahaj Paath
                     </div>
                     <div 
                         onClick={()=>{setIsOpen(false);navigate("/bookmarks")}} 
@@ -73,7 +73,7 @@ function HamburgerMenu() {
                     </div>
                     <div 
                         onClick={()=>{setIsOpen(false);navigate("/history")}} 
-                        className="text-xl text-center cursor-pointer w-full text-orange-200 border-t-1 border-zinc-700 pt-4"
+                        className="text-xl text-center cursor-pointer w-full text-orange-200 border-y-1 border-zinc-700 py-4"
                     >
                         🔍 History
                     </div>

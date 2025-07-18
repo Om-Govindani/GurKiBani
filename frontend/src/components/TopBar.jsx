@@ -137,7 +137,7 @@ const angInputRef = useRef();
 
         {/* Right Side */}
         <div className="flex items-center space-x-2 relative">
-          {(from === "searchresults" || from === "bookmarks") && (
+          {(from === "searchresults" || from === "bookmarks" || from === "history") && (
             <>
               <div className="text-xl text-white font-gurmukhi">
                 ਅੰਗ: {convertToGurmukhiNumber(highlightId.split("-")[0])}
@@ -157,68 +157,68 @@ const angInputRef = useRef();
           )}
 
           {from === "SahajPaath" && (
-  <>
-    
+            <>
+              
 
-    <button
-      className="text-white"
-      onClick={() => {
-        const newAng = Math.max(1, Number(ang) - 1);
-        setAng(String(newAng));
-      }}
-      title="Previous Ang"
-    >
-      <FiArrowLeftCircle size={28} />
-    </button>
+              <button
+                className="text-white"
+                onClick={() => {
+                  const newAng = Math.max(1, Number(ang) - 1);
+                  setAng(String(newAng));
+                }}
+                title="Previous Ang"
+              >
+                <FiArrowLeftCircle size={28} />
+              </button>
 
-    <button
-      className="text-white p-1"
-      onClick={() => {
-        const newAng = Math.min(1430, Number(ang) + 1);
-        setAng(String(newAng));
-      }}
-      title="Next Ang"
-    >
-      <FiArrowRightCircle size={28} />
-    </button>
+              <button
+                className="text-white p-1"
+                onClick={() => {
+                  const newAng = Math.min(1430, Number(ang) + 1);
+                  setAng(String(newAng));
+                }}
+                title="Next Ang"
+              >
+                <FiArrowRightCircle size={28} />
+              </button>
 
-    {/* 🔍 Inline ang search input */}
-    <div className="flex items-center">
-      {showAngInput ? (
-        <input
-          type="number"
-          ref={angInputRef}
-          min="1"
-          max="1430"
-          placeholder="Ang"
-          className="bg-white/80 text-zinc-800 px-2 py-1 rounded-md w-20 border border-zinc-600 focus:outline-none"
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              const num = parseInt(e.target.value);
-              if (num >= 1 && num <= 1430) {
-                setAng(String(num));
-                setShowAngInput(false);
-              }
-            }
-          }}
-          onBlur={() => setShowAngInput(false)}
-          autoFocus
-        />
-      ) : (
-        <button
-          className="text-white"
-          onClick={() => setShowAngInput(true)}
-          title="Search Ang"
-        >
-          <FiSearch size={24} />
-        </button>
-      )}
-    </div>
-    <div className="text-white text-lg sm:block">
-      ਅੰਗ: {convertToGurmukhiNumber(ang)}
-    </div>
-  </>
-)}
+              {/* 🔍 Inline ang search input */}
+              <div className="flex items-center">
+                {showAngInput ? (
+                  <input
+                    type="number"
+                    ref={angInputRef}
+                    min="1"
+                    max="1430"
+                    placeholder="Ang"
+                    className="bg-white/80 text-zinc-800 px-2 py-1 rounded-md w-20 border border-zinc-600 focus:outline-none"
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        const num = parseInt(e.target.value);
+                        if (num >= 1 && num <= 1430) {
+                          setAng(String(num));
+                          setShowAngInput(false);
+                        }
+                      }
+                    }}
+                    onBlur={() => setShowAngInput(false)}
+                    autoFocus
+                  />
+                ) : (
+                  <button
+                    className="text-white"
+                    onClick={() => setShowAngInput(true)}
+                    title="Search Ang"
+                  >
+                    <FiSearch size={24} />
+                  </button>
+                )}
+              </div>
+              <div className="text-white text-lg sm:block">
+                ਅੰਗ: {convertToGurmukhiNumber(ang)}
+              </div>
+            </>
+          )}
 
 
 

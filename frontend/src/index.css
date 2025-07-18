@@ -47,8 +47,8 @@ html, body {
 
 * {
   -webkit-user-select: none;  /* iOS Safari */
-  -webkit-touch-callout: none; /* disables callout menu */
-  user-select: none;          /* fallback */
+  -webkit-touch-callout: none;
+  user-select: none;          
   touch-action: manipulation;
 }
 
