@@ -10,9 +10,9 @@ function SearchResults({ results, setQuery }) {
   const [history, setHistory] = useContext(HistoryContext);
   const navigate = useNavigate();
 
-  const rowHeight = (language !== "both") ? 50 : 100;
-  const maxVisible = 6;
-  const calculatedHeight = Math.min(results.length, maxVisible) * rowHeight;
+  const maxVisible = 4;
+  const maxHeight = (language === "both" ? 110 : 60) * maxVisible;
+
 
   const isBookmarked = (result) => {
     return bookmarks.some((b) => b.romanChar === result.romanChar);
@@ -48,8 +48,10 @@ function SearchResults({ results, setQuery }) {
   return (
     <div
       className={`w-full max-w-lg overflow-y-auto bg-zinc-800 rounded-b-2xl transition-all duration-300`}
-      style={{ height: `${calculatedHeight}px` }}
+      style={{ maxHeight: `${maxHeight}px` }}
     >
+
+
       {results.map((result, index) => {
         const isQuickRef = result.id === "__quickref__";
 

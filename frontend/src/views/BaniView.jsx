@@ -129,6 +129,7 @@ function BaniView() {
         "धनासरी महला १ घरु १ चउपदे",
         "तिलंग महला १ घरु ३",
         "ੴ सतिगुर प्रसादि ॥",
+        "रूआल छंद ॥ त्व प्रसादि ॥",
         "तिलंग मः १ ॥",
         "सूही महला १ ॥",
         "रागु बिलावलु महला १ चउपदे घरु १ ॥",
@@ -199,7 +200,8 @@ function BaniView() {
         "बिलावलु महला ५ ॥",
         "रागु बिलावलु महला ५ दुपदे घरु ५",
         "सोरठि महला ५ ॥",
-        "सोरठि मः ५ ॥"
+        "सोरठि मः ५ ॥",
+        "रागु सोरठि ॥"
     ]
 
   return (
@@ -223,7 +225,7 @@ function BaniView() {
                 key={id}
                 ref={(el) => (verseRefs.current[id] = el)}
                 onClick={() => handleVerseTap(id)}
-                className={`py-2 transition-all duration-300 text-center rounded-xl ${
+                className={`py-1.5 transition-all duration-300 text-center rounded-xl ${
                   highlightId === id ? "bg-white/15" : ""
                 }`}
               >

@@ -66,7 +66,9 @@ function SearchBar({ results, setResults ,query , setQuery }) {
     const allMatches = [];
     for (const [id, verse] of Object.entries(SGGS)) {
       const verseRomanChars = verse[4].split(" ");
-      if (isMatch(verseRomanChars, normalizedChars)) {
+      const verseHindiChars = verse[3].split(" ");
+      const verseGurmukhiChars = verse[2].split(" ");
+      if (isMatch(verseRomanChars, normalizedChars) || isMatch(verseHindiChars , normalizedChars) || isMatch(verseGurmukhiChars , normalizedChars)) {
         allMatches.push({
           id,
           gurmukhi: verse[0],

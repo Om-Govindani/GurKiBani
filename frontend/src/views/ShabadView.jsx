@@ -109,7 +109,7 @@ function ShabadView() {
               <div
                 key={id}
                 ref={(el) => (verseRef.current[id] = el)}
-                className={`py-2 transition-all duration-200 text-center`}
+                className={`py-1.5 transition-all duration-200 text-center`}
               >
                 {language !== "hindi" && (
                   <div

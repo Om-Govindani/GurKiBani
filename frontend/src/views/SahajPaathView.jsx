@@ -105,7 +105,7 @@ function SahajPaathView() {
           <div
             key={id}
             ref={(el) => (verseRefs.current[id] = el)}
-            className={`flex flex-col gap-1 text-center p-2 rounded-xl transition-all duration-300 ${
+            className={`flex flex-col gap-1 text-center py-1.5 rounded-xl transition-all duration-300 ${
               highlightId === id ? "bg-white/15" : ""
             }`}
             onClick={() => handleVerseClick(id)}
