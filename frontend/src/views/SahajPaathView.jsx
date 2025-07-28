@@ -65,9 +65,9 @@ function SahajPaathView() {
             const delta = distance - initialDistance;
             if (Math.abs(delta) > 10) {
             if (delta > 0) {
-                setFontSize((f) => Math.min(f + 1, 48));
+                setFontSize((f) => Math.min(f + 6, 48));
             } else {
-                setFontSize((f) => Math.max(f - 1, 12));
+                setFontSize((f) => Math.max(f - 6, 12));
             }
             initialDistance = distance;
             }

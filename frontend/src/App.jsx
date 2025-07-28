@@ -64,7 +64,7 @@ function App() {
     
     let distinctId = localStorage.getItem("mixpanel_distinct_id");
     if (!distinctId) {
-      distinctId = crypto.randomUUID(); // or use uuid
+      distinctId = uuidv4(); // or use uuid
       localStorage.setItem("mixpanel_distinct_id", distinctId);
     }
     mixpanel.identify(distinctId);
