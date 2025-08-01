@@ -9,7 +9,8 @@ body {
   position: relative;
 }
 
-@media (min-width: 768px) {
+/* Desktop only: blurred background image */
+/* @media (min-width: 768px) {
   body::before {
     content: "";
     position: fixed;
@@ -21,24 +22,9 @@ body {
     opacity: 0.8;
     z-index: -1;
   }
-}
+} */
 
-@media (max-width: 767px) {
-  body::before {
-    content: "";
-    padding: env(safe-area-inset-top, 0) env(safe-area-inset-right, 0) env(safe-area-inset-bottom, 0) env(safe-area-inset-left, 0);
-    position: fixed;
-    inset: 0;
-    background-image: url('/ਦਰਬਾਰ_ਸਾਹਿਬ.jpg');
-    background-size: cover;
-    background-position: center;
-    filter: blur(4px);
-    opacity: 0.7;
-    z-index: -1;
-    box-sizing: border-box;
-  }
-}
-
+/* Remove mobile ::before, because video will be handled in React */
 html, body {
   touch-action: manipulation; /* disables pinch and double-tap zoom */
   -ms-touch-action: manipulation;
@@ -46,9 +32,8 @@ html, body {
 }
 
 * {
-  -webkit-user-select: none;  /* iOS Safari */
+  -webkit-user-select: none;  
   -webkit-touch-callout: none;
   user-select: none;          
   touch-action: manipulation;
 }
-

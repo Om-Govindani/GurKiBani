@@ -17,6 +17,7 @@ import AboutUs from "./views/AboutUs.jsx";
 import SilentAudio from "./components/SilentAudio.jsx";
 import SahajPaathView from "./views/SahajPaathView.jsx";
 import AngContext from "./contexts/AngContext.js";
+import BackgroundMedia from "./components/BackgroundMedia.jsx";
 
 
 
@@ -119,18 +120,19 @@ function App() {
           <HistoryContext.Provider value={[history , setHistory]}>
             <BookmarkContext.Provider value={[bookmarks , setBookmarks]}>
               <SilentAudio />
+              <BackgroundMedia />
                 <Router>
                   <Routes>
                     <Route path="/" element={ <SearchView />} />
-                  <Route path="/reset" element={<Navigate to="/" replace />} />
-                  <Route path="/shabad/:startId" element={<ShabadView />} />
-                  <Route path="/bookmarks" element={<BookmarkView />} />
-                  <Route path="/nitnem" element={<NitnemView />} />
-                  <Route path="/bani" element={<Navigate to="/nitnem" replace />} />
-                  <Route path="/bani/:name" element={<BaniView />} />
-                  <Route path="/history" element={<HistoryView />} />
-                  <Route path="*" element={<Navigate to="/" replace />} />
-                  <Route path="/SahajPaath" element={<SahajPaathView />} />
+                    <Route path="/reset" element={<Navigate to="/" replace />} />
+                    <Route path="/shabad/:startId" element={<ShabadView />} />
+                    <Route path="/bookmarks" element={<BookmarkView />} />
+                    <Route path="/nitnem" element={<NitnemView />} />
+                    <Route path="/bani" element={<Navigate to="/nitnem" replace />} />
+                    <Route path="/bani/:name" element={<BaniView />} />
+                    <Route path="/history" element={<HistoryView />} />
+                    <Route path="*" element={<Navigate to="/" replace />} />
+                    <Route path="/SahajPaath" element={<SahajPaathView />} />
                 </Routes>
               </Router>
             </BookmarkContext.Provider>
