@@ -5,7 +5,7 @@ body {
   color-scheme: dark;
   margin: 0;
   padding: 0;
-  height: 100dvh;
+  height: 100%;
   position: relative;
 }
 
@@ -29,6 +29,7 @@ html, body {
   touch-action: manipulation; /* disables pinch and double-tap zoom */
   -ms-touch-action: manipulation;
   overscroll-behavior: contain;
+  /* height : 100dvh; */
 }
 
 * {

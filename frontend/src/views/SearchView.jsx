@@ -40,7 +40,7 @@ function SearchView (){
     };
 
     return (
-        <div className="relative bg-transparent py-4 flex flex-col items-center justify-center px-4 overflow-y-hidden h-screen w-full overflow-hidden">
+        <div className="relative bg-transparent py-4 flex flex-col items-center justify-center px-4 h-screen w-full overflow-hidden">
             <HamburgerMenu />
             <SearchBar results={results} setResults={setResults} query={query} setQuery={setQuery} />
             <SearchResults results={results} setQuery={setQuery} />
