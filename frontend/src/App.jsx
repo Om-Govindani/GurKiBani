@@ -119,8 +119,8 @@ function App() {
         <LanguageContext.Provider value={[language , setLanguage]} >
           <HistoryContext.Provider value={[history , setHistory]}>
             <BookmarkContext.Provider value={[bookmarks , setBookmarks]}>
-              {/* <SilentAudio /> */}
-              <BackgroundMedia />
+              <SilentAudio />
+              {/* <BackgroundMedia /> */}
                 <Router>
                   <Routes>
                     <Route path="/" element={ <SearchView />} />
