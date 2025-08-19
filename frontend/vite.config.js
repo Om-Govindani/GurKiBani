@@ -31,7 +31,7 @@ export default defineConfig({
         theme_color: "#0B0D0E",
         background_color: "#0B0D0E",
         display: "standalone",
-        start_url: ".",
+        start_url: "/",
         icons: [
           {
             src: "/icon-192.png",
@@ -56,6 +56,7 @@ export default defineConfig({
       workbox: {
         maximumFileSizeToCacheInBytes: 50 * 1024 * 1024,
         globPatterns: ["**/*.{js,css,html,svg,png,json}"],
+        navigateFallback: 'index.html',
         runtimeCaching: [
           {
             urlPattern: /SGGS\.json$/,
