@@ -89,7 +89,7 @@ function SearchView (){
             )}
 
             <h2 className="absolute bottom-4 text-center text-white/80 mb-4 -z-1">
-                Sewa With ❤️ by Om Govindani
+                Sewa With ❤️ by Govindani's 
             </h2>
         </div>
     )
