@@ -29,30 +29,20 @@ function HamburgerMenu() {
     };
   },[isOpen])
 
-  const handleShare = async () => {
+  const handleShare = () => {
     const shareData = {
       title: "Gurkibani App",
       text: `Waheguru ji ka khalsa 🙏
 Waheguru ji ki fateh ✨
 Link : https://gurkibani.vercel.app
-Aap ji de sukraane 💛 
-Apk : `,
+Aap ji de sukraane 💛`,
       url: "https://raw.githubusercontent.com/Om-Govindani/GurKiBani/refs/heads/main/frontend/public/Gurkibani.apk", // ya phir apk ka direct link
     };
 
-    try {
-      if (navigator.share) {
-        await navigator.share(shareData);
-      } else {
-        // fallback: whatsapp specific share link
-        const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(
+    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(
           `${shareData.text}\n${shareData.url}`
         )}`;
-        window.open(whatsappUrl, "_blank");
-      }
-    } catch (err) {
-      console.error("Error sharing:", err);
-    }
+    window.open(whatsappUrl, "_blank");
   };
 
   return (
