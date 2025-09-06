@@ -1,9 +1,11 @@
 import {useState , useContext , useRef,useEffect} from "react";
+import { useNavigate } from "react-router-dom";
 import SearchBar from "../components/SearchBar.jsx"
 import SearchResults from "../components/SearchResults.jsx";
 import HamburgerMenu from "../components/HamburgerMenu.jsx";
 import LanguageContext from "../contexts/LanguageContext.js";
 import { MdSettings  , MdRefresh} from "react-icons/md";
+import { RiInformation2Fill } from "react-icons/ri";
 
 function SearchView (){
     const [results , setResults] = useState([]) ;
@@ -12,6 +14,7 @@ function SearchView (){
     const [language, setLanguage] = useContext(LanguageContext);
     const settingsRef = useRef();
     const buttonRef = useRef();
+    const navigate = useNavigate();
     
     useEffect(() => {
         function handleClickOutside(e) {
@@ -46,19 +49,33 @@ function SearchView (){
             <SearchResults results={results} setQuery={setQuery} />
 
             {/* Settings Button */}
-            <button
-                onClick={() => setShowLangMenu(prev => !prev)}
-                className="p-1 md:text-zinc-800 text-white fixed top-6 right-4"
-                aria-label="Language Menu"
-                ref={buttonRef}
-                style={{
-                    paddingTop: `calc(env(safe-area-inset-top ,0px))`,
-                    paddingBottom: "0.5rem",
-                    transform: 'translateZ(0)'
-                }}
-            >
-                <MdSettings size={30} />
-            </button>
+            <div className="fixed top-6 right-4">
+                <button
+                    onClick={()=>navigate('/Instructions')}
+                    aria-label="Instruction"
+                    className="p-1 md:text-zinc-800 text-white cursor-pointer"
+                    style={{
+                        paddingTop: `calc(env(safe-area-inset-top ,0px))`,
+                        paddingBottom: "0.5rem",
+                        transform: 'translateZ(0)'
+                    }}
+                >
+                    <RiInformation2Fill size={30}/>
+                </button>
+                <button
+                    onClick={() => setShowLangMenu(prev => !prev)}
+                    className="p-1 md:text-zinc-800 text-white cursor-pointer"
+                    aria-label="Language Menu"
+                    ref={buttonRef}
+                    style={{
+                        paddingTop: `calc(env(safe-area-inset-top ,0px))`,
+                        paddingBottom: "0.5rem",
+                        transform: 'translateZ(0)'
+                    }}
+                >
+                    <MdSettings size={30} />
+                </button>
+            </div>
 
             {/* Settings Menu */}
             {showLangMenu && (

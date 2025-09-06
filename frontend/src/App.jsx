@@ -18,6 +18,7 @@ import SilentAudio from "./components/SilentAudio.jsx";
 import SahajPaathView from "./views/SahajPaathView.jsx";
 import AngContext from "./contexts/AngContext.js";
 import BackgroundMedia from "./components/BackgroundMedia.jsx";
+import Instructions from "./views/Instructions.jsx"
 
 
 
@@ -124,6 +125,7 @@ function App() {
                 <Router>
                   <Routes>
                     <Route path="/" element={ <SearchView />} />
+                    <Route path="/instructions" element={ <Instructions />} />
                     <Route path="/reset" element={<Navigate to="/" replace />} />
                     <Route path="/shabad/:startId" element={<ShabadView />} />
                     <Route path="/bookmarks" element={<BookmarkView />} />
