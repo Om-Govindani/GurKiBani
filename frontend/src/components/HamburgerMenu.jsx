@@ -35,8 +35,9 @@ function HamburgerMenu() {
       text: `Waheguru ji ka khalsa 🙏
 Waheguru ji ki fateh ✨
 Link : https://gurkibani.vercel.app
-Aap ji de sukraane 💛`,
-      url: "https://gurkibani.vercel.app", // ya phir apk ka direct link
+Aap ji de sukraane 💛 
+Apk : `,
+      url: "https://raw.githubusercontent.com/Om-Govindani/GurKiBani/refs/heads/main/frontend/public/Gurkibani.apk", // ya phir apk ka direct link
     };
 
     try {
