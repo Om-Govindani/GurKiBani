@@ -45,7 +45,7 @@ function Instructions() {
       <div className="flex-1 flex flex-col items-center justify-center px-4 py-6">
         {!os && (
           <div className="flex flex-col gap-6 items-center justify-center">
-            <h1 className="text-3xl text-violet-200 border-b-1 border-zinc-700 py-4">Instructions for App install</h1>
+            <h1 className="text-xl text-violet-200 border-b-1 border-zinc-700 py-4">Instructions for App install</h1>
             <button
               onClick={() => setOs("android")}
               className="px-6 py-3 w-80 bg-white/15 text-orange-400 text-3xl font-semibold rounded-xl shadow-md hover:bg-orange-200/15 transition"

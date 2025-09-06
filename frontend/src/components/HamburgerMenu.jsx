@@ -65,6 +65,9 @@ Aap ji de sukraane 💛`,
             className={`fixed top-0 left-0 h-screen w-80 bg-zinc-800 backdrop-blur-2xl shadow-lg z-[998] transform transition-transform duration-300 ease-in-out ${isOpen ? "translate-x-0" : "-translate-x-full"}`}
             ref={menuRef}
         >
+            <div onClick={handleShare} className=" z-[999] fixed md:top-9 top-7 left-53 text-xl text-center cursor-pointer text-green-300/80 pb-6 flex flex-row items-center justify-center gap-x-2">
+                Share <FaWhatsappSquare size={30} />
+            </div>
             <div className="flex flex-col h-19/20  items-center justify-between py-3 px-6 relative">
                 <div className="fixed flex top-20 right-32">
                     <img src={ekOnkaar} alt="ekOnkaar" className="w-18 h-24" />
@@ -96,14 +99,9 @@ Aap ji de sukraane 💛`,
                     </div>
                     
                 </div>
-                <div className="w-full h-1/20 flex flex-col items-center justify-center">
-                    <div className="w-full flex flex-row items-center justify-center pb-6">
+                <div className="w-full h-1/20 flex flex-row items-center justify-center">
                         <img src={icon512} alt="App Logo" className="w-14 h-14 rounded-md" />
                         <h1 className="text-2xl ml-4 text-amber-400 font-light">Gur ki Bani</h1>
-                    </div>
-                    <div onClick={handleShare} className=" text-xl text-center cursor-pointer text-green-300/80 pb-6 flex flex-row items-center justify-center gap-x-2">
-                        <FaWhatsappSquare size={30} /> Share on Whatsapp
-                    </div>
                 </div>
             </div>
         </div>
