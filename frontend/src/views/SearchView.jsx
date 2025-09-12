@@ -20,6 +20,11 @@ function SearchView() {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [showInstallBtn, setShowInstallBtn] = useState(false);
 
+  // ✅ detect if already running as standalone (PWA)
+  const isInStandaloneMode =
+    window.matchMedia("(display-mode: standalone)").matches ||
+    window.navigator.standalone === true;
+
   useEffect(() => {
     // language menu outside click close
     function handleClickOutside(e) {
@@ -39,17 +44,17 @@ function SearchView() {
   useEffect(() => {
     // listen for install event
     const handler = (e) => {
+      if (isInStandaloneMode) return; // 🚫 don't show install button inside PWA
       e.preventDefault();
       setDeferredPrompt(e);
-      setShowInstallBtn(true); // show button when eligible
+      setShowInstallBtn(true);
     };
 
     window.addEventListener("beforeinstallprompt", handler);
-
     return () => {
       window.removeEventListener("beforeinstallprompt", handler);
     };
-  }, []);
+  }, [isInStandaloneMode]);
 
   const handleLanguageChange = (lang) => {
     setLanguage(lang);
@@ -104,14 +109,14 @@ function SearchView() {
         </div>
 
         {/* Install button (just below) */}
-        {/* {showInstallBtn && ( */}
+        {showInstallBtn && (
           <button
             onClick={handleInstallClick}
-            className="px-3 py-1 bg-zinc-700 w-18 text-white rounded-md shadow-md"
+            className="px-3 py-1 bg-zinc-700 text-white rounded-md shadow-md"
           >
             Install
           </button>
-        {/* )} */}
+        )}
       </div>
 
       {/* Settings Menu */}
