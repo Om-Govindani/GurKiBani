@@ -87,7 +87,13 @@ function SearchView() {
       <SearchResults results={results} setQuery={setQuery} />
 
       {/* 🔥 Top-right controls */}
-      <div className="fixed top-6 right-4 flex flex-col items-end space-y-2">
+      <div className="fixed top-6 right-4 flex flex-col items-end space-y-2"
+        style={{
+          paddingTop: `calc(env(safe-area-inset-top ,0px))`,
+          paddingBottom: "0.5rem",
+          transform: 'translateZ(0)'
+        }}
+      >
         {/* Row: i button + gear button */}
         <div className="flex space-x-1">
           <button
