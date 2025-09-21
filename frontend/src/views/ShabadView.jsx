@@ -4,6 +4,11 @@ import UserContext from "../contexts/SGGSContext";
 import SizeControlBtns from "../components/buttons/SizeControlBtns";
 import TopBar from "../components/TopBar";
 import LanguageContext from "../contexts/LanguageContext";
+import FontSizeContext from "../contexts/FontSizeContext";
+import HindiTranslationContext from "../contexts/HindiTranslationContext";
+import HindiTeekaShabadArthContext from "../contexts/HindiTeekaShabadArthContext";
+import HindiTeekaBhavArthContext from "../contexts/HindiTeekaBhavArthContext";
+import EngTranslitrationContext from "../contexts/EngTranslitrationContext";
 
 function ShabadView() {
   const { startId } = useParams();
@@ -11,7 +16,11 @@ function ShabadView() {
   const highlightId = searchParams.get("highlight");
   const from = searchParams.get("from");
   const SGGS = useContext(UserContext);
-  const [fontSize, setFontSize] = useState(24);
+  const [fontSize, setFontSize] = useContext(FontSizeContext);
+  const [engTranslitration] = useContext(EngTranslitrationContext);
+  const [hindiTeekaBhavArth] = useContext(HindiTeekaBhavArthContext);
+  const [hindiTeekaShabadArth] = useContext(HindiTeekaShabadArthContext);
+  const [hindiTranslation] = useContext(HindiTranslationContext);
   const [showControls, setShowControls] = useState(true);
   const verseRef = useRef({});
   const [language] = useContext(LanguageContext);
@@ -96,7 +105,7 @@ function ShabadView() {
     <div className="min-h-screen w-full bg-neutral-900 text-white px-2 py-5 relative flex-col">
       <TopBar highlightId={highlightId} from={from} />
 
-      <div className="w-full h-full mx-auto mt-[20px] relative overflow-y-scroll">
+      <div className="max-w-3xl h-full mx-auto mt-[20px] relative overflow-y-scroll">
         <div className="h-10"></div>
         {shabadVerses.length === 0 ? (
           <EmptyPage title={"Some technical issue"} content={"This will be fixed soon"} />
@@ -109,7 +118,7 @@ function ShabadView() {
               <div
                 key={id}
                 ref={(el) => (verseRef.current[id] = el)}
-                className={`py-1.5 transition-all duration-200 text-center`}
+                className={`py-3 transition-all duration-200 text-center`}
               >
                 {language !== "hindi" && (
                   <div
@@ -126,11 +135,43 @@ function ShabadView() {
                     className={`font-hindi ${
                       id === highlightId ? "bg-white/15" : ""
                     } ${applySpecialColor ? "text-orange-400" : "text-orange-200"}`}
-                    style={{ fontSize: `${fontSize}px` }}
+                    style={{ fontSize: `${fontSize - 2}px` }}
                   >
                     {verse[1]}
                   </div>
                 )}
+                {engTranslitration && <div
+                  className={`font-hindi ${
+                    id === highlightId ? "bg-white/15" : ""
+                  } text-gray-300 italic`}
+                  style={{ fontSize: `${fontSize - 2}px` }}
+                >
+                  {verse[7]}
+                </div>}
+                {hindiTranslation && <div
+                  className={`font-hindi ${
+                    id === highlightId ? "bg-white/15" : ""
+                  } text-teal-200`}
+                  style={{ fontSize: `${fontSize  - 6}px` }}
+                >
+                  {verse[8]}
+                </div>}
+                {hindiTeekaShabadArth && <div
+                  className={`font-hindi ${
+                    id === highlightId ? "bg-white/15" : ""
+                  } text-sky-200`}
+                  style={{ fontSize: `${fontSize  - 6}px` }}
+                >
+                  {verse[9]}
+                </div>}
+                {hindiTeekaBhavArth && <div
+                  className={`font-hindi ${
+                    id === highlightId ? "bg-white/15" : ""
+                  } text-amber-200`}
+                  style={{ fontSize: `${fontSize - 6}px` }}
+                >
+                  {verse[10]}
+                </div>}
               </div>
             );
           })

@@ -4,12 +4,21 @@ import LanguageContext from "../contexts/LanguageContext";
 import TopBar from "../components/TopBar";
 import SizeControlBtns from "../components/buttons/SizeControlBtns";
 import AngContext from "../contexts/AngContext";
+import FontSizeContext from "../contexts/FontSizeContext";
+import EngTranslitrationContext from "../contexts/EngTranslitrationContext";
+import HindiTeekaBhavArthContext from "../contexts/HindiTeekaBhavArthContext";
+import HindiTeekaShabadArthContext from "../contexts/HindiTeekaShabadArthContext";
+import HindiTranslationContext from "../contexts/HindiTranslationContext";
 
 function SahajPaathView() {
   const SGGS = useContext(SGGSContext);
   const [ang, setAng] = useContext(AngContext);
   const [language] = useContext(LanguageContext);
-  const [fontSize, setFontSize] = useState(24);
+  const [fontSize, setFontSize] = useContext(FontSizeContext);
+  const [engTranslitration] = useContext(EngTranslitrationContext);
+  const [hindiTeekaBhavArth] = useContext(HindiTeekaBhavArthContext);
+  const [hindiTeekaShabadArth] = useContext(HindiTeekaShabadArthContext);
+  const [hindiTranslation] = useContext(HindiTranslationContext);
   const [highlightId, setHighlightId] = useState(null);
   const verseRefs = useRef({});
 
@@ -122,11 +131,36 @@ function SahajPaathView() {
             {language !== "gurmukhi" && (
               <div
                 style={{ fontSize: `${fontSize - 2}px` }}
-                className="font-hindi text-orange-200"
+                className="font-hindi text-orange-200 font-semibold"
               >
                 {verse[1]}
               </div>
             )}
+            {engTranslitration && <div
+              className={`font-hindi text-gray-300 italic`}
+              style={{ fontSize: `${fontSize - 2}px` }}
+            >
+              {verse[7]}
+            </div>}
+            {hindiTranslation && <div
+              className={`font-hindi text-teal-200`}
+              style={{ fontSize: `${fontSize  - 6}px` }}
+            >
+              {verse[8]}
+            </div>}
+            {hindiTeekaShabadArth && <div
+              className={`font-hindi text-sky-200`}
+              style={{ fontSize: `${fontSize  - 6}px` }}
+            >
+              {verse[9]}
+            </div>}
+            {hindiTeekaBhavArth && <div
+              className={`font-hindi text-amber-200`}
+              style={{ fontSize: `${fontSize - 6}px` }}
+            >
+              {verse[10]}
+            </div>}
+            
           </div>
         ))}
       </div>

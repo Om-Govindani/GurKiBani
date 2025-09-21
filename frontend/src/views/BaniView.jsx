@@ -11,6 +11,7 @@ import SundarGutka from "../../public/SundarGutka.json";
 import SizeControlBtns from "../components/buttons/SizeControlBtns";
 import LanguageContext from "../contexts/LanguageContext";
 import EmptyPage from "../components/EmptyPage"; // Make sure this exists
+import FontSizeContext from "../contexts/FontSizeContext";
 
 function BaniView() {
   const { name } = useParams();
@@ -19,7 +20,7 @@ function BaniView() {
   const [searchParams] = useSearchParams();
   const from = searchParams.get("from");
 
-  const [fontSize, setFontSize] = useState(24);
+  const [fontSize, setFontSize] = useContext(FontSizeContext);
   const [language] = useContext(LanguageContext);
   const topBarRef = useRef(null);
   const verseRefs = useRef({});
@@ -77,8 +78,10 @@ function BaniView() {
   }, []);
 
   // Touch pinch zoom for font size
+  // Replace the existing touch effect with this improved version
   useEffect(() => {
     let initialDistance = null;
+    let initialFontSize = fontSize;
 
     function getDistance(touches) {
       const [a, b] = touches;
@@ -87,20 +90,25 @@ function BaniView() {
       return Math.sqrt(dx * dx + dy * dy);
     }
 
-    function handleTouchMove(e) {
+    function handleTouchStart(e) {
       if (e.touches.length === 2) {
-        const distance = getDistance(e.touches);
-        if (initialDistance === null) {
-          initialDistance = distance;
-        } else {
-          const delta = distance - initialDistance;
-          if (Math.abs(delta) > 8) {
-            setFontSize((f) =>
-              delta > 0 ? Math.min(f + 1, 48) : Math.max(f - 1, 12)
-            );
-            initialDistance = distance;
-          }
-        }
+        e.preventDefault();
+        initialDistance = getDistance(e.touches);
+        initialFontSize = fontSize;
+      }
+    }
+
+    function handleTouchMove(e) {
+      if (e.touches.length === 2 && initialDistance !== null) {
+        e.preventDefault();
+        const currentDistance = getDistance(e.touches);
+        const scale = currentDistance / initialDistance;
+        
+        // Apply scaling with smoothing
+        const newSize = Math.round(initialFontSize * scale);
+        
+        // Clamp between 12 and 48 with smooth transitions
+        setFontSize(Math.min(Math.max(newSize, 12), 48));
       }
     }
 
@@ -108,16 +116,18 @@ function BaniView() {
       initialDistance = null;
     }
 
-    document.addEventListener("touchmove", handleTouchMove, { passive: false });
-    document.addEventListener("touchend", resetDistance);
-    document.addEventListener("touchcancel", resetDistance);
+    document.addEventListener('touchstart', handleTouchStart, { passive: false });
+    document.addEventListener('touchmove', handleTouchMove, { passive: false });
+    document.addEventListener('touchend', resetDistance);
+    document.addEventListener('touchcancel', resetDistance);
 
     return () => {
-      document.removeEventListener("touchmove", handleTouchMove);
-      document.removeEventListener("touchend", resetDistance);
-      document.removeEventListener("touchcancel", resetDistance);
+      document.removeEventListener('touchstart', handleTouchStart);
+      document.removeEventListener('touchmove', handleTouchMove);
+      document.removeEventListener('touchend', resetDistance);
+      document.removeEventListener('touchcancel', resetDistance);
     };
-  }, []);
+  }, [fontSize]); // Added fontSize as dependency
 
   const highlightVerses = [
         "ੴ सति नामु करता पुरखु निरभउ निरवैरु",
@@ -231,7 +241,7 @@ function BaniView() {
               >
                 {language !== "hindi" && (
                   <div
-                    className={`font-gurmukhi ${
+                    className={`font-gurmukhi text-smooth ${
                       isHighlighted ? "text-rose-300" : "text-violet-50"
                     }`}
                     style={{ fontSize: `${fontSize}px`, lineHeight: "1.4" }}
@@ -241,7 +251,7 @@ function BaniView() {
                 )}
                 {language !== "gurmukhi" && (
                   <div
-                    className={`font-hindi ${
+                    className={`font-hindi text-smooth ${
                       isHighlighted ? "text-orange-400" : "text-orange-200"
                     }`}
                     style={{ fontSize: `${fontSize}px` }}

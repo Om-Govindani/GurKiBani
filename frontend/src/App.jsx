@@ -19,6 +19,11 @@ import SahajPaathView from "./views/SahajPaathView.jsx";
 import AngContext from "./contexts/AngContext.js";
 import BackgroundMedia from "./components/BackgroundMedia.jsx";
 import Instructions from "./views/Instructions.jsx"
+import FontSizeContext from "./contexts/FontSizeContext.js";
+import EngTranslitrationContext from "./contexts/EngTranslitrationContext.js";
+import HindiTeekaBhavArthContext from "./contexts/HindiTeekaBhavArthContext.js";
+import HindiTeekaShabadArthContext from "./contexts/HindiTeekaShabadArthContext.js";
+import HindiTranslationContext from "./contexts/HindiTranslationContext.js";
 
 
 
@@ -26,6 +31,26 @@ function App() {
 
   const [ang , setAng] = useState(() =>{
     return localStorage.getItem("ang") || "1";
+  })
+
+  const [engTranslitration , setEngTranslitration] = useState(() =>{
+    return localStorage.getItem("engTranslitration") || false;
+  })
+
+  const [hindiTeekaBhavArth , setHindiTeekaBhavArth] = useState(() =>{
+    return localStorage.getItem("hindiTeekaBhavArth") || false;
+  })
+
+  const [hindiTeekaShabadArth , setHindiTeekaShabadArth] = useState(() =>{
+    return localStorage.getItem("hindiTeekaShabadArth") || false;
+  })
+
+  const [hindiTranslation , setHindiTranslation] = useState(() =>{
+    return localStorage.getItem("hindiTranslation") || false;
+  })
+
+  const [fontSize , setFontSize] = useState(() =>{
+    return localStorage.getItem("fontSize") || "24";
   })
   
   const [language, setLanguage] = useState(() => {
@@ -45,6 +70,10 @@ function App() {
   useEffect(()=>{
     localStorage.setItem("ang" ,ang);
   },[ang]);
+
+  useEffect(()=>{
+    localStorage.setItem("fontSize" ,fontSize);
+  },[fontSize]);
 
   useEffect(() => {
     localStorage.setItem("bookmarks", JSON.stringify(bookmarks));
@@ -117,29 +146,39 @@ function App() {
   return (
     <SGGSContext.Provider value = {SGGS}>
       <AngContext.Provider value={[ang , setAng]}>
-        <LanguageContext.Provider value={[language , setLanguage]} >
-          <HistoryContext.Provider value={[history , setHistory]}>
-            <BookmarkContext.Provider value={[bookmarks , setBookmarks]}>
-              {/* <SilentAudio /> */}
-              {/* <BackgroundMedia /> */}
-                <Router>
-                  <Routes>
-                    <Route path="/" element={ <SearchView />} />
-                    <Route path="/instructions" element={ <Instructions />} />
-                    <Route path="/reset" element={<Navigate to="/" replace />} />
-                    <Route path="/shabad/:startId" element={<ShabadView />} />
-                    <Route path="/bookmarks" element={<BookmarkView />} />
-                    <Route path="/nitnem" element={<NitnemView />} />
-                    <Route path="/bani" element={<Navigate to="/nitnem" replace />} />
-                    <Route path="/bani/:name" element={<BaniView />} />
-                    <Route path="/history" element={<HistoryView />} />
-                    <Route path="*" element={<Navigate to="/" replace />} />
-                    <Route path="/SahajPaath" element={<SahajPaathView />} />
-                </Routes>
-              </Router>
-            </BookmarkContext.Provider>
-          </HistoryContext.Provider>
-        </LanguageContext.Provider>
+        <FontSizeContext.Provider value={[fontSize , setFontSize]}>
+          <LanguageContext.Provider value={[language , setLanguage]} >
+            <EngTranslitrationContext.Provider value={[engTranslitration , setEngTranslitration]} >
+              <HindiTeekaBhavArthContext.Provider value={[hindiTeekaBhavArth , setHindiTeekaBhavArth]}>
+                <HindiTeekaShabadArthContext.Provider value={[hindiTeekaShabadArth , setHindiTeekaShabadArth]}>
+                  <HindiTranslationContext.Provider value={[hindiTranslation , setHindiTranslation]} >
+                    <HistoryContext.Provider value={[history , setHistory]}>
+                      <BookmarkContext.Provider value={[bookmarks , setBookmarks]}>
+                        {/* <SilentAudio /> */}
+                        {/* <BackgroundMedia /> */}
+                          <Router>
+                            <Routes>
+                              <Route path="/" element={ <SearchView />} />
+                              <Route path="/instructions" element={ <Instructions />} />
+                              <Route path="/reset" element={<Navigate to="/" replace />} />
+                              <Route path="/shabad/:startId" element={<ShabadView />} />
+                              <Route path="/bookmarks" element={<BookmarkView />} />
+                              <Route path="/nitnem" element={<NitnemView />} />
+                              <Route path="/bani" element={<Navigate to="/nitnem" replace />} />
+                              <Route path="/bani/:name" element={<BaniView />} />
+                              <Route path="/history" element={<HistoryView />} />
+                              <Route path="*" element={<Navigate to="/" replace />} />
+                              <Route path="/SahajPaath" element={<SahajPaathView />} />
+                          </Routes>
+                        </Router>
+                      </BookmarkContext.Provider>
+                    </HistoryContext.Provider>
+                  </HindiTranslationContext.Provider>
+                </HindiTeekaShabadArthContext.Provider>
+              </HindiTeekaBhavArthContext.Provider>
+            </EngTranslitrationContext.Provider>
+          </LanguageContext.Provider>
+        </FontSizeContext.Provider>
       </AngContext.Provider>
     </SGGSContext.Provider>
   )

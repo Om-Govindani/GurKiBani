@@ -8,10 +8,12 @@ import LanguageContext from "../contexts/LanguageContext";
 import HistoryContext from "../contexts/HistoryContext";
 import { HiDotsVertical } from "react-icons/hi";
 import { HiTrash } from "react-icons/hi";
-import { HiArrowLeft, HiArrowRight } from 'react-icons/hi';
 import { FiArrowLeftCircle, FiArrowRightCircle , FiSearch } from 'react-icons/fi';
-import { MdBabyChangingStation, MdNavigateBefore, MdNavigateNext } from 'react-icons/md';
-import { BsArrowLeftCircleFill, BsArrowRightCircleFill } from 'react-icons/bs';
+import { HiChevronDown, HiChevronUp } from "react-icons/hi"; // ⬇️⬆️ icons
+import EngTranslitrationContext from "../contexts/EngTranslitrationContext";
+import HindiTeekaBhavArthContext from "../contexts/HindiTeekaBhavArthContext";
+import HindiTeekaShabadArthContext from "../contexts/HindiTeekaShabadArthContext";
+import HindiTranslationContext from "../contexts/HindiTranslationContext";
 
 
 
@@ -26,8 +28,13 @@ function TopBar({ highlightId, from }) {
   const found = bookmarks.some((b) => b.highlightId === highlightId);
   const [isBookmark, setIsBookmark] = useState(found);
   const [showLangMenu, setShowLangMenu] = useState(false);
+  const [showAdvance, setShowAdvance] = useState(false);
   const [showAngInput, setShowAngInput] = useState(false);
 
+  const [engTranslitration, setEngTranslitration] = useContext(EngTranslitrationContext);
+  const [hindiTeekaBhavArth, setHindiTeekaBhavArth] = useContext(HindiTeekaBhavArthContext);
+  const [hindiTeekaShabadArth, setHindiTeekaShabadArth] = useContext(HindiTeekaShabadArthContext);
+  const [hindiTranslation, setHindiTranslation] = useContext(HindiTranslationContext);
   const [history, setHistory] = useContext(HistoryContext);
   const settingsRef = useRef();
   const buttonRef = useRef();
@@ -234,19 +241,77 @@ const angInputRef = useRef();
             >
               <HiDotsVertical size={22} />
             </button>
+
             {showLangMenu && (
-              <div ref={settingsRef} className="absolute right-0 top-8 bg-zinc-900 text-white border border-zinc-700 rounded-md shadow-lg w-40 z-50">
+              <div
+                ref={settingsRef}
+                className="absolute right-0 top-8 bg-zinc-900 text-white border border-zinc-700 rounded-md shadow-lg w-48 z-50"
+              >
+                {/* Default options */}
                 {["both", "hindi", "gurmukhi"].map((lang) => (
                   <div
                     key={lang}
                     className={`px-4 py-2 cursor-pointer hover:bg-zinc-800 transition ${
                       language === lang ? "bg-zinc-700" : ""
                     }`}
-                    onClick={() => handleLanguageChange(lang)}
+                    onClick={() => {
+                      setLanguage(lang);
+                      setShowLangMenu(false);
+                    }}
                   >
                     {lang.charAt(0).toUpperCase() + lang.slice(1)}
                   </div>
                 ))}
+
+                {/* Advance option */}
+                <div
+                  className="px-4 py-2 cursor-pointer hover:bg-zinc-800 flex justify-between items-center"
+                  onClick={() => setShowAdvance(prev => !prev)}
+                >
+                  <span>Advance</span>
+                  {showAdvance ? <HiChevronUp size={16} /> : <HiChevronDown size={16} />}
+                </div>
+
+                {/* Advance sub-options (checkboxes) */}
+                {showAdvance && (
+                  <div className="px-4 py-2 space-y-2 text-sm">
+                    <label className="flex items-center space-x-2 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={engTranslitration === true}
+                        onChange={(e) =>{ setEngTranslitration(e.target.checked ? true : false); console.log(engTranslitration)}}
+                      />
+                      <span>Eng. Transliteration</span>
+                    </label>
+                    
+                    <label className="flex items-center space-x-2 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={hindiTranslation === true}
+                        onChange={(e) => setHindiTranslation(e.target.checked ? true : false)}
+                      />
+                      <span>Hindi Translation</span>
+                    </label>
+
+                    <label className="flex items-center space-x-2 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={hindiTeekaShabadArth === true}
+                        onChange={(e) => setHindiTeekaShabadArth(e.target.checked ? true : false)}
+                      />
+                      <span>Shabad Arth</span>
+                    </label>
+
+                    <label className="flex items-center space-x-2 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={hindiTeekaBhavArth === true}
+                        onChange={(e) => setHindiTeekaBhavArth(e.target.checked ? true : false)}
+                      />
+                      <span>Bhav Arth</span>
+                    </label>
+                  </div>
+                )}
               </div>
             )}
           </div>
