@@ -55,7 +55,8 @@ function App() {
 
 
   const [fontSize , setFontSize] = useState(() =>{
-    return localStorage.getItem("fontSize") || 24;
+    const stored = localStorage.getItem("fontSize");
+    return stored ? JSON.parse(stored) : 24;
   })
   
   const [language, setLanguage] = useState(() => {
@@ -77,7 +78,7 @@ function App() {
   },[ang]);
 
   useEffect(()=>{
-    localStorage.setItem("fontSize" ,fontSize);
+    localStorage.setItem("fontSize" ,JSON.stringify(fontSize));
   },[fontSize]);
 
   useEffect(()=>{
