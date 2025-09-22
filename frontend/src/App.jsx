@@ -34,23 +34,28 @@ function App() {
   })
 
   const [engTranslitration , setEngTranslitration] = useState(() =>{
-    return localStorage.getItem("engTranslitration") || false;
-  })
+    const stored = localStorage.getItem("engTranslitration");
+    return stored ? JSON.parse(stored) : false;
+  });
 
   const [hindiTeekaBhavArth , setHindiTeekaBhavArth] = useState(() =>{
-    return localStorage.getItem("hindiTeekaBhavArth") || false;
-  })
+    const stored = localStorage.getItem("hindiTeekaBhavArth");
+    return stored ? JSON.parse(stored) : false;
+  });
 
   const [hindiTeekaShabadArth , setHindiTeekaShabadArth] = useState(() =>{
-    return localStorage.getItem("hindiTeekaShabadArth") || false;
-  })
+    const stored = localStorage.getItem("hindiTeekaShabadArth");
+    return stored ? JSON.parse(stored) : false;
+  });
 
   const [hindiTranslation , setHindiTranslation] = useState(() =>{
-    return localStorage.getItem("hindiTranslation") || false;
-  })
+    const stored = localStorage.getItem("hindiTranslation");
+    return stored ? JSON.parse(stored) : false;
+  });
+
 
   const [fontSize , setFontSize] = useState(() =>{
-    return localStorage.getItem("fontSize") || "24";
+    return localStorage.getItem("fontSize") || 24;
   })
   
   const [language, setLanguage] = useState(() => {
@@ -74,6 +79,24 @@ function App() {
   useEffect(()=>{
     localStorage.setItem("fontSize" ,fontSize);
   },[fontSize]);
+
+  useEffect(()=>{
+    localStorage.setItem("engTranslitration", JSON.stringify(engTranslitration));
+  },[engTranslitration]);
+
+  useEffect(()=>{
+    localStorage.setItem("hindiTeekaBhavArth", JSON.stringify(hindiTeekaBhavArth));
+  },[hindiTeekaBhavArth]);
+
+  useEffect(()=>{
+    localStorage.setItem("hindiTeekaShabadArth", JSON.stringify(hindiTeekaShabadArth));
+  },[hindiTeekaShabadArth]);
+
+  useEffect(()=>{
+    localStorage.setItem("hindiTranslation", JSON.stringify(hindiTranslation));
+  },[hindiTranslation]);
+
+
 
   useEffect(() => {
     localStorage.setItem("bookmarks", JSON.stringify(bookmarks));

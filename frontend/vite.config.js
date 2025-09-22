@@ -21,8 +21,6 @@ export default defineConfig({
         "ਦਰਬਾਰ_ਸਾਹਿਬ.jpg",
         "Darbar-sahib.jpeg",
         "ekOnkaar.png",
-        "silent.mp3",
-        "DarbarSahib.mp4",
       ],
       manifest: {
         name: "GurKiBani",
