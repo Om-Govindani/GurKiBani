@@ -279,11 +279,11 @@ const angInputRef = useRef();
                       <input
                         type="checkbox"
                         checked={engTranslitration === true}
-                        onChange={(e) =>{ setEngTranslitration(e.target.checked ? true : false); console.log(engTranslitration)}}
+                        onChange={(e) =>{ setEngTranslitration(e.target.checked ? true : false); }}
                       />
                       <span>Eng. Transliteration</span>
                     </label>
-                    
+
                     <label className="flex items-center space-x-2 cursor-pointer">
                       <input
                         type="checkbox"

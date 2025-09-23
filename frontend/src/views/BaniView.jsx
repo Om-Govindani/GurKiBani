@@ -12,6 +12,7 @@ import SizeControlBtns from "../components/buttons/SizeControlBtns";
 import LanguageContext from "../contexts/LanguageContext";
 import EmptyPage from "../components/EmptyPage"; // Make sure this exists
 import FontSizeContext from "../contexts/FontSizeContext";
+import AutoScroll from "../components/buttons/AutoScroll";
 
 function BaniView() {
   const { name } = useParams();
@@ -25,7 +26,10 @@ function BaniView() {
   const topBarRef = useRef(null);
   const verseRefs = useRef({});
   const [highlightId, setHighlightId] = useState(null);
+  const verseContainerRef = useRef(null);
   const isSukhmani = decodedName === "सुखमनी साहिब";
+  const [controlsVisible, setControlsVisible] = useState(false);
+  const timeoutRef = useRef(null);
 
   // Save verse ID on tap
   const handleVerseTap = (id) => {
@@ -77,11 +81,8 @@ function BaniView() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
-  // Touch pinch zoom for font size
-  // Replace the existing touch effect with this improved version
   useEffect(() => {
     let initialDistance = null;
-    let initialFontSize = fontSize;
 
     function getDistance(touches) {
       const [a, b] = touches;
@@ -90,25 +91,21 @@ function BaniView() {
       return Math.sqrt(dx * dx + dy * dy);
     }
 
-    function handleTouchStart(e) {
-      if (e.touches.length === 2) {
-        e.preventDefault();
-        initialDistance = getDistance(e.touches);
-        initialFontSize = fontSize;
-      }
-    }
-
     function handleTouchMove(e) {
-      if (e.touches.length === 2 && initialDistance !== null) {
-        e.preventDefault();
-        const currentDistance = getDistance(e.touches);
-        const scale = currentDistance / initialDistance;
-        
-        // Apply scaling with smoothing
-        const newSize = Math.round(initialFontSize * scale);
-        
-        // Clamp between 12 and 48 with smooth transitions
-        setFontSize(Math.min(Math.max(newSize, 12), 48));
+      if (e.touches.length === 2) {
+        const distance = getDistance(e.touches);
+        if (initialDistance === null) {
+          initialDistance = distance;
+        } else {
+          const delta = distance - initialDistance;
+          if (Math.abs(delta) > 10) {
+            setFontSize((f) => {
+              const newSize = delta > 0 ? Math.min(f + 1, 48) : Math.max(f - 1, 12);
+              return newSize;
+            });
+            initialDistance = distance;
+          }
+        }
       }
     }
 
@@ -116,18 +113,36 @@ function BaniView() {
       initialDistance = null;
     }
 
-    document.addEventListener('touchstart', handleTouchStart, { passive: false });
-    document.addEventListener('touchmove', handleTouchMove, { passive: false });
-    document.addEventListener('touchend', resetDistance);
-    document.addEventListener('touchcancel', resetDistance);
+    document.addEventListener("touchmove", handleTouchMove, { passive: false });
+    document.addEventListener("touchend", resetDistance);
+    document.addEventListener("touchcancel", resetDistance);
 
     return () => {
-      document.removeEventListener('touchstart', handleTouchStart);
-      document.removeEventListener('touchmove', handleTouchMove);
-      document.removeEventListener('touchend', resetDistance);
-      document.removeEventListener('touchcancel', resetDistance);
+      document.removeEventListener("touchmove", handleTouchMove);
+      document.removeEventListener("touchend", resetDistance);
+      document.removeEventListener("touchcancel", resetDistance);
     };
-  }, [fontSize]); // Added fontSize as dependency
+  }, []);
+
+  const showControlsTemporarily = () => {
+    setControlsVisible(true);
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    timeoutRef.current = setTimeout(() => setControlsVisible(false), 3000);
+  };
+
+  // Detect global interactions
+  useEffect(() => {
+    const handleInteraction = () => showControlsTemporarily();
+    window.addEventListener("scroll", handleInteraction);
+    window.addEventListener("mousemove", handleInteraction);
+    window.addEventListener("touchstart", handleInteraction);
+
+    return () => {
+      window.removeEventListener("scroll", handleInteraction);
+      window.removeEventListener("mousemove", handleInteraction);
+      window.removeEventListener("touchstart", handleInteraction);
+    };
+  }, []);
 
   const highlightVerses = [
         "ੴ सति नामु करता पुरखु निरभउ निरवैरु",
@@ -215,10 +230,12 @@ function BaniView() {
     ]
 
   return (
-    <div className="relative min-h-screen w-full bg-neutral-900 flex-col px-2 py-5">
+    <div className="relative h-screen w-full bg-neutral-900 flex-col px-2 py-5">
       <TopBar ref={topBarRef} from={from} />
 
-      <div className="h-full mx-auto w-full mt-[20px] overflow-y-scroll">
+      <div className="h-full mx-auto w-full mt-[20px] overflow-y-scroll flex-1"
+        ref = {verseContainerRef}
+      >
         <div className="h-10"></div>
 
         {baniVerses.length === 0 ? (
@@ -235,7 +252,7 @@ function BaniView() {
                 key={id}
                 ref={(el) => (verseRefs.current[id] = el)}
                 onClick={() => handleVerseTap(id)}
-                className={`py-1.5 transition-all duration-300 text-center rounded-xl ${
+                className={`max-w-3xl mx-auto py-1.5 transition-all duration-300 text-center rounded-xl ${
                   highlightId === id ? "bg-white/15" : ""
                 }`}
               >
@@ -265,8 +282,20 @@ function BaniView() {
         )}
       </div>
 
-      <div className="fixed bottom-4 right-4 z-50 opacity-60">
+      <div
+        className={`fixed bottom-4 right-4 z-50 transition-opacity duration-500 ${
+          controlsVisible ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
+      >
         <SizeControlBtns setFontSize={setFontSize} />
+      </div>
+
+      <div
+        className={`fixed bottom-4 left-4 z-50 transition-opacity duration-500 ${
+          controlsVisible ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
+      >
+        <AutoScroll containerRef={verseContainerRef} />
       </div>
     </div>
   );

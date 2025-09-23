@@ -9,6 +9,7 @@ import EngTranslitrationContext from "../contexts/EngTranslitrationContext";
 import HindiTeekaBhavArthContext from "../contexts/HindiTeekaBhavArthContext";
 import HindiTeekaShabadArthContext from "../contexts/HindiTeekaShabadArthContext";
 import HindiTranslationContext from "../contexts/HindiTranslationContext";
+import AutoScroll from "../components/buttons/AutoScroll";
 
 function SahajPaathView() {
   const SGGS = useContext(SGGSContext);
@@ -21,6 +22,30 @@ function SahajPaathView() {
   const [hindiTranslation] = useContext(HindiTranslationContext);
   const [highlightId, setHighlightId] = useState(null);
   const verseRefs = useRef({});
+  const verseContainerRef = useRef(null);
+  const [controlsVisible, setControlsVisible] = useState(false);
+  const timeoutRef = useRef(null);
+
+
+  const showControlsTemporarily = () => {
+    setControlsVisible(true);
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    timeoutRef.current = setTimeout(() => setControlsVisible(false), 3000);
+  };
+
+  // Detect global interactions
+  useEffect(() => {
+    const handleInteraction = () => showControlsTemporarily();
+    window.addEventListener("scroll", handleInteraction);
+    window.addEventListener("mousemove", handleInteraction);
+    window.addEventListener("touchstart", handleInteraction);
+
+    return () => {
+      window.removeEventListener("scroll", handleInteraction);
+      window.removeEventListener("mousemove", handleInteraction);
+      window.removeEventListener("touchstart", handleInteraction);
+    };
+  }, []);
 
   // Filter and sort verses for current ang
   const filteredVerses = Object.entries(SGGS)
@@ -107,14 +132,16 @@ function SahajPaathView() {
   };
 
   return (
-    <div className="relative min-h-screen w-full bg-neutral-900 flex-col px-2 py-5 select-none">
+    <div className="relative h-screen w-full bg-neutral-900 flex-col px-2 py-5 select-none">
       <TopBar from="SahajPaath" ang={ang} setAng={setAng} />
-      <div className="max-w-3xl mx-auto mt-20 space-y-2">
+      <div className="mx-auto mt-20 space-y-2 h-full overflow-y-scroll"
+        ref = {verseContainerRef}
+      >
         {filteredVerses.map(([id, verse]) => (
           <div
             key={id}
             ref={(el) => (verseRefs.current[id] = el)}
-            className={`flex flex-col gap-1 text-center py-1.5 rounded-xl transition-all duration-300 ${
+            className={`max-w-3xl mx-auto flex flex-col gap-1 text-center py-1.5 rounded-xl transition-all duration-300 ${
               highlightId === id ? "bg-white/15" : ""
             }`}
             onClick={() => handleVerseClick(id)}
@@ -131,7 +158,7 @@ function SahajPaathView() {
             {language !== "gurmukhi" && (
               <div
                 style={{ fontSize: `${fontSize - 2}px` }}
-                className="font-hindi text-orange-200 font-semibold"
+                className="font-hindi text-orange-200"
               >
                 {verse[1]}
               </div>
@@ -164,8 +191,20 @@ function SahajPaathView() {
           </div>
         ))}
       </div>
-      <div className="fixed bottom-4 right-4 z-50">
+      <div
+        className={`fixed bottom-4 right-4 z-50 transition-opacity duration-500 ${
+          controlsVisible ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
+      >
         <SizeControlBtns setFontSize={setFontSize} />
+      </div>
+
+      <div
+        className={`fixed bottom-4 left-4 z-50 transition-opacity duration-500 ${
+          controlsVisible ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
+      >
+        <AutoScroll containerRef={verseContainerRef} />
       </div>
     </div>
   );

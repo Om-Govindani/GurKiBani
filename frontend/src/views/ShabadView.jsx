@@ -2,6 +2,7 @@ import { useParams, useSearchParams } from "react-router-dom";
 import { useContext, useState, useEffect, useRef } from "react";
 import UserContext from "../contexts/SGGSContext";
 import SizeControlBtns from "../components/buttons/SizeControlBtns";
+import AutoScroll from "../components/buttons/AutoScroll";
 import TopBar from "../components/TopBar";
 import LanguageContext from "../contexts/LanguageContext";
 import FontSizeContext from "../contexts/FontSizeContext";
@@ -23,7 +24,10 @@ function ShabadView() {
   const [hindiTranslation] = useContext(HindiTranslationContext);
   const [showControls, setShowControls] = useState(true);
   const verseRef = useRef({});
+  const verseContainerRef = useRef(null);
   const [language] = useContext(LanguageContext);
+  const [controlsVisible, setControlsVisible] = useState(false);
+  const timeoutRef = useRef(null);
 
   const RAAG_NAMES = [
     "ਰਾਗੁ","ਸ੍ਰੀ","ਮਾਝ","ਗਉੜੀ","ਆਸਾ","ਗੁਜਰੀ","ਦੇਵਗੰਧਾਰੀ","ਬਿਹਾਗੜਾ",
@@ -83,6 +87,7 @@ function ShabadView() {
     };
   }, []);
 
+
   useEffect(() => {
     if (highlightId && verseRef.current[highlightId]) {
       verseRef.current[highlightId].scrollIntoView({
@@ -101,11 +106,33 @@ function ShabadView() {
     return [...RAAG_NAMES, ...SECTION_KW].some((kw) => firstVerse.includes(kw));
   })();
 
+  const showControlsTemporarily = () => {
+    setControlsVisible(true);
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    timeoutRef.current = setTimeout(() => setControlsVisible(false), 3000);
+  };
+
+  // Detect global interactions
+  useEffect(() => {
+    const handleInteraction = () => showControlsTemporarily();
+    window.addEventListener("scroll", handleInteraction);
+    window.addEventListener("mousemove", handleInteraction);
+    window.addEventListener("touchstart", handleInteraction);
+
+    return () => {
+      window.removeEventListener("scroll", handleInteraction);
+      window.removeEventListener("mousemove", handleInteraction);
+      window.removeEventListener("touchstart", handleInteraction);
+    };
+  }, []);
+
   return (
-    <div className="min-h-screen w-full bg-neutral-900 text-white px-2 py-5 relative flex-col">
+    <div className="h-screen w-full bg-neutral-900 px-2 py-5 relative flex flex-col">
       <TopBar highlightId={highlightId} from={from} />
 
-      <div className="max-w-3xl h-full mx-auto mt-[20px] relative overflow-y-scroll">
+      <div className="w-full flex-1 h-full mx-auto mt-[20px] relative overflow-y-scroll"
+        ref={verseContainerRef}
+      >
         <div className="h-10"></div>
         {shabadVerses.length === 0 ? (
           <EmptyPage title={"Some technical issue"} content={"This will be fixed soon"} />
@@ -118,7 +145,7 @@ function ShabadView() {
               <div
                 key={id}
                 ref={(el) => (verseRef.current[id] = el)}
-                className={`py-3 transition-all duration-200 text-center`}
+                className={` max-w-3xl py-3 transition-all duration-200 text-center mx-auto`}
               >
                 {language !== "hindi" && (
                   <div
@@ -179,11 +206,19 @@ function ShabadView() {
       </div>
 
       <div
-        className={`fixed bottom-4 right-4 z-50 group transition-opacity duration-500 ${
-          showControls ? "opacity-50 hover:opacity-100" : "opacity-0"
+        className={`fixed bottom-4 right-4 z-50 transition-opacity duration-500 ${
+          controlsVisible ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
       >
         <SizeControlBtns setFontSize={setFontSize} />
+      </div>
+
+      <div
+        className={`fixed bottom-4 left-4 z-50 transition-opacity duration-500 ${
+          controlsVisible ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
+      >
+        <AutoScroll containerRef={verseContainerRef} />
       </div>
     </div>
   );
