@@ -235,6 +235,7 @@ function BaniView() {
 
       <div className="h-full mx-auto w-full mt-[20px] overflow-y-scroll flex-1"
         ref = {verseContainerRef}
+        // style={{ height: `calc(100vh - 80px)` }}
       >
         <div className="h-10"></div>
 

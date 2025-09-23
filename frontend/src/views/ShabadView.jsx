@@ -132,6 +132,7 @@ function ShabadView() {
 
       <div className="w-full flex-1 h-full mx-auto mt-[20px] relative overflow-y-scroll"
         ref={verseContainerRef}
+        // style={{ height: `calc(100vh - 80px)` }}
       >
         <div className="h-10"></div>
         {shabadVerses.length === 0 ? (

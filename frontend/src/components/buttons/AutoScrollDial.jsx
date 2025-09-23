@@ -17,7 +17,7 @@ export default function AutoScrollDial({ speed, setSpeed }) {
   const handlePointerMove = (clientX) => {
     if (!dragging.current || startX.current === null) return;
     const diff = clientX - startX.current;
-    const THRESH = 30; // pixel threshold to change one step
+    const THRESH = 15; // pixel threshold to change one step
     if (Math.abs(diff) > THRESH) {
       if (diff < 0) {
         // swipe left -> increase (like wheel)
