@@ -134,9 +134,10 @@ function SahajPaathView() {
   return (
     <div className="relative h-screen w-full bg-neutral-900 flex-col px-2 py-5 select-none">
       <TopBar from="SahajPaath" ang={ang} setAng={setAng} />
-      <div className="mx-auto mt-20 space-y-2 h-full overflow-y-scroll"
+      <div className="mx-auto mt-[20px] h-full overflow-y-scroll"
         ref = {verseContainerRef}
       >
+        <div className="h-10"></div>
         {filteredVerses.map(([id, verse]) => (
           <div
             key={id}
