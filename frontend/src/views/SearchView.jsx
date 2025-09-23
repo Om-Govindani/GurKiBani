@@ -1,4 +1,5 @@
 import { useState, useContext, useRef, useEffect } from "react";
+import { registerSW } from 'virtual:pwa-register';
 import { useNavigate } from "react-router-dom";
 import SearchBar from "../components/SearchBar.jsx";
 import SearchResults from "../components/SearchResults.jsx";
@@ -61,9 +62,13 @@ function SearchView() {
     setShowLangMenu(false);
   };
 
-  const handleRefresh = () => {
-    window.location.reload();
+  const handleRefresh = async () => {
+    if (updateSW) {
+      await updateSW(); // nayi version ko activate karo
+    }
+    window.location.reload(); // phir reload karo
   };
+
 
   const handleInstallClick = async () => {
     if (deferredPrompt) {
@@ -74,6 +79,13 @@ function SearchView() {
       setShowInstallBtn(false);
     }
   };
+
+  const updateSW = registerSW({
+    onNeedRefresh() {
+      updateSW();
+    }
+  });
+
 
   return (
     <div className="relative bg-transparent py-4 flex flex-col items-center justify-center px-4 h-screen w-full overflow-hidden">
