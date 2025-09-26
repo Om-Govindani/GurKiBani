@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import SGGSContext from "./contexts/SGGSContext.js"
 import BookmarkContext from "./contexts/BookmarkContext.js";
 import LanguageContext from "./contexts/LanguageContext.js";
-import SGGS from "../public/SGGS.json";
+// import SGGS from "../public/SGGS.json";
 import ShabadView from "./views/ShabadView.jsx";
 import SearchView from "./views/SearchView.jsx";
 import { useState , useEffect , useRef} from "react";
@@ -28,6 +28,29 @@ import HindiTranslationContext from "./contexts/HindiTranslationContext.js";
 
 
 function App() {
+
+  const [sggsData, setSggsData] = useState(null);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("/SGGS.json");
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        setSggsData(data);
+        setError(null);
+      } catch (err) {
+        console.error("Failed to fetch SGGS data:", err);
+        setError("Failed to load Gurbani data. You may be offline or the data is not cached.");
+      } finally {
+        // setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
 
   const [ang , setAng] = useState(() =>{
     return localStorage.getItem("ang") || "1";
@@ -168,7 +191,7 @@ function App() {
 
 
   return (
-    <SGGSContext.Provider value = {SGGS}>
+    <SGGSContext.Provider value = {sggsData}>
       <AngContext.Provider value={[ang , setAng]}>
         <FontSizeContext.Provider value={[fontSize , setFontSize]}>
           <LanguageContext.Provider value={[language , setLanguage]} >

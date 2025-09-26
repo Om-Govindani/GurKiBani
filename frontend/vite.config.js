@@ -78,6 +78,72 @@ export default defineConfig({
               },
             },
           },
+          {
+            urlPattern: /A-Step-1\.png$/,
+            handler: "StaleWhileRevalidate",
+            options: {
+              cacheName: "A-Step-1",
+              expiration: {
+                maxEntries: 1,
+                maxAgeSeconds: 60 * 60 * 24 * 365, // 1 year
+              },
+            },
+          },
+          {
+            urlPattern: /A-Step-2\.png$/,
+            handler: "StaleWhileRevalidate",
+            options: {
+              cacheName: "A-Step-2",
+              expiration: {
+                maxEntries: 1,
+                maxAgeSeconds: 60 * 60 * 24 * 365, // 1 year
+              },
+            },
+          },
+          {
+            urlPattern: /A-Step-3\.png$/,
+            handler: "StaleWhileRevalidate",
+            options: {
+              cacheName: "A-Step-3",
+              expiration: {
+                maxEntries: 1,
+                maxAgeSeconds: 60 * 60 * 24 * 365, // 1 year
+              },
+            },
+          },
+          {
+            urlPattern: /I-Step-1\.jpeg$/,
+            handler: "StaleWhileRevalidate",
+            options: {
+              cacheName: "I-Step-1",
+              expiration: {
+                maxEntries: 1,
+                maxAgeSeconds: 60 * 60 * 24 * 365, // 1 year
+              },
+            },
+          },
+          {
+            urlPattern: /I-Step-2\.jpeg$/,
+            handler: "StaleWhileRevalidate",
+            options: {
+              cacheName: "I-Step-2",
+              expiration: {
+                maxEntries: 1,
+                maxAgeSeconds: 60 * 60 * 24 * 365, // 1 year
+              },
+            },
+          },
+          {
+            urlPattern: /I-Step-1\.jpeg$/,
+            handler: "StaleWhileRevalidate",
+            options: {
+              cacheName: "I-Step-3",
+              expiration: {
+                maxEntries: 1,
+                maxAgeSeconds: 60 * 60 * 24 * 365, // 1 year
+              },
+            },
+          },
         ],
       },
     }),
