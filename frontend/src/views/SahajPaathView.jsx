@@ -10,6 +10,7 @@ import HindiTeekaBhavArthContext from "../contexts/HindiTeekaBhavArthContext";
 import HindiTeekaShabadArthContext from "../contexts/HindiTeekaShabadArthContext";
 import HindiTranslationContext from "../contexts/HindiTranslationContext";
 import AutoScroll from "../components/buttons/AutoScroll";
+import EmptyPage from "../components/EmptyPage";
 
 function SahajPaathView() {
   const SGGS = useContext(SGGSContext);
@@ -48,14 +49,14 @@ function SahajPaathView() {
   }, []);
 
   // Filter and sort verses for current ang
-  const filteredVerses = Object.entries(SGGS)
+  const filteredVerses = SGGS ? Object.entries(SGGS)
     .filter(([key]) => key.startsWith(`${String(ang).trim()}-`))
     .sort((a, b) => {
       const [, lineA, verseA] = a[0].split("-").map(Number);
       const [, lineB, verseB] = b[0].split("-").map(Number);
       if (lineA !== lineB) return lineA - lineB;
       return verseA - verseB;
-    });
+    }) : [];
 
   // Scroll to stored verse on load
   useEffect(() => {
@@ -133,12 +134,13 @@ function SahajPaathView() {
 
   return (
     <div className="relative h-screen w-full bg-neutral-900 flex-col px-2 py-5 select-none">
-      <TopBar from="SahajPaath" ang={ang} setAng={setAng} />
-      <div className="mx-auto mt-[20px] w-full h-full overflow-y-scroll"
+      <TopBar from="SahajPaath" ang={ang} setAng={setAng} containerRef={verseContainerRef}/>
+      <div className="mx-auto pt-[20px] w-full h-full overflow-y-scroll"
         ref = {verseContainerRef}
       >
         <div className="h-10"></div>
-        {filteredVerses.map(([id, verse]) => (
+        {filteredVerses.length === 0 ? <EmptyPage title={"Waheguru ❤️"} /> : 
+          filteredVerses.map(([id, verse]) => (
           <div
             key={id}
             ref={(el) => (verseRefs.current[id] = el)}

@@ -16,7 +16,7 @@ export default function AutoScroll({ containerRef }) {
     if (!container) return;
 
     const pxPerTick = Math.max(1, Math.round(speed)); // pixels per interval tick
-    const intervalMs = 40; // tick every 80ms (feel free to tune)
+    const intervalMs = 65; // tick every 80ms (feel free to tune)
 
     const id = setInterval(() => {
       if (directionRef.current === "down") {

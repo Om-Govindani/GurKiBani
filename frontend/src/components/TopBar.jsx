@@ -10,6 +10,7 @@ import { HiDotsVertical } from "react-icons/hi";
 import { HiTrash } from "react-icons/hi";
 import { FiArrowLeftCircle, FiArrowRightCircle , FiSearch } from 'react-icons/fi';
 import { HiChevronDown, HiChevronUp } from "react-icons/hi"; // ⬇️⬆️ icons
+import { FaCaretUp } from "react-icons/fa";
 import EngTranslitrationContext from "../contexts/EngTranslitrationContext";
 import HindiTeekaBhavArthContext from "../contexts/HindiTeekaBhavArthContext";
 import HindiTeekaShabadArthContext from "../contexts/HindiTeekaShabadArthContext";
@@ -18,7 +19,8 @@ import HindiTranslationContext from "../contexts/HindiTranslationContext";
 
 
 
-function TopBar({ highlightId, from }) {
+
+function TopBar({ highlightId, from , containerRef}) {
   const navigate = useNavigate();
   const [bookmarks, setBookmarks] = useContext(BookmarkContext);
   const [ang, setAng] = useContext(AngContext);
@@ -228,6 +230,17 @@ const angInputRef = useRef();
           )}
 
 
+          {containerRef && (
+            <button
+              onClick={() => {
+                containerRef.current?.scrollTo({ top: 0, behavior: "smooth" });
+              }}
+              className="p-1 text-white"
+              title="Scroll to Top"
+            >
+              <FaCaretUp size={30} />
+            </button>
+          )}
 
 
           {/* 3-dot menu */}

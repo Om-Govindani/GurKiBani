@@ -4,6 +4,7 @@ import UserContext from "../contexts/SGGSContext";
 import SizeControlBtns from "../components/buttons/SizeControlBtns";
 import AutoScroll from "../components/buttons/AutoScroll";
 import TopBar from "../components/TopBar";
+import EmptyPage from "../components/EmptyPage";
 import LanguageContext from "../contexts/LanguageContext";
 import FontSizeContext from "../contexts/FontSizeContext";
 import HindiTranslationContext from "../contexts/HindiTranslationContext";
@@ -97,9 +98,11 @@ function ShabadView() {
     }
   }, [highlightId]);
 
-  const shabadVerses = Object.entries(SGGS).filter(
-    ([id, verse]) => verse[5] === startId
-  );
+  const shabadVerses = SGGS
+    ? Object.entries(SGGS).filter(
+        ([id, verse]) => verse[5] === startId
+      )
+    : [];
 
   const shouldHighlightFirstVerse = (() => {
     const firstVerse = shabadVerses[0]?.[1]?.[0] || "";
@@ -128,15 +131,17 @@ function ShabadView() {
 
   return (
     <div className="h-screen w-full bg-neutral-900 px-2 py-5 relative flex flex-col">
-      <TopBar highlightId={highlightId} from={from} />
-
-      <div className="w-full flex-1 h-full mx-auto mt-[20px] relative overflow-y-scroll"
+      
+        <TopBar highlightId={highlightId} from={from} containerRef={verseContainerRef}/>
+      
+      {/* <TopBar highlightId={highlightId} from={from} /> */}
+      <div className="w-full flex-1 h-full mx-auto pt-[50px] relative overflow-y-scroll"
         ref={verseContainerRef}
         // style={{ height: `calc(100vh - 80px)` }}
       >
-        <div className="h-10"></div>
+        {/* <div className="h-10"></div> */}
         {shabadVerses.length === 0 ? (
-          <EmptyPage title={"Some technical issue"} content={"This will be fixed soon"} />
+          <EmptyPage title={"Waheguru ❤️"} />
         ) : (
           shabadVerses.map(([id, verse], index) => {
             const isFirstVerse = index === 0;

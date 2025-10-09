@@ -231,7 +231,7 @@ function BaniView() {
 
   return (
     <div className="relative h-screen w-full bg-neutral-900 flex-col px-2 py-5">
-      <TopBar ref={topBarRef} from={from} />
+      <TopBar ref={topBarRef} from={from} containerRef={verseContainerRef}/>
 
       <div className="h-full mx-auto w-full mt-[20px] overflow-y-scroll flex-1"
         ref = {verseContainerRef}
