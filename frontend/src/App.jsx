@@ -31,6 +31,7 @@ function App() {
 
   const [sggsData, setSggsData] = useState(null);
   const [error, setError] = useState(null);
+  const wakeLockRef = useRef(null); 
 
   useEffect(() => {
     const fetchData = async () => {
@@ -175,18 +176,65 @@ function App() {
   }, []);
 
   useEffect(() => {
-  function disableZoom(e) {
-    if (e.touches.length > 1) {
-      e.preventDefault(); // stops pinch zoom
+    if (!('wakeLock' in navigator)) return; // Agar feature supported nahi hai, toh stop ho jao
+
+    const requestWakeLock = async () => {
+      try {
+        // Screen Wake Lock request
+        wakeLockRef.current = await navigator.wakeLock.request('screen');
+        console.log('Wake Lock active!');
+
+        wakeLockRef.current.addEventListener('release', () => {
+          console.log('Wake Lock was released. Re-requesting...');
+          // Agar lock release ho gaya, toh dobara request karo (e.g., jab screen unlock hoti hai)
+          requestWakeLock();
+        });
+
+      } catch (err) {
+        console.error(`Wake Lock failed: ${err.name}, ${err.message}`);
+      }
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        // App jab foreground mein aaye toh lock request karo
+        requestWakeLock();
+      } else if (wakeLockRef.current) {
+        // App jab background mein jaaye toh lock release karo (battery save)
+        wakeLockRef.current.release();
+        wakeLockRef.current = null;
+      }
+    };
+
+    // Events add karo
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    requestWakeLock(); // Component mount hone par pehli baar request
+
+    // Cleanup: Component unmount hone par lock release karo
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      if (wakeLockRef.current) {
+        wakeLockRef.current.release();
+        wakeLockRef.current = null;
+        console.log('Wake Lock released on unmount.');
+      }
+    };
+  }, []); // Run only once
+
+
+  useEffect(() => {
+    function disableZoom(e) {
+      if (e.touches.length > 1) {
+        e.preventDefault(); // stops pinch zoom
+      }
     }
-  }
 
-  document.addEventListener('touchmove', disableZoom, { passive: false });
+    document.addEventListener('touchmove', disableZoom, { passive: false });
 
-  return () => {
-    document.removeEventListener('touchmove', disableZoom);
-  };
-}, []);
+    return () => {
+      document.removeEventListener('touchmove', disableZoom);
+    };
+  }, []);
 
 
 
