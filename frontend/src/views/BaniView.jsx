@@ -60,7 +60,6 @@ function BaniView() {
 
       // Loop through the CURRENT Bani verses
       for (const [id, verse] of baniVerses) { 
-          // 💥 FIX: Safety Check: Agar file updated nahi hai (5 elements nahi hain), toh skip karo.
           // Isse agar koi bhi Bani transform nahi hui hai, toh app crash nahi hoga.
           if (!verse || verse.length < 5) continue; 
           
@@ -335,7 +334,7 @@ function BaniView() {
 
       <div 
         className={`h-full mx-auto w-full mt-[20px] overflow-y-scroll flex-1 relative 
-          ${isSearchMode ? 'filter blur-sm pointer-events-none opacity-80 transition-all duration-300' : ''}
+          ${isSearchMode ? 'filter blur-[4px] pointer-events-none opacity-80 transition-all duration-300' : ''}
         `}
         ref={verseContainerRef}
       >

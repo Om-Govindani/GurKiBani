@@ -239,7 +239,7 @@ function SearchBar({ from , bani , results, setResults, query, setQuery , onSear
         from === "bani" && onSearch ? onSearch() : handleSearch();
       }}
       className={`w-full max-w-lg bg-zinc-800 h-14 flex transition-all duration-300
-        ${hasResults ? "rounded-t-2xl rounded-b-none " : "rounded-2xl"} shadow-md shadow-stone-700/60`}
+        ${hasResults ? "rounded-t-2xl rounded-b-none " : "rounded-2xl"}`}
     >
       <input
         type="text"
