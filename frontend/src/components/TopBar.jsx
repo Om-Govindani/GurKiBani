@@ -147,7 +147,7 @@ const angInputRef = useRef();
         {/* Right Side */}
         <div className="flex items-center space-x-2 relative">
 
-          {from === "bani" && (
+          {(from === "bani" || from === "search") && (
             <button
               className="p-1 text-white"
               onClick={onSearchToggle}
