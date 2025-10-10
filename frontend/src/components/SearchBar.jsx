@@ -2,13 +2,15 @@ import { useState, useEffect, useContext, useRef } from "react";
 import SGGSContext from "../contexts/SGGSContext";
 import BookmarkContext from "../contexts/BookmarkContext";
 
-function SearchBar({ results, setResults, query, setQuery }) {
-  const SGGS = useContext(SGGSContext);
+function SearchBar({ from , bani , results, setResults, query, setQuery , onSearch }) {
+  const SGGS_CONTEXT = useContext(SGGSContext);
+  const SGGS = (from === "bani" && bani) ? bani : SGGS_CONTEXT;
   const [bookmarks] = useContext(BookmarkContext);
-
+  // const [showBubble, setShowBubble] = useState(false);
   const [listening, setListening] = useState(false);
   const recognitionRef = useRef(null);
   const stopTimerRef = useRef(null);
+  const inputRef = useRef(null); 
 
   const quickRefs = {
     "japji sahib": ["ਜਪੁਜੀ ਸਾਹਿਬ", "जपुजी साहिब"],
@@ -47,6 +49,14 @@ function SearchBar({ results, setResults, query, setQuery }) {
 
   // --- Voice: start listening for 10 seconds ---
   const startListening = () => {
+
+    if (!navigator.onLine) {
+      setShowBubble(true);
+      setTimeout(() => setShowBubble(false), 1500);
+      return;
+    }
+
+
     if (typeof window === "undefined") return;
 
     const SpeechRecognition =
@@ -127,7 +137,13 @@ function SearchBar({ results, setResults, query, setQuery }) {
   const handleSearch = () => {
     const raw = query.trim().toLowerCase();
     const normalizedChars = raw.includes(" ") ? raw.split(/\s+/) : raw.split("");
-
+    
+    // 💥 FIX: Safety check for SGGS_CONTEXT availability
+    if (!SGGS_CONTEXT || Object.keys(SGGS_CONTEXT).length === 0) {
+        setResults([]);
+        return;
+    }
+    
     if (normalizedChars.length < 3) {
       setResults([]);
       return;
@@ -152,10 +168,15 @@ function SearchBar({ results, setResults, query, setQuery }) {
     };
 
     const allMatches = [];
-    for (const [id, verse] of Object.entries(SGGS)) {
-      const verseRomanChars = verse[4].split(" ");
+    // 💥 FIX: Loop over SGGS_CONTEXT data with defensive check
+    for (const [id, verse] of Object.entries(SGGS_CONTEXT)) { 
+      // 💥 FIX: Add defensive check for incomplete verse data (verse must have at least 5 elements)
+      if (!verse || verse.length < 5) continue; 
+        
+      const verseRomanChars = verse[4].split(" "); // 💥 Error was happening here
       const verseHindiChars = verse[3].split(" ");
       const verseGurmukhiChars = verse[2].split(" ");
+      // ... (rest of search logic is unchanged)
       if (
         isMatch(verseRomanChars, normalizedChars) ||
         isMatch(verseHindiChars, normalizedChars) ||
@@ -181,17 +202,33 @@ function SearchBar({ results, setResults, query, setQuery }) {
         (res) => !bookmarks.some((b) => b.romanChar === res.romanChar)
       ),
     ];
-
+    // console.log(sortedResults)
     setResults(sortedResults);
   };
 
   useEffect(() => {
     const delay = setTimeout(() => {
-      handleSearch();
+      // Logic 1: Local Bani search (from="bani")
+      if (from === "bani" && onSearch) {
+          onSearch(); // Runs BaniView's handleLocalSearch logic
+      } 
+      // Logic 2: Global SGGS search (from="searchView" or otherwise)
+      else if (SGGS_CONTEXT && from !== "bani") {
+          handleSearch(); // Runs this file's global search logic
+      } else {
+        setResults([]); // Clear if no search is intended or context is not ready
+      }
     }, 200);
     return () => clearTimeout(delay);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [query]);
+  }, [query, SGGS_CONTEXT, onSearch, from]);
+
+  useEffect(() => {
+    // FIX: Autofocus sirf tabhi ho jab from="bani" ho.
+    if (from === "bani" && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [from]);
 
   const hasResults = results.length > 0;
 
@@ -199,63 +236,67 @@ function SearchBar({ results, setResults, query, setQuery }) {
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        handleSearch();
+        from === "bani" && onSearch ? onSearch() : handleSearch();
       }}
       className={`w-full max-w-lg bg-zinc-800 h-14 flex transition-all duration-300
         ${hasResults ? "rounded-t-2xl rounded-b-none " : "rounded-2xl"} shadow-md shadow-stone-700/60`}
     >
       <input
         type="text"
-        placeholder="Enter First Characters of Shabad"
+        ref={inputRef}
+        placeholder={from === "bani" ? "Enter First Characters" : "Enter First Characters of Shabad"}
         value={query}
         onChange={(e) => {
           setQuery(e.target.value.toLowerCase());
         }}
-        className={`w-6/7 h-full bg-zinc-800 text-white/80 px-6 py-4 placeholder:text-zinc-400 text-lg
-          ${hasResults ? "rounded-tl-2xl rounded-bl-none" : "rounded-l-2xl"} outline-none`}
+        className={`h-full bg-zinc-800 text-white/80 px-6 py-4 placeholder:text-zinc-400 text-lg outline-none
+          ${hasResults ? "rounded-tl-2xl rounded-bl-none" : "rounded-l-2xl"}
+          ${from === "bani" ? "w-full rounded-r-2xl" : "w-6/7"}`}
       />
 
       {/* Mic / Stop button */}
-      {!listening ? (
-        <button
-          type="button"
-          onClick={startListening}
-          className={`w-1/7 bg-zinc-400 cursor-pointer transition-all duration-300 hover:bg-white/40 active:scale-95 flex items-center justify-center
-            ${hasResults ? "rounded-tr-2xl rounded-br-none" : "rounded-r-2xl"}`}
-          aria-label="Start voice search"
-          title="Start voice search"
-        >
-          {/* Mic icon - white */}
-          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-mic" viewBox="0 0 16 16">
-            <path d="M3.5 6.5A.5.5 0 0 1 4 7v1a4 4 0 0 0 8 0V7a.5.5 0 0 1 1 0v1a5 5 0 0 1-4.5 4.975V15h3a.5.5 0 0 1 0 1h-7a.5.5 0 0 1 0-1h3v-2.025A5 5 0 0 1 3 8V7a.5.5 0 0 1 .5-.5"/>
-            <path d="M10 8a2 2 0 1 1-4 0V3a2 2 0 1 1 4 0zM8 0a3 3 0 0 0-3 3v5a3 3 0 0 0 6 0V3a3 3 0 0 0-3-3"/>
-          </svg>
-        </button>
-      ) : (
-        <button
-          type="button"
-          onClick={stopListening}
-          className={`w-1/7 bg-red-500 cursor-pointer transition-all duration-300 hover:bg-red-400 active:scale-95 flex items-center justify-center
-            ${hasResults ? "rounded-tr-2xl rounded-br-none" : "rounded-r-2xl"}`}
-          aria-label="Stop voice search"
-          title="Stop voice search"
-        >
-          {/* White cross icon */}
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6 text-white"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth={2}
-            strokeLinecap="round"
-            strokeLinejoin="round"
+      {/* <div className="relative"> */}
+        {from !== "bani" && (!listening ? (
+          <button
+            type="button"
+            onClick={startListening}
+            className={`w-1/7 bg-zinc-400 cursor-pointer transition-all duration-300 hover:bg-white/40 active:scale-95 flex items-center justify-center
+              ${hasResults ? "rounded-tr-2xl rounded-br-none" : "rounded-r-2xl"}`}
+            aria-label="Start voice search"
+            title="Start voice search"
           >
-            <line x1="18" y1="6" x2="6" y2="18" />
-            <line x1="6" y1="6" x2="18" y2="18" />
-          </svg>
-        </button>
-      )}
+            {/* Mic icon - white */}
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-mic" viewBox="0 0 16 16">
+              <path d="M3.5 6.5A.5.5 0 0 1 4 7v1a4 4 0 0 0 8 0V7a.5.5 0 0 1 1 0v1a5 5 0 0 1-4.5 4.975V15h3a.5.5 0 0 1 0 1h-7a.5.5 0 0 1 0-1h3v-2.025A5 5 0 0 1 3 8V7a.5.5 0 0 1 .5-.5"/>
+              <path d="M10 8a2 2 0 1 1-4 0V3a2 2 0 1 1 4 0zM8 0a3 3 0 0 0-3 3v5a3 3 0 0 0 6 0V3a3 3 0 0 0-3-3"/>
+            </svg>
+          </button>
+        ) : (
+          <button
+            type="button"
+            onClick={stopListening}
+            className={`w-1/7 bg-red-500 cursor-pointer transition-all duration-300 hover:bg-red-400 active:scale-95 flex items-center justify-center
+              ${hasResults ? "rounded-tr-2xl rounded-br-none" : "rounded-r-2xl"}`}
+            aria-label="Stop voice search"
+            title="Stop voice search"
+          >
+            {/* White cross icon */}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6 text-white"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        ))}
+        
     </form>
   );
 }

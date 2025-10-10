@@ -14,7 +14,6 @@ import BaniView from "./views/BaniView.jsx";
 import HistoryContext from "./contexts/HistoryContext.js";
 import HistoryView from "./views/HistoryView.jsx";
 import AboutUs from "./views/AboutUs.jsx";
-import SilentAudio from "./components/SilentAudio.jsx";
 import SahajPaathView from "./views/SahajPaathView.jsx";
 import AngContext from "./contexts/AngContext.js";
 import BackgroundMedia from "./components/BackgroundMedia.jsx";

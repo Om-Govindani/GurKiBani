@@ -4,7 +4,7 @@ import BookmarkContext from "../contexts/BookmarkContext";
 import LanguageContext from "../contexts/LanguageContext";
 import HistoryContext from "../contexts/HistoryContext";
 
-function SearchResults({ results, setQuery }) {
+function SearchResults({ results, setQuery , onBaniResultClick}) {
   const [bookmarks] = useContext(BookmarkContext);
   const [language] = useContext(LanguageContext);
   const [history, setHistory] = useContext(HistoryContext);
@@ -22,6 +22,11 @@ function SearchResults({ results, setQuery }) {
     setQuery("");
 
     const isQuickRef = result.id === "__quickref__";
+
+    if (!isQuickRef && !result.startId && onBaniResultClick) {
+        onBaniResultClick(result.id); // BaniView mein scroll logic trigger karo
+        return; // Navigation mat karo
+    }
 
     if (isQuickRef) {
       navigate(`/bani/${encodeURIComponent(result.devanagari)}?from=search`);

@@ -20,7 +20,7 @@ import HindiTranslationContext from "../contexts/HindiTranslationContext";
 
 
 
-function TopBar({ highlightId, from , containerRef}) {
+function TopBar({ highlightId, from , containerRef , onSearchToggle}) {
   const navigate = useNavigate();
   const [bookmarks, setBookmarks] = useContext(BookmarkContext);
   const [ang, setAng] = useContext(AngContext);
@@ -146,6 +146,17 @@ const angInputRef = useRef();
 
         {/* Right Side */}
         <div className="flex items-center space-x-2 relative">
+
+          {from === "bani" && (
+            <button
+              className="p-1 text-white"
+              onClick={onSearchToggle}
+              title="Search Bani"
+            >
+              <FiSearch size={24} />
+            </button>
+          )}
+
           {(from === "searchresults" || from === "bookmarks" || from === "history") && (
             <>
               <div className="text-xl text-white font-gurmukhi">

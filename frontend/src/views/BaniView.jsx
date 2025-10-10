@@ -13,6 +13,8 @@ import LanguageContext from "../contexts/LanguageContext";
 import EmptyPage from "../components/EmptyPage"; // Make sure this exists
 import FontSizeContext from "../contexts/FontSizeContext";
 import AutoScroll from "../components/buttons/AutoScroll";
+import SearchBar from "../components/SearchBar";
+import SearchResults from "../components/SearchResults";
 
 function BaniView() {
   const { name } = useParams();
@@ -20,7 +22,8 @@ function BaniView() {
   const baniVerses = Object.entries(SundarGutka[decodedName]) || [];
   const [searchParams] = useSearchParams();
   const from = searchParams.get("from");
-
+  const [results, setResults] = useState([]);
+  const [query, setQuery] = useState("");
   const [fontSize, setFontSize] = useContext(FontSizeContext);
   const [language] = useContext(LanguageContext);
   const topBarRef = useRef(null);
@@ -30,6 +33,86 @@ function BaniView() {
   const isSukhmani = decodedName === "सुखमनी साहिब";
   const [controlsVisible, setControlsVisible] = useState(false);
   const timeoutRef = useRef(null);
+  const searchRef = useRef(null); 
+  const [isSearchMode, setIsSearchMode] = useState(false);
+  const [scrollTargetId, setScrollTargetId] = useState(null);
+  const toggleSearchMode = () => {
+    setIsSearchMode(prev => {
+        if (prev) {
+             setResults([]); // Clear results on close
+             setQuery(""); // Clear query on close
+        }
+        return !prev;
+    });
+  };
+
+  const handleLocalSearch = () => {
+      const raw = query.trim().toLowerCase();
+      // Remove spaces from query for fuzzy substring matching (e.g., 'mmp' from 'mmp')
+      const inputString = raw.replace(/\s/g, ""); 
+      
+      if (inputString.length < 3) {
+          setResults([]);
+          return;
+      }
+
+      const allMatches = [];
+
+      // Loop through the CURRENT Bani verses
+      for (const [id, verse] of baniVerses) { 
+          // 💥 FIX: Safety Check: Agar file updated nahi hai (5 elements nahi hain), toh skip karo.
+          // Isse agar koi bhi Bani transform nahi hui hai, toh app crash nahi hoga.
+          if (!verse || verse.length < 5) continue; 
+          
+          // Index 2: Gurmukhi Initials (e.g., 'ੴ ਸ ਨ ਕ ਪ ਨ ਨ')
+          const gurmukhiInitials = (verse[2] || '').toLowerCase().replace(/\s/g, "");
+          
+          // Index 3: Devanagari Initials (e.g., 'ੴ स न क प न न')
+          const devanagariInitials = (verse[3] || '').toLowerCase().replace(/\s/g, "");
+          
+          // Index 4: Romanized Initials (e.g., 'i s n k p n n')
+          const romanizedInitials = (verse[4] || '').toLowerCase().replace(/\s/g, "");
+
+
+          // 💥 CORRECT COMPARISON: Input string ko sirf initial character strings ke against check karo
+          if (romanizedInitials.includes(inputString) || 
+              gurmukhiInitials.includes(inputString) || 
+              devanagariInitials.includes(inputString)) 
+          {
+              
+              allMatches.push({
+                  id: id,                     
+                  gurmukhi: verse[0],
+                  devanagari: verse[1],
+                  // startId is intentionally missing for local scroll
+              });
+          }
+      }
+
+      setResults(allMatches);
+  };
+  // 💥 New Function: Scroll to verse when a result is clicked
+  const handleResultScroll = (id) => {
+      setScrollTargetId(id);
+  };
+
+
+  // New useEffect to handle scrolling when a result is clicked
+  useEffect(() => {
+    if (scrollTargetId && verseRefs.current[scrollTargetId]) {
+        verseRefs.current[scrollTargetId].scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+        });
+        setScrollTargetId(null); 
+        setIsSearchMode(false); 
+        setResults([]);
+        setQuery("");
+        // Momentarily highlight the verse for visual feedback
+        setHighlightId(scrollTargetId);
+        setTimeout(() => setHighlightId(null), 3000);
+    }
+  }, [scrollTargetId]);
 
   // Save verse ID on tap
   const handleVerseTap = (id) => {
@@ -61,6 +144,23 @@ function BaniView() {
       window.scrollTo(0, 0);
     }
   }, [decodedName]);
+
+  useEffect(() => {
+    function handleOutsideClick(event) {
+      // Agar search overlay dikh raha hai AND click search overlay ke andar nahi hua hai
+      if (isSearchMode && searchRef.current && !searchRef.current.contains(event.target)) {
+        setIsSearchMode(false); // Search mode band kar do
+      }
+    }
+
+    // Mousedown event par listener lagao
+    document.addEventListener("mousedown", handleOutsideClick);
+
+    // Cleanup: Component unmount hone par listener hata do
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, [isSearchMode]);
 
   // Keyboard navigation
   useEffect(() => {
@@ -231,11 +331,13 @@ function BaniView() {
 
   return (
     <div className="relative h-screen w-full bg-neutral-900 flex-col px-2 py-5">
-      <TopBar ref={topBarRef} from={from} containerRef={verseContainerRef}/>
+      <TopBar ref={topBarRef} from={from} containerRef={verseContainerRef} onSearchToggle={toggleSearchMode}/>
 
-      <div className="h-full mx-auto w-full mt-[20px] overflow-y-scroll flex-1"
-        ref = {verseContainerRef}
-        // style={{ height: `calc(100vh - 80px)` }}
+      <div 
+        className={`h-full mx-auto w-full mt-[20px] overflow-y-scroll flex-1 relative 
+          ${isSearchMode ? 'filter blur-sm pointer-events-none opacity-80 transition-all duration-300' : ''}
+        `}
+        ref={verseContainerRef}
       >
         <div className="h-10"></div>
 
@@ -298,6 +400,36 @@ function BaniView() {
       >
         <AutoScroll containerRef={verseContainerRef} />
       </div>
+      {isSearchMode && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60">
+          <div 
+            // 💥 Yahan pe flex-col add kiya hai taaki SearchBar aur SearchResults vertically stack ho
+            // 💥 aur isi div par searchRef lagana hai
+            className="w-11/12 max-w-lg flex flex-col items-center" 
+            ref={searchRef} // 👈 Reference ab is parent div par hai
+          >
+            {/* SearchBar aur SearchResults dono yahan honge */}
+            <SearchBar
+                from="bani"
+                bani={baniVerses}
+                results={results}
+                setResults={setResults}
+                query={query}
+                setQuery={setQuery}
+                onSearch={handleLocalSearch}
+            />
+            {/* Search Results tabhi dikhenge jab results honge */}
+            {results.length > 0 && 
+              <SearchResults 
+                results={results} 
+                setQuery={setQuery} 
+                onBaniResultClick={handleResultScroll}
+              />}
+
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }
