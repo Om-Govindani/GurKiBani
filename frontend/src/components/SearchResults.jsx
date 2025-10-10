@@ -22,17 +22,30 @@ function SearchResults({ results, setQuery , onBaniResultClick}) {
     setQuery("");
 
     const isQuickRef = result.id === "__quickref__";
-
+    const isBaniResult = result.type === 'bani'; // 💥 Naya check
+    
+    // Logic 1: In-page Bani Search (Agar startId missing hai)
     if (!isQuickRef && !result.startId && onBaniResultClick) {
         onBaniResultClick(result.id); // BaniView mein scroll logic trigger karo
         return; // Navigation mat karo
     }
 
+    // Logic 2: BaniView Navigation (Agar result SundarGutka se aaya hai)
+    if (isBaniResult) {
+      // result.id is like "Japuji Sahib-1"
+      const [baniName, highlightId] = result.id.split('-');
+
+      navigate(`/bani/${encodeURIComponent(baniName)}?from=search&highlight=${highlightId}`);
+      return; 
+    }
+
+    // Logic 3: SGGS Navigation (Original logic, made safe)
     if (isQuickRef) {
       navigate(`/bani/${encodeURIComponent(result.devanagari)}?from=search`);
     } else {
-      // ✅ Add to history
+      // ✅ Add to history (SGGS search ke liye)
       setHistory((prev) => {
+        // newEntry ko turant yahan define karo
         const newEntry = {
           id: result.id,
           startId: result.startId,
@@ -46,6 +59,7 @@ function SearchResults({ results, setQuery , onBaniResultClick}) {
         
       });
 
+      // 3. Navigate to ShabadView
       navigate(`/shabad/${result.startId}?highlight=${result.id}&from=searchresults`);
     }
   };
@@ -59,6 +73,7 @@ function SearchResults({ results, setQuery , onBaniResultClick}) {
 
       {results.map((result, index) => {
         const isQuickRef = result.id === "__quickref__";
+        const isBaniResult = result.type === 'bani';
 
         return (
           <div
@@ -67,7 +82,7 @@ function SearchResults({ results, setQuery , onBaniResultClick}) {
             className={`relative px-4 py-3 border-y border-zinc-700 text-white text-sm cursor-pointer hover:bg-zinc-700/40 transition`}
           >
             {/* 📿 Simran Mala */}
-            {isQuickRef && (
+            {(isQuickRef || isBaniResult) && (
               <div className="absolute top-1/2 -translate-y-1/2 right-2 text-orange-300 text-xl">
                 📿
               </div>

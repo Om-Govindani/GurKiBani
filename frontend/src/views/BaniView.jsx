@@ -17,10 +17,11 @@ import SearchBar from "../components/SearchBar";
 import SearchResults from "../components/SearchResults";
 
 function BaniView() {
-  const { name } = useParams();
+  const { name} = useParams();
   const decodedName = decodeURIComponent(name);
   const baniVerses = Object.entries(SundarGutka[decodedName]) || [];
   const [searchParams] = useSearchParams();
+  const highlightIdURL = searchParams.get("highlight"); 
   const from = searchParams.get("from");
   const [results, setResults] = useState([]);
   const [query, setQuery] = useState("");
@@ -122,27 +123,45 @@ function BaniView() {
   };
 
   // Scroll to saved verse using layoutEffect for timing reliability
-  useLayoutEffect(() => {
-    if (isSukhmani) {
+  useEffect(() => {
+    let targetId = null;
+
+    // 1. URL se aayi hui highlight ID check karo
+    if (highlightIdURL) {
+      targetId = highlightIdURL;
+      
+    // 2. Agar Sukhmani Sahib hai, toh saved progress check karo
+    } else if (isSukhmani) { 
       const savedId = localStorage.getItem("sukhmani_last_verse");
       if (savedId) {
-        setHighlightId(savedId);
-
-        requestAnimationFrame(() => {
-          verseRefs.current[savedId]?.scrollIntoView({
-            behavior: "smooth",
-            block: "center",
-          });
-        });
-
-        setTimeout(() => {
-          setHighlightId(null);
-        }, 3000);
+        targetId = savedId;
       }
+    } 
+
+    if (targetId) {
+      // Highlight state set karo aur scroll karo
+      setHighlightId(targetId);
+
+      requestAnimationFrame(() => {
+        // Scroll kahan karna hai? verseRefs ke current verse par
+        verseRefs.current[targetId]?.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+      });
+
+      // Highlight ko 3 seconds baad hata do (Agar yeh URL se aaya ho)
+      setTimeout(() => {
+        setHighlightId(null);
+      }, 3000);
     } else {
+      // Agar koi target nahi mila, toh top par scroll kar do
       window.scrollTo(0, 0);
     }
-  }, [decodedName]);
+    
+    // Yahan [decodedName] hai, taaki jab Bani badle, toh effect dobara chale.
+  }, [decodedName, highlightIdURL, isSukhmani]);
+
 
   useEffect(() => {
     function handleOutsideClick(event) {
@@ -325,7 +344,8 @@ function BaniView() {
         "रागु बिलावलु महला ५ दुपदे घरु ५",
         "सोरठि महला ५ ॥",
         "सोरठि मः ५ ॥",
-        "रागु सोरठि ॥"
+        "रागु सोरठि ॥",
+        "रागु गउड़ी महला ५"
     ]
 
   return (

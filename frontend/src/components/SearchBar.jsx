@@ -1,10 +1,12 @@
 import { useState, useEffect, useContext, useRef } from "react";
+import SundarGutka from "../../public/SundarGutka.json";
 import SGGSContext from "../contexts/SGGSContext";
 import BookmarkContext from "../contexts/BookmarkContext";
 
 function SearchBar({ from , bani , results, setResults, query, setQuery , onSearch }) {
   const SGGS_CONTEXT = useContext(SGGSContext);
   const SGGS = (from === "bani" && bani) ? bani : SGGS_CONTEXT;
+  if(!bani) bani = SundarGutka;
   const [bookmarks] = useContext(BookmarkContext);
   // const [showBubble, setShowBubble] = useState(false);
   const [listening, setListening] = useState(false);
@@ -193,6 +195,39 @@ function SearchBar({ from , bani , results, setResults, query, setQuery , onSear
       }
     }
 
+    const baniMatches = [];
+
+    // Har Bani ke andar jaakar verses mein search karo
+    for (const [baniNameDevanagari, verses] of Object.entries(SundarGutka)) {
+      // Verse ka array (e.g., [['1', [Gurmukhi, Devanagari]], ...])
+      for (const [id, verse] of Object.entries(verses)) {
+        const gurmukhiInitials = (verse[2] || '').toLowerCase().replace(/\s/g, "");
+          
+          // Index 3: Devanagari Initials (e.g., 'ੴ स न क प न न')
+          const devanagariInitials = (verse[3] || '').toLowerCase().replace(/\s/g, "");
+          
+          // Index 4: Romanized Initials (e.g., 'i s n k p n n')
+          const romanizedInitials = (verse[4] || '').toLowerCase().replace(/\s/g, "");
+
+
+          // 💥 CORRECT COMPARISON: Input string ko sirf initial character strings ke against check karo
+          if (isMatch(romanizedInitials,normalizedChars) || 
+              isMatch(gurmukhiInitials,normalizedChars) || 
+              isMatch(devanagariInitials,normalizedChars)) 
+          {
+          baniMatches.push({
+            id: `${baniNameDevanagari}-${id}`, // Unique ID: BaniName-VerseID
+            gurmukhi: verse[0],
+            devanagari: verse[1],
+            baniName: baniNameDevanagari, // Bani name for navigation
+            type: 'bani',                // 💥 Mark this result as a Bani result
+          });
+          // Ek Bani se ek hi match dikhana better UX hai (agar tum चाहो तो)
+          break; // Next Bani par jao
+        }
+      }
+    }
+
     const sortedResults = [
       ...(quickRefResult ? [quickRefResult] : []),
       ...allMatches.filter((res) =>
@@ -202,8 +237,11 @@ function SearchBar({ from , bani , results, setResults, query, setQuery , onSear
         (res) => !bookmarks.some((b) => b.romanChar === res.romanChar)
       ),
     ];
-    // console.log(sortedResults)
-    setResults(sortedResults);
+    console.log(baniMatches)
+    setResults([
+      ...sortedResults,
+      ...baniMatches // Bani results hamesha aakhir mein aayenge
+    ]);
   };
 
   useEffect(() => {
