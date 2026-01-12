@@ -13,10 +13,9 @@ import NitnemView from "./views/NitnemView.jsx";
 import BaniView from "./views/BaniView.jsx";
 import HistoryContext from "./contexts/HistoryContext.js";
 import HistoryView from "./views/HistoryView.jsx";
-import AboutUs from "./views/AboutUs.jsx";
 import SahajPaathView from "./views/SahajPaathView.jsx";
 import AngContext from "./contexts/AngContext.js";
-import BackgroundMedia from "./components/BackgroundMedia.jsx";
+import BackgroundSettings from "./views/BackgroundSettings.jsx";
 import Instructions from "./views/Instructions.jsx"
 import FontSizeContext from "./contexts/FontSizeContext.js";
 import EngTranslitrationContext from "./contexts/EngTranslitrationContext.js";
@@ -51,6 +50,27 @@ function App() {
     };
     fetchData();
   }, []);
+
+  useEffect(() => {
+    const savedBg = localStorage.getItem("gkb_bg");
+    if (savedBg) {
+      document.documentElement.style.setProperty("--gkb-bg-desktop", `url(${savedBg})`);
+      document.documentElement.style.setProperty("--gkb-bg-mobile", `url(${savedBg})`);
+    }
+
+    const blur = localStorage.getItem("gkb_bg_blur");
+    if (blur) {
+      document.documentElement.style.setProperty("--gkb-bg-blur", `${blur}px`);
+    }
+
+    // ✅ opacity
+    const opacity = localStorage.getItem("gkb_bg_opacity");
+    if (opacity) {
+      document.documentElement.style.setProperty("--gkb-bg-opacity", opacity);
+    }
+
+  }, []);
+
 
   const [ang , setAng] = useState(() =>{
     return localStorage.getItem("ang") || "1";
@@ -261,6 +281,7 @@ function App() {
                               <Route path="/bani" element={<Navigate to="/nitnem" replace />} />
                               <Route path="/bani/:name" element={<BaniView />} />
                               <Route path="/history" element={<HistoryView />} />
+                              <Route path="/__background" element={<BackgroundSettings />} />
                               <Route path="*" element={<Navigate to="/" replace />} />
                               <Route path="/SahajPaath" element={<SahajPaathView />} />
                           </Routes>

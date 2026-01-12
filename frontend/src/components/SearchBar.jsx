@@ -138,7 +138,18 @@ function SearchBar({ from , bani , results, setResults, query, setQuery , onSear
   // --- Your existing search logic (unchanged) ---
   const handleSearch = () => {
     const raw = query.trim().toLowerCase();
+    const isDesktop = window.matchMedia("(min-width: 768px)").matches;
     const normalizedChars = raw.includes(" ") ? raw.split(/\s+/) : raw.split("");
+    const secretBgMatch = !isDesktop && raw === "background";
+
+  const secretBgResult = secretBgMatch
+    ? {
+        id: "__secret_background__",
+        gurmukhi: "Background Change",
+        devanagari: "Change Background",
+        type: "secret",
+      }
+    : null;
     
     // 💥 FIX: Safety check for SGGS_CONTEXT availability
     if (!SGGS_CONTEXT || Object.keys(SGGS_CONTEXT).length === 0) {
@@ -237,8 +248,9 @@ function SearchBar({ from , bani , results, setResults, query, setQuery , onSear
         (res) => !bookmarks.some((b) => b.romanChar === res.romanChar)
       ),
     ];
-    console.log(baniMatches)
+    
     setResults([
+      ...(secretBgResult ? [secretBgResult] : []),
       ...sortedResults,
       ...baniMatches // Bani results hamesha aakhir mein aayenge
     ]);

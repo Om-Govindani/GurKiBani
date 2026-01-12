@@ -23,6 +23,12 @@ function SearchResults({ results, setQuery , onBaniResultClick}) {
 
     const isQuickRef = result.id === "__quickref__";
     const isBaniResult = result.type === 'bani'; // 💥 Naya check
+
+    if (result.id === "__secret_background__") {
+      navigate("/__background");
+      return;
+    }
+
     
     // Logic 1: In-page Bani Search (Agar startId missing hai)
     if (!isQuickRef && !result.startId && onBaniResultClick) {
